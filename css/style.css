@@ -1,0 +1,209 @@
+body{
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+li{
+    display: inline;
+    float: left;
+}
+a{
+    display: block;
+    padding: 20px;
+    background-color: transparent;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+    text-decoration: none;
+    color: #bacbe6;
+    transition-duration: 0.4s;
+}
+a:hover{
+    color: white;
+}
+#navbar{
+    margin: 0;
+    padding: 0;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #343a40;
+}
+.container{
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+#homepagemark{
+    margin-left: 5%;
+    margin-right: 35%;
+    padding: 0;
+    height: 60%;
+    width: 40%;
+    display: flex;
+    align-items: center;
+}
+#nav{
+    margin: 0;
+    padding: 0;
+    height: 60%;
+    height: 60%;
+    display: flex;
+}
+#gotohomepage{
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 30px;
+    font-family: 微軟正黑體;
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+}
+/*以上區域為共通導航區塊*/
+#backround{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 0;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+    z-index: -10;
+}
+#logincontainer{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    height: 500px;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: #343a40;
+    border-radius: 30px;
+
+}
+#loginmsg{
+    display: flex;
+    margin: 0;
+    padding-top: 15%;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 25px;
+    font-family: 微軟正黑體;
+}
+#login{
+    margin: 0;
+    padding-top: 10%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.msgcontainer{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+.identifiertext{
+    padding-top: 5%;
+    padding-left: 20%;
+    color: #bacbe6;
+}
+.identifierinput{
+    padding-top: 2px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.textinput{
+    width: 60%;
+    height: 34px;
+    line-height: 34px;
+    outline-style: none;
+    font-size: 16px;
+    font-family: 微軟正黑體;
+    color: #343a40;
+    border: none;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 5px;
+
+}
+.line{
+    width: 0;
+    height: 3px;
+    display: block;
+    background-color: #343a40;
+    background-image: linear-gradient(90deg, #bacbe6 0%, #C850C0 48%, #FFCC70 100%);
+    transition: all 0.24s ease-in-out;
+}
+input:focus+.line,input:valid+.line{
+    width: 60%;
+}
+#submitbox{
+    margin: 0;
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#trigger{
+    width: 60%;
+    height: 40px;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+    color: #343a40;
+    border-radius: 20px;
+    background-color: springgreen;
+    box-shadow: none;
+}
+#trigger:hover{
+    transition-duration: 0.28s;
+    background-color: #20c997;
+    cursor: pointer;
+}
+#buttonbox{
+    margin: 0;
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#backtohome{
+    width: 60%;
+    height: 40px;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+    color: #343a40;
+    border-radius: 20px;
+    background-color: #bacbe6;
+    box-shadow: none;
+}
+#backtohome:hover{
+    transition-duration: 0.28s;
+    background-color: #b02a37;
+    color: #bacbe6;
+    cursor: pointer;
+}
