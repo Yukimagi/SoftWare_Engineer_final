@@ -143,10 +143,8 @@
     $uid = $_SESSION['uid'];
 
     if (isset($identity) && $identity !== "SYS") {
-        $location = "localhost"; //連到本機
-        $account = "root";
-        $password = "32438654";
-        $link = mysql_pconnect($location,$account,$password);
+        //連接資料庫
+        include("connection.php");
 
         switch ($identity){
             case "S":
