@@ -15,11 +15,7 @@
     <?php
     /*
         session_start();
-
-        $location = "localhost"; //連到本機
-        $account = "root";
-        $password = "32438654";
-        $link = mysql_pconnect($location,$account,$password);
+        include("connection.php");
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileid = $_POST["account"];
