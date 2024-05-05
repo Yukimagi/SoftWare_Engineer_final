@@ -123,74 +123,84 @@ if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
                 <div class="col-lg-8">
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="assets/article_warn.png" alt="..." /></a>
                         <div class="card-body">
-                            <div class="small text-muted">January 1, 2021</div>
-                            <h2 class="card-title">Featured Post Title</h2>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
-                            <a class="btn btn-primary" href="#!">Read more →</a>
+
                         </div>
                     </div>
-                    <!-- Nested row for non-featured blog posts-->
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                <div class="card-body">
-                                    <div class="small text-muted">January 1, 2021</div>
-                                    <h2 class="card-title h4">Post Title</h2>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam.</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Pagination-->
-                    <nav aria-label="Pagination">
-                        <hr class="my-0" />
-                        <ul class="pagination justify-content-center my-4">
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
-                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-                        </ul>
-                    </nav>
+                    <?php
+                        $select_db=@mysql_select_db("rentsystem");//選擇資料庫
+                        if(!$select_db)
+                        {
+                        echo'<br>找不到資料庫!<br>';
+                        }
+                        else
+                        {//查table
+                            $sql_query = "SELECT * FROM `contact article`";
+                            $result = mysql_query($sql_query);
+
+                            // 查所有文章
+                            while ($row = mysql_fetch_assoc($result)) {
+                                $articleID = $row['articleID'];
+                                $articleIname = $row['articleIname'];
+                                $articleIcontent = $row['articleIcontent'];
+                                $lovenum = $row['lovenum'];
+                                $keepnum = $row['keepnum'];
+
+                                // 輸出文章
+                                echo '<div class="card mb-4">';
+                                echo '<div class="card-body">';
+                                echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
+                                echo '<p class="card-text">' . $articleIcontent . '</p>';
+                                echo'<ul class="list-unstyled mb-0">';
+                                echo '<li><span>Likes: ' . $lovenum . '</span>';
+                                //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
+                                echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
+                                //echo '<span>Likes: ' . $lovenum . '</span>';
+                                //echo '';
+                                echo '<li><span>Keeps: ' . $keepnum . '</span>';
+                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
+                                echo'</ul>';
+                                echo'<ul class="list-unstyled mb-0">';
+                                echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Response.php?articleID=' . $articleID . '">Read more →</a></li>';
+                                echo'</ul>';
+                                echo '</div>';
+                                echo '</div>';
+                            }
+                        }
+                    ?>
+                    <!-- 記得引入函數-->
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                    // JavaScript 
+                    function loveArticle(articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_love.php', 
+                            type: 'POST',
+                            data: { articleID: articleID }, 
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();
+                            }
+                        });
+                    }
+
+                    
+                    function keepArticle(uid, articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
+                            }
+                        });
+                    }
+
+                    </script>
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
