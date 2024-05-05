@@ -65,9 +65,12 @@ if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
                         <li class="nav-item"><a class="nav-link" href="index02.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
-                        
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Communicate.php">交流平台</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>
+                        <?php
+                        if (!($identity === "SYS"&&$identity === "L"&& $identity === "訪客")) {
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Publish_Artical.php">刊登文章</a></li>';
+                        }
+                        ?>
+                        <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
                         <?php
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="index01.php?logged_in=false">使用者登出</a></li>';
@@ -108,8 +111,8 @@ if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">租屋交流平台</h1>
-                    <p class="lead mb-0">歡迎使用!</p>
+                    <h1 class="fw-bolder">文章交流</h1>
+                    
                 </div>
             </div>
         </header>
@@ -193,8 +196,8 @@ if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
                 <div class="col-lg-4">
                     <!-- Search widget-->
                     <div class="card mb-4">
-                        <div class="card-header">找好房</div>
-                        <div class="card-body">
+                    <div class="card-header">找文章</div>
+                    <div class="card-body">
                             <div class="input-group">
                                 <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
                                 <button class="btn btn-primary" id="button-search" type="button">Go!</button>
