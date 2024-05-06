@@ -178,7 +178,64 @@
                     <!-- Side widget-->
                     <div class="card mb-4">
                         <div class="card-header">personal profile</div>
-                        <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                        <?php
+                            if (!empty($identity) && !empty($uid)) {
+                                if ($identity === "T") {
+                                    // 查询教师信息表
+                                    $table = "teacher_profile";
+                                    $columns = "t_uid, t_name, t_rank, t_tel, t_mail, t_officetel";
+                                } elseif ($identity === "S") {
+                                    // 查询学生基本信息表
+                                    $table = "basicinfo";
+                                    $columns = "uid, SID, name, grade, gender, phone, email";
+                                }
+                            
+                                // 构建 SQL 查询语句
+                                $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
+                                if ($identity === "S") {
+                                    $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
+                                }
+                            
+                                $result = mysql_query($sql_query);
+                            
+                                if ($result) {
+                                    // 输出查询结果
+                                    while ($row = mysql_fetch_assoc($result)) {
+                                        // 输出指定的列
+                                        echo '<div class="card-body">';
+                                        foreach ($row as $key => $value) {
+                                            if ($key === "t_uid" || $key === "uid") {
+                                                $key_text = "UID";
+                                            } else if ($key === "t_name" || $key === "name") {
+                                                $key_text = "姓名";
+                                            } else if ($key === "t_rank") {
+                                                $key_text = "職等";
+                                            } else if ($key === "t_tel" || $key === "phone") {
+                                                $key_text = "電話";
+                                            } else if ($key === "t_mail" || $key === "email") {
+                                                $key_text = "信箱";
+                                            } else if ($key === "t_officetel") {
+                                                $key_text = "辦公室電話";
+                                            } else if ($key === "SID") {
+                                                $key_text = "學號";
+                                            } else if ($key === "grade") {
+                                                $key_text = "年級";
+                                            } else if ($key === "gender") {
+                                                $key_text = "性別";
+                                            }
+                                            echo "$key_text: $value <br>";
+                                        }
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查询失败：" . mysql_error();
+                                }
+                            } else {
+                                echo "未提供足够的信息进行查询。";
+                            }
+                            
+                        ?>
+                        
                     </div>
                 </div>
             </div>
