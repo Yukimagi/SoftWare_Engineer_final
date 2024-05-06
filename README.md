@@ -14,7 +14,9 @@
 #### CPS_Communication.php -> 交流文章
 ###### update_keep.php/update_love.php ->更新收藏與按讚!
 ###### CPS_Publish_Artical.php -> 刊登文章
-###### CPS_Publish_Response.php -> 回覆文章(顯示完整文章)
+###### CPS_Publish_Response.php -> 回覆文章(顯示完整文章回覆)
+###### CPS_Publish_Response2.php -> 回覆文章處理
+###### CPS_Communicate_search.php -> 搜尋文章標題處理(前頁傳要找的關鍵字，後一頁呼叫sql提供)
 
 ## connection.php範本
 ```php

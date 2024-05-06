@@ -116,102 +116,42 @@
                 </div>
             </div>
         </header>
-        <!-- Page content-->
-        <div class="container">
-            <div class="row">
-                <!-- Blog entries-->
+        <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+                $articleID = $_POST["articleID"];
+                //$title = $_POST["title"];
+                $content = $_POST["content"];
 
-                    <?php
-                        //$title = $content = "";
-                        // 檢查是否前一個頁面獲得articleID
-                        if(isset($_GET['articleID'])) {
-                            $articleID = $_GET['articleID'];
-                        }
+                $select_db=@mysql_select_db("rentsystem");//選擇資料庫
+                if(!$select_db)
+                {
+                    echo'<br>找不到資料庫!<br>';
+                }
+                else
+                {
 
-                        ?>
-
-                    <?php
-                        $select_db=@mysql_select_db("rentsystem");//選擇資料庫
-                        if(!$select_db)
-                        {
-                        echo'<br>找不到資料庫!<br>';
-                        }
-                        else
-                        {//查table
-
-                                
-                                $sql_query2 = "SELECT * FROM `contact article` WHERE articleID = '$articleID'";
-                                $result2 = mysql_query($sql_query2);
-                                while ($row2 = mysql_fetch_assoc($result2)) {
-                                    $articleIname = $row2['articleIname'];
-                                    $articleIcontent = $row2['articleIcontent'];
-                                    $lovenum = $row2['lovenum'];
-                                    $keepnum = $row2['keepnum'];
-
-                                    // 輸出文章
-                                    echo '<div class="card mb-4">';
-                                    echo '<div class="card-body">';
-                                    echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
-                                    echo '<p class="card-text">' . $articleIcontent . '</p>';
-                                    echo'<ul class="list-unstyled mb-0">';
-                                    echo '<li><span>Likes: ' . $lovenum . '</span>';
-                                    //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
-                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
-                                    }
-                                    //echo '<span>Likes: ' . $lovenum . '</span>';
-                                    //echo '';
-                                    echo '<li><span>Keeps: ' . $keepnum . '</span>';
-                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
-                                    }
-                                    //$content="";
-                                    echo'</ul>';
-                                    echo'<ul class="list-unstyled mb-0">';
-                                    //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
-                                    //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                    if(!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo'<div class="container">';
-                                        echo'<div class="center">'; 
-                                            echo'<form method="post" action="CPS_Artical_Response2.php">';
-                                                echo '<input type="hidden" name="articleID" value="' . $articleID . '">';
-                                                echo'<label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">回覆:</span></label><br>';
-                                                echo'<textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
-                                                
-                                                echo'<input type="submit" value="送出">';
-                                            echo'</form>';
-                                        echo'</div>';
-                                    echo'</div>';
-                                    echo'</ul>';
-                                    }
-                                    echo '</div>';
-                                    echo '</div>';
-                                }
-                                $num=1;
-                                $sql_query3 = "SELECT * FROM `article_msg` WHERE articleID = '$articleID'";
-                                $result3 = mysql_query($sql_query3);
-                                while ($row3 = mysql_fetch_assoc($result3)) {
-                                    $msg = $row3['msg'];
-
-
-                                    // 輸出文章
-                                    echo '<div class="card mb-4">';
-                                    echo '<div class="card-body">';
-                                    echo '<p class="card-text">回覆' . $num . ':</p>';
-                                    echo '<p class="card-text">' . $msg . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    $num++;
-                                }
-                            
-                        }
-                    ?>
+                    // 插入新文章到db
+                    $sql_query = "INSERT INTO `article_msg` (articleID,msg) VALUES ('$articleID', '$content')";
+                    $RESULT=mysql_query($sql_query);
+                    if($RESULT){
+                    // 提示用戶文章已發布！
+                    echo "<p>回覆成功！</p>";
+                    echo '<script>
+                            setTimeout(function() {
+                                window.location.href = "CPS_Communicate.php"; // 跳回CPS_Communicate.php
+                            }, 1000); // 2000ms（即1秒）
+                        </script>';
+                    }
+                    else{
+                        echo "<p>回覆失敗！</p>";
+                    }
                     
-                </div>
 
-            </div>
-        </div>
+                    
+                }
+            }
+        ?>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
