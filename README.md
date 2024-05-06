@@ -1,5 +1,4 @@
 # SoftWare_Engineer_final
-##### 2024/5/5 完成merge首頁與登入並製作CPS 首頁、template等等...功能
 ### 各個檔案的功能(提供參考)
 #### CPS_Home.php -> 個人頁面(主頁)
 
