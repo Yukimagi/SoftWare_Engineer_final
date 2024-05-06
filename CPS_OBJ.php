@@ -24,37 +24,37 @@
         include("connection.php");
         ?>
         <?php
-session_start(); // 啟動 session
+            session_start(); // 啟動 session
 
-// 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-    $identity = "訪客";
-    $uid = "None";
-}
-else{
-// 從 session 中獲取使用者的身份和 ID
-$identity = $_SESSION['identity'];
-$uid = $_SESSION['uid'];
-}
+            // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
+            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+                $identity = "訪客";
+                $uid = "None";
+            }
+            else{
+            // 從 session 中獲取使用者的身份和 ID
+            $identity = $_SESSION['identity'];
+            $uid = $_SESSION['uid'];
+            }
 
-if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
+            if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
 
-    switch ($identity){
-        case "S":
-            $sql_query = "select name from basicinfo where uid='" . $uid . "'";
-            break;
-        case "T":
-            $sql_query = "select t_name as name from teacher_profile where t_uid='" . $uid . "'";
-            break;
-        case "L":
-            $sql_query = "select l_name as name from landlord where uid='" . $uid . "'";
-            break;
-    }
-    $result = mysql_query($sql_query);
-    $row = mysql_fetch_array($result);
-    $name = $row["name"];
-}
-?>
+                switch ($identity){
+                    case "S":
+                        $sql_query = "select name from basicinfo where uid='" . $uid . "'";
+                        break;
+                    case "T":
+                        $sql_query = "select t_name as name from teacher_profile where t_uid='" . $uid . "'";
+                        break;
+                    case "L":
+                        $sql_query = "select l_name as name from landlord where uid='" . $uid . "'";
+                        break;
+                }
+                $result = mysql_query($sql_query);
+                $row = mysql_fetch_array($result);
+                $name = $row["name"];
+            }
+            ?>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -233,7 +233,7 @@ if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
         </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
