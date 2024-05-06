@@ -1,6 +1,6 @@
 <?php
 
-include("connection.php");
+include("../../connection.php");
 
 $select_db = @mysql_select_db("rentsystem");
 if(!$select_db) {
@@ -27,12 +27,12 @@ if(!$select_db) {
             // 回傳
             echo $keepnum;
         } else {
-            echo "更新收藏数失败: " . mysql_error();
-            // 在此处进行处理，更新数据库等操作
+            echo "更新失敗: " . mysql_error();
+            
         }
     } else {
-        // 如果未收到 uid 或 articleID，可以返回错误信息
-        echo "未收到用户ID或文章ID";
+        
+        echo "未收到用戶ID或文章ID";
     }
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 //連結資料庫
-include("connection.php");
+include("../../connection.php");
 ?>
 <?php
 
@@ -28,7 +28,7 @@ else
         // 回傳
         echo $lovenum;
     } else {
-        echo "更新喜欢数失败: " . mysql_error();
+        echo "更新失敗: " . mysql_error();
     }
 }
 ?>
