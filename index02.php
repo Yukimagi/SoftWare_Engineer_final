@@ -177,7 +177,7 @@
                 }
             ?>
             <li><a href="#">租屋管理</a></li>
-            <li><a href="CPS_Home.php">交流平台</a></li>
+            <li><a href="CPS/CPS_Home.php">交流平台</a></li>
             <li><a href="#">廣告平台</a></li>
             <?php
                 if (isset($identity) && $identity !== "SYS") {
