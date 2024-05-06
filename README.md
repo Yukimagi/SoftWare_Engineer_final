@@ -12,7 +12,7 @@
 ###### CPS_dataProcess/delete_keep.php -> 個人收藏刪除
 
 #### CPS_Communication.php -> 交流文章
-##### update_keep.php/update_love.php ->更新收藏與按讚!
+###### update_keep.php/update_love.php ->更新收藏與按讚!
 ###### CPS_Publish_Artical.php -> 刊登文章
 ###### CPS_Publish_Response.php -> 回覆文章(顯示完整文章)
 
