@@ -10,7 +10,7 @@
 ##### CPS_personal_keep.php -> 個人收藏的文章
 ###### CPS_dataProcess/delete_keep.php -> 個人收藏刪除
 
-#### CPS_Communication.php -> 交流文章
+#### CPS_Communication.php -> 交流文章(注意!!!針對系統管理員，我有提供可以針對不符合的文章進行刪除)
 ###### update_keep.php/update_love.php ->更新收藏與按讚!
 ###### CPS_Publish_Artical.php -> 刊登文章
 ###### CPS_Publish_Response.php -> 回覆文章(顯示完整文章回覆)

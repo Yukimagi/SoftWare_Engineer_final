@@ -164,6 +164,11 @@
                                 if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
                                 echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
                                 }
+                                
+                                if (($identity === "SYS")) {
+                                echo '<li><span>是否不符規範:</span>';
+                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
+                                }
                                 echo'</ul>';
                                 echo'<ul class="list-unstyled mb-0">';
                                 echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Response.php?articleID=' . $articleID . '">Read more →</a></li>';
@@ -195,6 +200,18 @@
                         
                         $.ajax({
                             url: 'CPS_dataProcess/update_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
+                            }
+                        });
+                    }
+
+                    function DeleteArticle(uid,articleID) {
+                        $.ajax({
+                            url: 'CPS_dataProcess/delete_article.php', 
                             type: 'POST',
                             data: { uid: uid, articleID: articleID },
                             success: function(response) {
