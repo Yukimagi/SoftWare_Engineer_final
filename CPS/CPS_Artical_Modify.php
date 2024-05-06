@@ -122,22 +122,22 @@
 
         <?php
         $title = $content = "";
-        // 检查是否从前一个页面获取了 articleID
+        // 檢查是否前一個頁面獲得articleID
         if(isset($_GET['articleID'])) {
             $articleID = $_GET['articleID'];
 
-            // 查询数据库获取文章标题和内容
+            // 查
             $sql_query = "SELECT articleIname, articleIcontent FROM `contact article` WHERE articleID = '$articleID'";
             $result = mysql_query($sql_query);
 
             if($result && mysql_num_rows($result) > 0) {
-                // 获取查询结果
+                // 獲得查詢結果
                 $row = mysql_fetch_assoc($result);
                 $title = $row['articleIname'];
                 $content = $row['articleIcontent'];
             } else {
-                // 查询失败或没有对应的文章ID
-                echo "查询文章信息失败";
+                // 失敗
+                echo "查詢文章訊息失敗";
             }
         }
 

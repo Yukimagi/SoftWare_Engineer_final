@@ -206,16 +206,16 @@
                         <?php
                             if (!empty($identity) && !empty($uid)) {
                                 if ($identity === "T") {
-                                    // 查询教师信息表
+                                    // 查教師的資料
                                     $table = "teacher_profile";
                                     $columns = "t_uid, t_name, t_rank, t_tel, t_mail, t_officetel";
                                 } elseif ($identity === "S") {
-                                    // 查询学生基本信息表
+                                    // 查學生的資料
                                     $table = "basicinfo";
                                     $columns = "uid, SID, name, grade, gender, phone, email";
                                 }
                             
-                                // 构建 SQL 查询语句
+                                // SQL 查
                                 $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
                                 if ($identity === "S") {
                                     $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
@@ -224,7 +224,7 @@
                                 $result = mysql_query($sql_query);
                             
                                 if ($result) {
-                                    // 输出查询结果
+                                    // 輸出結果
                                     while ($row = mysql_fetch_assoc($result)) {
                                         // 输出指定的列
                                         echo '<div class="card-body">';
@@ -253,10 +253,10 @@
                                         echo "</div>";
                                     }
                                 } else {
-                                    echo "查询失败：" . mysql_error();
+                                    echo "查失敗：" . mysql_error();
                                 }
                             } else {
-                                echo "未提供足够的信息进行查询。";
+                                echo "為提供殂購的訊息進行查詢";
                             }
                             
                         ?>
