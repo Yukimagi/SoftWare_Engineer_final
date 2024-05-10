@@ -1,76 +1,20 @@
 body{
-    margin: 0;
+    margin:0;
     padding: 0;
     position: relative;
 }
-ul{
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-li{
-    display: inline;
-    float: left;
-}
-a{
-    display: block;
-    padding: 20px;
-    background-color: transparent;
-    font-family: 微軟正黑體;
-    font-size: 20px;
-    text-decoration: none;
-    color: #bacbe6;
-    transition-duration: 0.4s;
-}
-a:hover{
-    color: white;
-}
-#navbar{
-    margin: 0;
-    padding: 0;
-    height: 100px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    background-color: #343a40;
-}
-.container{
-    margin: 0;
-    padding: 0;
-    height: 50px;
-    width: 80%;
-    display: flex;
-    align-items: center;
-}
-#homepagemark{
-    margin-left: 5%;
-    margin-right: 35%;
-    padding: 0;
-    height: 60%;
-    width: 40%;
-    display: flex;
-    align-items: center;
-}
-#nav{
-    margin: 0;
-    padding: 0;
-    height: 60%;
-    height: 60%;
-    display: flex;
-}
-#gotohomepage{
-    margin: 0;
-    padding: 0;
-    border: none;
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
     text-align: center;
-    text-decoration: none;
-    font-size: 30px;
-    font-family: 微軟正黑體;
-    color: white;
-    background-color: transparent;
-    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-/*以上區域為共通導航區塊*/
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
 #backround{
     position: relative;
     display: flex;
@@ -100,20 +44,37 @@ a:hover{
 
 }
 #loginmsg{
-    display: flex;
+    overflow: auto;
+    padding-top: 10%;
+    height: 20%;
+}
+#loginiconbox{
     margin: 0;
-    padding-top: 15%;
-    width: 100%;
-    height: 10%;
-    justify-content: center;
+    width: 40%;
+    height: 100%;
+    float: left;
+    display: flex;
     align-items: center;
-    color: white;
-    font-size: 25px;
+    justify-content: flex-end;
+}
+#icon{
+    width: 70px;
+    height: 70px;
+}
+#logintextbox{
+    margin: 0;
+    width: 40%;
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 微軟正黑體;
+    font-size: 30px;
+    color: white;
 }
 #login{
     margin: 0;
-    padding-top: 10%;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -175,6 +136,7 @@ input:focus+.line,input:valid+.line{
     font-family: 微軟正黑體;
     font-size: 20px;
     color: #343a40;
+    border: none;
     border-radius: 20px;
     background-color: springgreen;
     box-shadow: none;
@@ -184,12 +146,12 @@ input:focus+.line,input:valid+.line{
     background-color: #20c997;
     cursor: pointer;
 }
-#buttonbox{
+#back{
     margin: 0;
-    padding-top: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
 }
 #backtohome{
     width: 60%;
@@ -197,13 +159,14 @@ input:focus+.line,input:valid+.line{
     font-family: 微軟正黑體;
     font-size: 20px;
     color: #343a40;
+    border: none;
     border-radius: 20px;
-    background-color: #bacbe6;
+    background-color: white;
     box-shadow: none;
 }
 #backtohome:hover{
     transition-duration: 0.28s;
     background-color: #b02a37;
-    color: #bacbe6;
+    color: white;
     cursor: pointer;
 }
