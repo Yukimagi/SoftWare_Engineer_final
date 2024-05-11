@@ -48,11 +48,6 @@ function updatemsg(){
     alert(message);
     window.location.href="lobby.php";
 }
-function deletemsg(){
-    var message = '已刪除資料';
-    alert(message);
-    window.location.href="SAS_UserDelete.php";
-}
 function createmsg(){
     var message = '已新增資料';
     alert(message);
@@ -70,28 +65,44 @@ function showiframe1(){
     iframe.style.display = 'block';
     disableiframe1.style.display = 'none';
 }
-function showiframe2(){{
+function showiframe2(){
     var iframe = document.getElementById('user_delete');
     var disableiframe1 = document.getElementById('user_profile');
     iframe.style.display = 'block';
     disableiframe1.style.display = 'none';
-}}
+}
+function showiframe3(){
+    var iframe = document.getElementById('personaluserdetail');
+    iframe.style.display='block';
+}
 ////////////////////////////////////////
 function backtoSAS(){
     window.location.href='SAS.php';
+}
+function backtolobby(){
+    window.top.location.href="lobby.php";
 }
 ////////////////////////////////////////
 function deleteconfirm(){
     var confirmation = confirm('是否刪除該使用者帳號?');
     if(confirmation){
+        return true;
     }else{
         alert('已取消操作');
+        window.location.href='SAS_UserDelete.php';
+        return false;
     }
+}
+function deletemsg(){
+    var message = '已刪除資料';
+    alert(message);
+    window.location.href="SAS_UserDelete.php";
 }
 ////////////////////////////////////////
 function updateconfirm(){
     var confirmation = confirm('是否更改該使用者帳號資訊?');
     if(confirmation){
+        window.top.location.href="lobby.php";
         return true;
     }else{
         alert('已取消操作');
@@ -109,3 +120,4 @@ function createconfirm(){
         return false;
     }
 }
+
