@@ -88,3 +88,14 @@ function deleteconfirm(){
         alert('已取消操作');
     }
 }
+////////////////////////////////////////
+function updateconfirm(){
+    var confirmation = confirm('是否更改該使用者帳號資訊?');
+    if(confirmation){
+        return true;
+    }else{
+        alert('已取消操作');
+        history.go(0)
+        return false;
+    }
+}
