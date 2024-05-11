@@ -6,12 +6,15 @@ session_start();
 $account = $_POST['account'];
 $password = $_POST['password'];
 
-$sql = "SELECT * FROM user_profile WHERE account = '$account' AND password = '$password'";
-$stmt = $conn->query($sql);
+$sql_query = "SELECT * FROM user_profile WHERE account = :account AND password = :password";
+$result = $conn->prepare($sql_query);
+$result->bindParam(":account", $account);
+$result->bindParam(":password", $password);
+$result->execute();
 
-if($stmt->rowCount() == 1){
+if($result->rowCount() == 1){
     $_SESSION['loggedin'] = 1;
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = $result->fetch(PDO::FETCH_ASSOC);
     $_SESSION['uid'] = $row['uid'];
     $_SESSION['identity'] = $row['identity'];
     $uid = $row['uid'];
