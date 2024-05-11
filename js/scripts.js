@@ -75,6 +75,14 @@ function showiframe3(){
     var iframe = document.getElementById('personaluserdetail');
     iframe.style.display='block';
 }
+function showiframe4(){
+    var iframe = document.getElementById('createaccountchoice');
+    var disableiframe1 = document.getElementById('user_profile');
+    var disableiframe2 = document.getElementById('user_delete');
+    iframe.style.display='block';
+    disableiframe1.style.display='none';
+    disableiframe2.style.display='none';
+}
 ////////////////////////////////////////
 function backtoSAS(){
     window.location.href='SAS.php';
@@ -103,6 +111,7 @@ function updateconfirm(){
     var confirmation = confirm('是否更改該使用者帳號資訊?');
     if(confirmation){
         window.top.location.href="lobby.php";
+        alert('已更新個人資料');
         return true;
     }else{
         alert('已取消操作');
