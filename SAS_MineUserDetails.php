@@ -205,7 +205,143 @@ $uid = $_SESSION['uid'];
                         break;
                 }
             } else {
-                echo "找不到該用戶的資料。";
+                //echo "找不到該用戶的資料。";
+                echo "<h1>個人帳戶資料</h1>";       // 在這裡顯示用戶詳細資料
+                echo '<hr>';
+                
+                $sql_query = "select * from user_profile where uid='" . $uid . "'";
+                $result = $conn->query($sql_query);
+                if ($result->rowCount() > 0) {
+                    $row = $result->fetch(PDO::FETCH_ASSOC);
+                }
+
+                switch ($identity) {
+                    case 'T':
+                        echo '<div class="profile_form">';
+                        echo '<form action="SAS_SQLCreateForMassive.php" method="post" onsubmit="return updateconfirm()">';
+                        echo '<table class="profile_table">';
+                        echo '<tr>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
+                            echo '<td><label for="teacher_rank">密碼</label></td><td><input type="text" name="passwd" value="' . $row['password'] . '"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="teacher_name">教師姓名</label></td><td><input type="text" name="teacher_name"></td>';
+                            echo '<td><label for="teacher_rank">教師職級</label></td><td><input type="text" name="teacher_rank"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="teacher_tel">教師連絡電話</label></td><td><input type="text" name="teacher_tel"></td>';
+                            echo '<td><label for="teacher_mail">教師E-mail</label></td><td><input type="text" name="teacher_mail"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="office_location">辦公室位置</label></td><td><input type="text" name="office_location"></td>';
+                            echo '<td><label for="office_phone">辦公室電話</label></td><td><input type="text" name="office_phone"></td>';
+                        echo '</tr>';
+                        echo '</table>';
+                        echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
+                        echo '<input type="hidden" name="uid" value="' . $uid . '">';
+                        echo '<input type="hidden" name="identity" value="' . $identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="true">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby" class="rightbutton">';
+                        echo '</div>';
+                        echo '</form>';
+                        echo '</div>';
+                        break;
+                    case 'S':
+                        echo '<div class="profile_form">';
+                        echo '<form action="SAS_SQLCreateForMassive.php" method="post" onsubmit="return updateconfirm()">';
+                        echo '<table class="profile_table">';
+                        echo '<tr>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
+                            echo '<td><label for="teacher_rank">密碼</label></td><td><input type="text" name="passwd" value="' . $row['password'] . '"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_name">學生姓名</label></td><td><input type="text" name="student_name"></td>';
+                            echo '<td><label for="student_id">學生學號</label></td><td><input type="text" name="student_id"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_Tname">學生導師姓名</label></td><td><input type="text" name="student_Tname"></td>';
+                            echo '<td></td><td></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_grade">學生年級</label></td><td><input type="text" name="student_grade"></td>';
+                            echo '<td><label for="student_gender">學生性別</label></td><td><input type="text" name="student_gender"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_phone">學生連絡電話</label></td><td><input type="text" name="student_phone"></td>';
+                            echo '<td><label for="student_email">學生E-mail</label></td><td><input type="text" name="student_email"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_haddr">學生家中地址</label></td><td><input type="text" name="student_haddr"></td>';
+                            echo '<td><label for="student_htel">學生家中電話</label></td><td><input type="text" name="student_htel"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="student_cont">學生緊急聯絡人</label></td><td><input type="text" name="student_cont"></td>';
+                            echo '<td><label for="student_contphone">學生緊急聯絡人電話</label></td><td><input type="text" name="student_contphone"></td>';
+                        echo '</tr>';
+                        echo '</table>';
+                        echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
+                        echo '<input type="hidden" name="uid" value="' . $uid . '">';
+                        echo '<input type="hidden" name="identity" value="' . $identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="true">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby()" class="rightbutton">';
+                        echo '</div>';
+                        echo '</form>';
+                        echo '</div>';
+                        break;
+                    case 'L':
+                        echo '<div class="profile_form">';
+                        echo '<form action="SAS_SQLCreateForMassive.php" method="post" onsubmit="return updateconfirm()">';
+                        echo '<table class="profile_table">';
+                        echo '<tr>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
+                            echo '<td><label for="teacher_rank">密碼</label></td><td><input type="text" name="passwd" value="' . $row['password'] . '"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="landlord_name">房東姓名</label></td><td><input type="text" name="landlord_name"></td>';
+                            echo '<td><label for="landlord_gender">房東性別</label></td><td><input type="text" name="landlord_gender"></td>';
+                        echo '</tr>';
+                        echo '<tr>';
+                            echo '<td><label for="landlord_phone">房東連絡電話</label></td><td><input type="text" name="landlord_phone"></td>';
+                            echo '<td><label for="landlord_line">房東LineID</label></td><td><input type="text" name="landlord_line"></td>';
+                        echo '</tr>';
+                        echo '</table>';
+                        echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
+                        echo '<input type="hidden" name="uid" value="' . $uid . '">';
+                        echo '<input type="hidden" name="identity" value="' . $identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="true">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby()" class="rightbutton">';
+                        echo '</div>';
+                        echo '</form>';
+                        echo '</div>';
+                        break;
+                }
             }
         } else {
             echo "未提供用戶ID。";
