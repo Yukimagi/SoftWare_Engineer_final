@@ -70,6 +70,7 @@ if (isset($_POST['uid'])) {
             $result->bindParam(":Contactor", $cont);
             $result->bindParam(":Cphone", $contphone);
             $result->bindParam(":user_id", $user_id);
+            break;
         case 'L':
             $name = $_POST['landlord_name'];
             $gender = $_POST['landlord_gender'];
