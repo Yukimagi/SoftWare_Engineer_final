@@ -9,96 +9,10 @@ $name = $_SESSION['name'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>用戶詳細資料</title>
-    <link href="css/lobby.css" rel="stylesheet" />
+    <link href="css/SAS_CreateAccount.css" rel="stylesheet" />
     <script src="js/scripts.js"></script>
-    <style>
-        .content table {
-            margin: 0 auto; /* 讓表格置中 */
-            border-collapse: collapse; /* 合併邊框 */
-        }
-
-        .content th,
-        .content td {
-            /*border: 1px solid black; /* 添加框線 */
-            padding: 8px; /* 設置儲存格內距 */
-            /*text-align: center;*/
-        }
-        div table {
-            width: 100%;
-        }
-
-        input[readonly]{
-            background-color: grey;
-        }
-    </style>
 </head>
 <body>
-<header>
-    <h1>租屋管理系統</h1>
-</header>
-<nav>
-    <h2>功能選單</h2>
-    <ul>
-        <div>
-            <li><a href="lobby.php">首頁</a></li>
-        </div>
-        <?php
-        $managementlist = '
-            <div id="management_function">
-                <span><li><a href="SAS.php">後台 - 帳號管理</a></li></span>
-                <div class="option">
-                    <li><a href="SAS_CreateAccountChoice.php" id="sys_function">新增使用者帳戶</a></li>
-                    <li><a href="#" id="sys_function">新增大量帳戶</a></li>
-                    <li><a href="SAS_UserDelete.php" id="sys_function">刪除使用者帳戶</a></li>
-                    <li><a href="#" id="sys_function">變更使用者權限</a></li>
-                </div>
-            </div>
-        ';
-        if (isset($identity) && $identity === "SYS") {
-            echo $managementlist;
-        }
-        ?>
-        <div>
-            <li><a href="#">租屋管理</a></li>
-        </div>
-        <div>
-            <li><a href="#">交流平台</a></li>
-        </div>
-        <div>
-            <li><a href="#">廣告平台</a></li>
-        </div>
-        <?php
-        if (isset($identity) && $identity !== "SYS") {
-            echo ' <li><a href="#">個人帳戶管理</a></li>';
-        }
-        ?>
-        <!-- 添加更多功能連結 -->
-        <hr> <!-- 添加分隔線 -->
-        <p>現在身分為：
-            <?php
-            if (isset($identity) && $identity === "SYS") {
-                echo '<span style="color:#b0c4de; display: inline;">系統管理員</span>';
-            }
-            elseif (isset($identity) && $identity === "T") {
-                echo '<span style="color:#b0c4de; display: inline;">教師</span>';
-            }
-            elseif (isset($identity) && $identity === "S") {
-                echo '<span style="color:#b0c4de; display: inline;">學生</span>';
-            }
-            elseif (isset($identity) && $identity === "L") {
-                echo '<span style="color:#b0c4de; display: inline;">房東</span>';
-            }
-
-
-            if (isset($identity) && $identity !== "SYS") {
-                echo '<br>';
-                echo '使用者姓名：<span style="color:#b0c4de; display: inline;">' . $name . '</span>';
-            }
-            ?>
-        </p>
-        <li class="LoginLink"><a href="logoutprocess.php">使用者登出</a></li>
-    </ul>
-</nav>
 <div class="content">
     <?php
         include("connection.php");
@@ -115,18 +29,19 @@ $name = $_SESSION['name'];
             $newNumberPart = $numberPart + 1; // 增加 1
             $new_Uid = "U" . str_pad($newNumberPart, 5, "0", STR_PAD_LEFT); // 補齊零填充並連接回 "U" 字母
 
-            echo "<h1>請輸入使用者資料</h1>";       // 在這裡顯示用戶詳細資料
+            echo "<h1>請輸入新建使用者資料</h1>";       // 在這裡顯示用戶詳細資料
+            echo '<hr>';
 
             switch ($new_identity) {
                 case 'T':
                     echo '<div class="profile_form">';
                     echo '<form action="SAS_SQLCreate.php" method="post" onsubmit="return createconfirm()">';
-                    echo '<table>';
+                    echo '<table class="profile_table">';
                     echo '<tr>';
-                        echo '<th style="width: 10%;"></th>';
-                        echo '<th style="width: 25%;"></th>';
-                        echo '<th style="width: 7%;"></th>';
-                        echo '<th style="width: 40%;"></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
                     echo '</tr>';
                     echo '<tr>';
                         echo '<td><label for="teacher_name">教師姓名</label></td><td><input type="text" name="teacher_name"></td>';
@@ -142,22 +57,25 @@ $name = $_SESSION['name'];
                     echo '</tr>';
                     echo '</table>';
                     echo '<br>';
+                    echo '<hr>';
+                    echo '<div class="buttonbox">';
                     echo '<input type="hidden" name="uid" value="' . $new_Uid . '">';
                     echo '<input type="hidden" name="identity" value="' . $new_identity . '">';
-                    echo '<input type="submit" value="儲存">';
-                    echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
+                    echo '<input type="submit" value="儲存" class="leftbutton">';
+                    echo '<input type="button" value="返回" onclick="location.href=\'SAS_CreateAccountChoice.php\'" class="rightbutton">';
+                    echo '</div>';
                     echo '</form>';
                     echo '</div>';
                     break;
                 case 'S':
                     echo '<div class="profile_form">';
                     echo '<form action="SAS_SQLCreate.php" method="post" onsubmit="return createconfirm()">';
-                    echo '<table>';
+                    echo '<table class="profile_table">';
                     echo '<tr>';
-                        echo '<th style="width: 10%;"></th>';
-                        echo '<th style="width: 25%;"></th>';
-                        echo '<th style="width: 7%;"></th>';
-                        echo '<th style="width: 40%;"></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
                     echo '</tr>';
                     echo '<tr>';
                         echo '<td><label for="student_name">學生姓名</label></td><td><input type="text" name="student_name"></td>';
@@ -185,22 +103,25 @@ $name = $_SESSION['name'];
                     echo '</tr>';
                     echo '</table>';
                     echo '<br>';
+                    echo '<hr>';
+                    echo '<div class="buttonbox">';
                     echo '<input type="hidden" name="uid" value="' . $new_Uid . '">';
                     echo '<input type="hidden" name="identity" value="' . $new_identity . '">';
-                    echo '<input type="submit" value="儲存">';
-                    echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
+                    echo '<input type="submit" value="儲存" class="leftbutton">';
+                    echo '<input type="button" value="返回" onclick="location.href=\'SAS_CreateAccountChoice.php\'" class="rightbutton">';
+                    echo '</div>';
                     echo '</form>';
                     echo '</div>';
                     break;
                 case 'L':
                     echo '<div class="profile_form">';
                     echo '<form action="SAS_SQLCreate.php" method="post" onsubmit="return createconfirm()">';
-                    echo '<table>';
+                    echo '<table class="profile_table">';
                     echo '<tr>';
-                        echo '<th style="width: 10%;"></th>';
-                        echo '<th style="width: 25%;"></th>';
-                        echo '<th style="width: 7%;"></th>';
-                        echo '<th style="width: 40%;"></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
+                        echo '<th></th>';
                     echo '</tr>';
                     echo '<tr>';
                         echo '<td><label for="landlord_name">房東姓名</label></td><td><input type="text" name="landlord_name"></td>';
@@ -212,10 +133,13 @@ $name = $_SESSION['name'];
                     echo '</tr>';
                     echo '</table>';
                     echo '<br>';
+                    echo '<hr>';
+                    echo '<div class="buttonbox">';
                     echo '<input type="hidden" name="uid" value="' . $new_Uid . '">';
                     echo '<input type="hidden" name="identity" value="' . $new_identity . '">';
-                    echo '<input type="submit" value="儲存">';
-                    echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
+                    echo '<input type="submit" value="儲存" class="leftbutton">';
+                    echo '<input type="button" value="返回" onclick="location.href=\'SAS_CreateAccountChoice.php\'" class="rightbutton">';
+                    echo '</div>';
                     echo '</form>';
                     echo '</div>';
                     break;
