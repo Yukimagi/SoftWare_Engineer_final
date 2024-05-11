@@ -69,7 +69,7 @@ if (isset($_POST['uid'])) {
             $result->bindParam(":Hphone", $htel);
             $result->bindParam(":Contactor", $cont);
             $result->bindParam(":Cphone", $contphone);
-            $result->bindParam(":user_id", $user_id);
+            $result->bindParam(":uid", $user_id);
             break;
         case 'L':
             $name = $_POST['landlord_name'];
@@ -93,7 +93,19 @@ if (isset($_POST['uid'])) {
     }
     if ($result->execute()) {
         if (isset($_POST['NotSAS']) && $_POST['NotSAS'] === "true"){
-            echo '<script>updatemsg()</script>';
+            $sql_query = "UPDATE user_profile SET 
+                user_profile.account = :account,
+                user_profile.password = :password
+                WHERE user_profile.uid = :uid";
+            $result = $conn->prepare($sql_query);
+            $result->bindParam(":account", $_POST['account']);
+            $result->bindParam(":password", $_POST['passwd']);
+            $result->bindParam(":uid", $user_id);
+            if ($result->execute()) {
+                echo '<script>updatemsg()</script>';
+            }else {
+                echo '<script>warning4()</script>';
+            }
         }else{
             echo '<script>updatemsgForSAS()</script>';
         }
