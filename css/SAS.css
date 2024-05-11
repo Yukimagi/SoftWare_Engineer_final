@@ -14,8 +14,21 @@ a{
     text-decoration: none;
 }
 a:hover{
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     color: #C850C0;
+}
+#title{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    margin: 0;
+    text-align: center;
+}
+hr{
+    border: 0;
+    padding: 2px;
+    background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);
 }
 body{
     margin: 0;
