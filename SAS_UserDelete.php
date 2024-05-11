@@ -80,13 +80,13 @@ include ('connection.php')
                 echo '<td>' . $user_identity . '</td>';
                 echo '<td>' . $user_name . '</td>';
                 echo '<td>';
-                echo '<form action="SAS_SQLDelete.php" method="post">';
+                echo '<form action="SAS_SQLDelete.php" method="post" onsubmit="return deleteconfirm()" id="checkbox">';
                 echo '<input type="hidden" name="uid" value="' . $row['uid'] . '">';
                 echo '<input type="hidden" name="identity" value="' . $row['identity'] . '">';
                 echo  $user_account;
                 echo '</td>';
                 echo '<td>';
-                echo '<input type="submit" value="刪除" onclick="deleteconfirm()"></td>';
+                echo '<input type="submit" value="刪除" id="checkbutton"></td>';
                 echo '</form>';
                 echo '</tr>';
             }
