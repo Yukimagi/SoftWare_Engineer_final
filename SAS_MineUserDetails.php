@@ -10,96 +10,10 @@ $uid = $_SESSION['uid'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>用戶詳細資料</title>
-    <link href="css/lobby.css" rel="stylesheet" />
+    <link href="css/SAS_MineUserDetails.css" rel="stylesheet" />
     <script src="js/scripts.js"></script>
-    <style>
-        .content table {
-            margin: 0 auto; /* 讓表格置中 */
-            border-collapse: collapse; /* 合併邊框 */
-        }
-
-        .content th,
-        .content td {
-            /*border: 1px solid black; /* 添加框線 */
-            padding: 8px; /* 設置儲存格內距 */
-            /*text-align: center;*/
-        }
-        div table {
-            width: 100%;
-        }
-
-        input[readonly]{
-            background-color: grey;
-        }
-    </style>
 </head>
 <body>
-<header>
-    <h1>租屋管理系統</h1>
-</header>
-<nav>
-    <h2>功能選單</h2>
-    <ul>
-        <div>
-            <li><a href="lobby.php">首頁</a></li>
-        </div>
-        <?php
-        $managementlist = '
-            <div id="management_function">
-                <span><li><a href="SAS.php">後台 - 帳號管理</a></li></span>
-                <div class="option">
-                    <li><a href="SAS_CreateAccountChoice.php" id="sys_function">新增使用者帳戶</a></li>
-                    <li><a href="#" id="sys_function">新增大量帳戶</a></li>
-                    <li><a href="SAS_UserDelete.php" id="sys_function">刪除使用者帳戶</a></li>
-                    <li><a href="#" id="sys_function">變更使用者權限</a></li>
-                </div>
-            </div>
-        ';
-        if (isset($identity) && $identity === "SYS") {
-            echo $managementlist;
-        }
-        ?>
-        <div>
-            <li><a href="#">租屋管理</a></li>
-        </div>
-        <div>
-            <li><a href="#">交流平台</a></li>
-        </div>
-        <div>
-            <li><a href="#">廣告平台</a></li>
-        </div>
-        <?php
-        if (isset($identity) && $identity !== "SYS") {
-            echo ' <li><a href="#">個人帳戶管理</a></li>';
-        }
-        ?>
-        <!-- 添加更多功能連結 -->
-        <hr> <!-- 添加分隔線 -->
-        <p>現在身分為：
-            <?php
-            if (isset($identity) && $identity === "SYS") {
-                echo '<span style="color:#b0c4de; display: inline;">系統管理員</span>';
-            }
-            elseif (isset($identity) && $identity === "T") {
-                echo '<span style="color:#b0c4de; display: inline;">教師</span>';
-            }
-            elseif (isset($identity) && $identity === "S") {
-                echo '<span style="color:#b0c4de; display: inline;">學生</span>';
-            }
-            elseif (isset($identity) && $identity === "L") {
-                echo '<span style="color:#b0c4de; display: inline;">房東</span>';
-            }
-
-
-            if (isset($identity) && $identity !== "SYS") {
-                echo '<br>';
-                echo '使用者姓名：<span style="color:#b0c4de; display: inline;">' . $name . '</span>';
-            }
-            ?>
-        </p>
-        <li class="LoginLink"><a href="logoutprocess.php">使用者登出</a></li>
-    </ul>
-</nav>
 <div class="content">
     <?php
         include("connection.php");
@@ -121,7 +35,8 @@ $uid = $_SESSION['uid'];
             if ($result->rowCount() > 0) {
                 $user_profile = $result->fetch(PDO::FETCH_ASSOC);
                 $user_profile_array = array_values($user_profile);
-                echo "<h1>User Details</h1>";       // 在這裡顯示用戶詳細資料
+                echo "<h1>個人帳戶資料</h1>";       // 在這裡顯示用戶詳細資料
+                echo '<hr>';
 
                 $sql_query = "select * from user_profile where uid='" . $uid . "'";
                 $result = $conn->query($sql_query);
@@ -133,12 +48,12 @@ $uid = $_SESSION['uid'];
                     case 'T':
                         echo '<div class="profile_form">';
                         echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
-                        echo '<table>';
+                        echo '<table class="profile_table">';
                         echo '<tr>';
-                            echo '<th style="width: 10%;"></th>';
-                            echo '<th style="width: 25%;"></th>';
-                            echo '<th style="width: 7%;"></th>';
-                            echo '<th style="width: 40%;"></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
                         echo '</tr>';
                         echo '<tr>';
                             echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
@@ -158,11 +73,14 @@ $uid = $_SESSION['uid'];
                         echo '</tr>';
                         echo '</table>';
                         echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
                         echo '<input type="hidden" name="uid" value="' . $uid . '">';
                         echo '<input type="hidden" name="identity" value="' . $identity . '">';
                         echo '<input type="hidden" name="NotSAS" value="true">';
-                        echo '<input type="submit" value="儲存">';
-                        echo '<input type="button" value="返回" onclick="location.href=\'lobby.php\'">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby" class="rightbutton">';
+                        echo '</div>';
                         echo '</form>';
                         echo '</div>';
                         /*
@@ -183,12 +101,12 @@ $uid = $_SESSION['uid'];
                         }
                         echo '<div class="profile_form">';
                         echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
-                        echo '<table>';
+                        echo '<table class="profile_table">';
                         echo '<tr>';
-                            echo '<th style="width: 10%;"></th>';
-                            echo '<th style="width: 25%;"></th>';
-                            echo '<th style="width: 7%;"></th>';
-                            echo '<th style="width: 40%;"></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
                         echo '</tr>';
                         echo '<tr>';
                             echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
@@ -220,11 +138,14 @@ $uid = $_SESSION['uid'];
                         echo '</tr>';
                         echo '</table>';
                         echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
                         echo '<input type="hidden" name="uid" value="' . $uid . '">';
                         echo '<input type="hidden" name="identity" value="' . $identity . '">';
                         echo '<input type="hidden" name="NotSAS" value="true">';
-                        echo '<input type="submit" value="儲存">';
-                        echo '<input type="button" value="返回" onclick="location.href=\'lobby.php\'">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby()" class="rightbutton">';
+                        echo '</div>';
                         echo '</form>';
                         echo '</div>';
                         /*
@@ -244,12 +165,12 @@ $uid = $_SESSION['uid'];
                     case 'L':
                         echo '<div class="profile_form">';
                         echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
-                        echo '<table>';
+                        echo '<table class="profile_table">';
                         echo '<tr>';
-                            echo '<th style="width: 10%;"></th>';
-                            echo '<th style="width: 25%;"></th>';
-                            echo '<th style="width: 7%;"></th>';
-                            echo '<th style="width: 40%;"></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
+                            echo '<th></th>';
                         echo '</tr>';
                         echo '<tr>';
                             echo '<td><label for="teacher_name">帳號</label></td><td><input type="text" name="account" value="' . $row['account'] . '"></td>';
@@ -265,11 +186,14 @@ $uid = $_SESSION['uid'];
                         echo '</tr>';
                         echo '</table>';
                         echo '<br>';
+                        echo '<hr>';
+                        echo '<div class="buttonbox">';
                         echo '<input type="hidden" name="uid" value="' . $uid . '">';
                         echo '<input type="hidden" name="identity" value="' . $identity . '">';
                         echo '<input type="hidden" name="NotSAS" value="true">';
-                        echo '<input type="submit" value="儲存">';
-                        echo '<input type="button" value="返回" onclick="location.href=\'lobby.php\'">';
+                        echo '<input type="submit" value="儲存" class="leftbutton">';
+                        echo '<input type="button" value="返回" onclick="backtolobby()" class="rightbutton">';
+                        echo '</div>';
                         echo '</form>';
                         echo '</div>';
                         /*
