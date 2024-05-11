@@ -27,7 +27,7 @@ $name = $_SESSION['name'];
             <div id="management_function">
                 <span><input type="button" id="manage_button" value="後台 - 帳號管理" onclick="showiframe1()"></span>
                 <div class="option">
-                    <li><a href="#" id="sys_function">新增使用者帳戶</a></li>
+                    <li><a href="#" id="sys_function" onclick="showiframe4()">新增使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">新增大量帳戶</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe2()">刪除使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">變更使用者權限</a></li>
@@ -84,6 +84,7 @@ $name = $_SESSION['name'];
         <iframe id="user_profile" src="SAS.php"></iframe>
         <iframe id="user_delete" src="SAS_UserDelete.php"></iframe>
         <iframe id="personaluserdetail" src="SAS_MineUserDetails.php"></iframe>
+        <iframe id="createaccountchoice" src="SAS_CreateAccountChoice.php"></iframe>
     </div>
 </div>
 </body>
