@@ -15,4 +15,3 @@ Fix:
   
 Docs:  
 - 更新README.md  
-- 更新MYSQL連線方式說明
