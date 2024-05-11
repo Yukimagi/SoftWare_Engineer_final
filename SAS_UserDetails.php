@@ -42,7 +42,7 @@ $name = $_SESSION['name'];
                 switch ($user_identity) {
                     case 'T':
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_SQLUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
                         echo '<table class="profile_table">';
                         echo '<tr>';
                             echo '<th></th>';
@@ -91,7 +91,7 @@ $name = $_SESSION['name'];
                             $teacher_name = $teacher_profile['t_name'];
                         }
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_SQLUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
                         echo '<table class="profile_table">';
                         echo '<tr>';
                             echo '<th></th>';
@@ -151,7 +151,7 @@ $name = $_SESSION['name'];
                         break;
                     case 'L':
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_SQLUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
                         echo '<table class="profile_table">';
                         echo '<tr>';
                             echo '<th></th>';
