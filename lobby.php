@@ -29,7 +29,7 @@ $name = $_SESSION['name'];
                 <div class="option">
                     <li><a href="#" id="sys_function">新增使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">新增大量帳戶</a></li>
-                    <li><a href="#" id="sys_function">刪除使用者帳戶</a></li>
+                    <li><a href="#" id="sys_function" onclick="showiframe2()">刪除使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">變更使用者權限</a></li>
                 </div>
             </div>
@@ -54,10 +54,10 @@ $name = $_SESSION['name'];
         ?>
         <!-- 添加更多功能連結 -->
         <hr> <!-- 添加分隔線 -->
-        <p id="statuspage">現在身分為：<br>
+        <p id="statuspage">現在身分為：
             <?php
             if (isset($identity) && $identity === "SYS") {
-                echo '<span style="color:#b0c4de; display: inline;">系統管理員</span>';
+                echo '<span style="color:#b0c4de; display: inline;">管理員</span>';
             }
             elseif (isset($identity) && $identity === "T") {
                 echo '<span style="color:#b0c4de; display: inline;">教師</span>';
@@ -80,8 +80,9 @@ $name = $_SESSION['name'];
     </ul>
 </nav>
 <div class="content">
-    <div id="info_container">
+    <div id="iframe_container">
         <iframe id="user_profile" src="SAS.php"></iframe>
+        <iframe id="user_delete" src="SAS_UserDelete.php"></iframe>
     </div>
 </div>
 </body>
