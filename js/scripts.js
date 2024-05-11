@@ -95,7 +95,17 @@ function updateconfirm(){
         return true;
     }else{
         alert('已取消操作');
-        history.go(0)
+        history.go(0);
+        return false;
+    }
+}
+////////////////////////////////////////
+function createconfirm(){
+    var confirmation = confirm('是否新增此筆使用者帳號?');
+    if(confirmation){
+        return true;
+    }else{
+        alert('已取消操作');
         return false;
     }
 }
