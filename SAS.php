@@ -53,7 +53,7 @@
                 <div id="management_function">
                     <span><li><a href="SAS.php">後台 - 帳號管理</a></li></span>
                     <div class="option">
-                        <li><a href="#" id="sys_function">新增使用者帳戶</a></li>
+                        <li><a href="SAS_CreateAccountChoice.php" id="sys_function">新增使用者帳戶</a></li>
                         <li><a href="#" id="sys_function">新增大量帳戶</a></li>
                         <li><a href="#" id="sys_function">刪除使用者帳戶</a></li>
                         <li><a href="#" id="sys_function">變更使用者權限</a></li>
