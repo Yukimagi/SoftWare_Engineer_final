@@ -27,7 +27,6 @@ if(isset( $_POST['uid'])){
     $stmt2 = $conn -> prepare($sql2);
     try{
         $stmt1 = $conn -> exec($sql1);
-
         try{
             $stmt2 = $conn -> exec($sql2);
             echo '<script>deletemsg()</script>';
