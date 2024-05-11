@@ -8,7 +8,7 @@ $name = $_SESSION['name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>HomePage</title>
+    <title>用戶詳細資料</title>
     <link href="css/lobby.css" rel="stylesheet" />
     <script src="js/scripts.js"></script>
     <style>
@@ -47,7 +47,7 @@ $name = $_SESSION['name'];
             <div id="management_function">
                 <span><li><a href="SAS.php">後台 - 帳號管理</a></li></span>
                 <div class="option">
-                    <li><a href="#" id="sys_function">新增使用者帳戶</a></li>
+                    <li><a href="SAS_CreateAccountChoice.php" id="sys_function">新增使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">新增大量帳戶</a></li>
                     <li><a href="#" id="sys_function">刪除使用者帳戶</a></li>
                     <li><a href="#" id="sys_function">變更使用者權限</a></li>
@@ -128,7 +128,7 @@ $name = $_SESSION['name'];
                 switch ($user_identity) {
                     case 'T':
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_ProfileUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post">';
                         echo '<table>';
                         echo '<tr>';
                             echo '<th style="width: 10%;"></th>';
@@ -152,6 +152,7 @@ $name = $_SESSION['name'];
                         echo '<br>';
                         echo '<input type="hidden" name="uid" value="' . $user_id . '">';
                         echo '<input type="hidden" name="identity" value="' . $user_identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="false">';
                         echo '<input type="submit" value="儲存">';
                         echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
                         echo '</form>';
@@ -173,7 +174,7 @@ $name = $_SESSION['name'];
                             $teacher_name = $teacher_profile['t_name'];
                         }
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_ProfileUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post">';
                         echo '<table>';
                         echo '<tr>';
                             echo '<th style="width: 10%;"></th>';
@@ -209,6 +210,7 @@ $name = $_SESSION['name'];
                         echo '<br>';
                         echo '<input type="hidden" name="uid" value="' . $user_id . '">';
                         echo '<input type="hidden" name="identity" value="' . $user_identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="false">';
                         echo '<input type="submit" value="儲存">';
                         echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
                         echo '</form>';
@@ -229,7 +231,7 @@ $name = $_SESSION['name'];
                         break;
                     case 'L':
                         echo '<div class="profile_form">';
-                        echo '<form action="SAS_ProfileUpdate.php" method="post">';
+                        echo '<form action="SAS_SQLUpdate.php" method="post">';
                         echo '<table>';
                         echo '<tr>';
                             echo '<th style="width: 10%;"></th>';
@@ -249,6 +251,7 @@ $name = $_SESSION['name'];
                         echo '<br>';
                         echo '<input type="hidden" name="uid" value="' . $user_id . '">';
                         echo '<input type="hidden" name="identity" value="' . $user_identity . '">';
+                        echo '<input type="hidden" name="NotSAS" value="false">';
                         echo '<input type="submit" value="儲存">';
                         echo '<input type="button" value="返回" onclick="location.href=\'SAS.php\'">';
                         echo '</form>';
