@@ -49,7 +49,7 @@ $name = $_SESSION['name'];
         </div>
         <?php
         if (isset($identity) && $identity !== "SYS") {
-            echo ' <li><a href="#">個人帳戶管理</a></li>';
+            echo ' <li><a href="#" onclick="showiframe3()">個人帳戶管理</a></li>';
         }
         ?>
         <!-- 添加更多功能連結 -->
@@ -83,6 +83,7 @@ $name = $_SESSION['name'];
     <div id="iframe_container">
         <iframe id="user_profile" src="SAS.php"></iframe>
         <iframe id="user_delete" src="SAS_UserDelete.php"></iframe>
+        <iframe id="personaluserdetail" src="SAS_MineUserDetails.php"></iframe>
     </div>
 </div>
 </body>
