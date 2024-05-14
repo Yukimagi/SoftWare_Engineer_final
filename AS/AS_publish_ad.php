@@ -114,22 +114,7 @@
             <div class="container">
                 <div class="text-center my-5">
                     <h1 class="fw-bolder">刊登廣告</h1>
-                    <?php       
-                    // 從資料庫中檢索圖片數據
-                    $sql_query = "SELECT r_photo FROM `ad` WHERE luid = :uid";
-                    $stmt = $conn->prepare($sql_query);
-                    $stmt->bindParam(":uid", $uid);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    // 解碼圖片數據
-                    $image_data = base64_decode($row['r_photo']);
-
-                    // 顯示圖片
-                    echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" />';
-
                     
-                    ?>
                     
                 </div>
             </div>
@@ -144,7 +129,15 @@
             $r_money = $_POST["money"];
             $r_deposit = $_POST["deposit"];
             $r_utilitybill = $_POST["utilitybill"];
-            $r_photo = $_POST["photo"];
+            // $r_photo = $_POST["photo"];
+
+            // 处理文件上传
+            $r_photo_tmp_name = $_FILES["photo"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
+            $r_photo = base64_encode($r_photo); // 对文件内容进行编码
+
+
+
             $content = $_POST["content"];
 
             // $select_db = mysql_select_db("rentsystem");
@@ -187,6 +180,7 @@
                     $result->bindParam(":uid", $uid);
                     $result->bindParam(":r_place", $r_place);
                     $result->bindParam(":r_photo", $r_photo);
+                    // $result->bindParam(":r_photo", $photo_data);
                     $result->bindParam(":r_format", $r_format);
                     $result->bindParam(":r_money", $r_money);
                     $result->bindParam(":r_deposit", $r_deposit);
@@ -194,7 +188,7 @@
                     $result->bindParam(":content", $content);
                     $result->execute();
 
-                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
+                    // echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
                 }
 
         }
@@ -203,7 +197,7 @@
         
         <div class="container">
             <div class="center"> 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">廣告地點：</span></label><br>
                     <input type="text" id="title" name="title" value="<?php echo $r_place; ?>"style="width: 800px; height: 40px;"><br><br>
                     
@@ -220,7 +214,7 @@
                     <input type="text" id="utilitybill" name="utilitybill" value="<?php echo $r_utilitybill; ?>"style="width: 800px; height: 40px;"><br><br>
 
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片：</span></label><br>
-                    <input type="text" id="photo" name="photo" value="<?php echo $r_photo; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <input type="file" id="photo" name="photo" value="<?php echo $r_photo; ?>"style="width: 800px; height: 40px;"><br><br>
 
                     <label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">其他:</span></label><br>
                     <textarea id="content" name="content" style="width: 800px; height: 500px;"><?php echo $content; ?></textarea><br><br>
@@ -233,6 +227,22 @@
                 </form>
             </div>
         </div>
+        <?php       
+                    // 從資料庫中檢索圖片數據
+                    $sql_query = "SELECT r_photo FROM `ad` WHERE luid = :uid";
+                    $stmt = $conn->prepare($sql_query);
+                    $stmt->bindParam(":uid", $uid);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    // 解碼圖片數據
+                    $image_data = base64_decode($row['r_photo']);
+
+                    // 顯示圖片
+                    echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" />';
+
+                    
+        ?>
         
         <!-- Footer-->
         <footer class="py-5 bg-dark">
