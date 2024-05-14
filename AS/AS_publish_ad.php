@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>CPS</title>
+        <title>AS</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -33,7 +33,7 @@
             session_start(); // 啟動 session
 
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -42,7 +42,6 @@
             $identity = $_SESSION['identity'];
             $uid = $_SESSION['uid'];
             }
-
             if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
 
                 switch ($identity){
@@ -54,13 +53,14 @@
                         break;
                     case "L":
                         $sql_query = "select l_name as name from landlord where uid='" . $uid . "'";
+
                         break;
                 }
-                $result = mysql_query($sql_query);
-                $row = mysql_fetch_array($result);
+                $result = $conn->query($sql_query);
+                $row = $result->fetch(PDO::FETCH_ASSOC);
                 $name = $row["name"];
             }
-            ?>
+        ?>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -68,14 +68,14 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Mangement.php">廣告管理</a></li>
                         <?php
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
@@ -131,35 +131,45 @@
             $r_photo = $_POST["photo"];
             $content = $_POST["content"];
 
-            $select_db = mysql_select_db("rentsystem");
-            if (!$select_db) {
-                echo '<br>找不到資料庫!<br>';
-            } else {
+            // $select_db = mysql_select_db("rentsystem");
+            // if (!$select_db) {
+            //     echo '<br>找不到資料庫!<br>';
+            // } else {
                 $sql_query = "SELECT COUNT(*) AS total_rows FROM `ad`";
-                $result = mysql_query($sql_query);
-                $row = mysql_fetch_assoc($result);
+                $result = $conn->query($sql_query);
+                $row = $result->fetch(PDO::FETCH_ASSOC);
                 $total_rows = $row['total_rows'];
 
                 if ($total_rows == 0) {
                     $new_id = "A00000";
                 } else {
                     $sql_query = "SELECT MAX(rid) AS max_id FROM `ad`";
-                    $result = mysql_query($sql_query);
-                    $row = mysql_fetch_array($result);
+                    $result = $conn->query($sql_query);
+                    $row = $result->fetch(PDO::FETCH_ASSOC);
                     $max_id = $row["max_id"];
                     $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
                 }
-
                 $sql_query = "INSERT INTO `ad` (rid, l_uid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_photo', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
-                mysql_query($sql_query);
+                // $sql_query = "INSERT INTO `ad` (rid, l_uid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                echo "<p>廣告審核中！</p>";
-                echo '<script>
-                        setTimeout(function() {
-                            window.location.href = "AS_AD_Management.php"; // 跳回AS_AD_Mangement.php
-                        }, 2000); // 2000ms（即2秒）
-                    </script>';
-            }
+                if ($stmt = $mysqli->prepare($sql_query)) {
+                    // 綁定參數
+                    $stmt->bind_param("sssssssss", $new_id, $uid, $r_place, $r_photo, $r_format, $r_money, $r_deposit, $r_utilitybill, $content);
+                
+                    // 執行語句
+                    if ($stmt->execute()) {
+                        echo "Record inserted successfully.";
+                    } else {
+                        echo "Error: " . $stmt->error;
+                    }
+                
+                    // 關閉語句
+                    $stmt->close();
+                } else {
+                    echo "Error: " . $mysqli->error;
+                }
+
+                // echo "<script>alert('廣告審核中！'); window.location.href='AS_Landlord.php';</script>";
         }
         ?>
 

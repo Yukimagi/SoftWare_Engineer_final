@@ -27,7 +27,7 @@
             session_start(); // 啟動 session
 
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -36,7 +36,6 @@
             $identity = $_SESSION['identity'];
             $uid = $_SESSION['uid'];
             }
-
             if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
 
                 switch ($identity){
@@ -48,10 +47,11 @@
                         break;
                     case "L":
                         $sql_query = "select l_name as name from landlord where uid='" . $uid . "'";
+
                         break;
                 }
-                $result = mysql_query($sql_query);
-                $row = mysql_fetch_array($result);
+                $result = $conn->query($sql_query);
+                $row = $result->fetch(PDO::FETCH_ASSOC);
                 $name = $row["name"];
             }
             ?>
@@ -62,7 +62,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
 
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_Home.php">廣告</a></li>
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_publish_ad.php">刊登</a></li>
@@ -70,7 +70,7 @@
                         
                         <?php
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->

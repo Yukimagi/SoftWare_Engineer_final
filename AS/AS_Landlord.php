@@ -28,9 +28,8 @@
         <?php
             session_start(); // 啟動 session
 
-
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -39,10 +38,7 @@
             $identity = $_SESSION['identity'];
             $uid = $_SESSION['uid'];
             }
-
-
             if (isset($identity) && $identity !== "SYS" && $identity !== "訪客") {
-
 
                 switch ($identity){
                     case "S":
@@ -54,11 +50,10 @@
                     case "L":
                         $sql_query = "select l_name as name from landlord where uid='" . $uid . "'";
 
-
                         break;
                 }
-                $result = mysql_query($sql_query);
-                $row = mysql_fetch_array($result);
+                $result = $conn->query($sql_query);
+                $row = $result->fetch(PDO::FETCH_ASSOC);
                 $name = $row["name"];
             }
         ?>
@@ -71,7 +66,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
-                        <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                        
@@ -79,7 +74,7 @@
                         <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_OBJ.php">物件評價</a></li> -->
                         <?php
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
@@ -116,11 +111,11 @@
         </nav>
         <!-- Page header with logo and tagline-->
         <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
+            <!-- <div class="container">
                 <div class="text-center my-5">
                     <h1 class="fw-bolder">個人資料</h1>
                 </div>
-            </div>
+            </div> -->
         </header>
 
 
@@ -147,14 +142,14 @@
 
                                 // SQL 查詢
                                 $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
-                                $result = mysql_query($sql_query);
-
+                                $result = $conn->query($sql_query);
+                                
 
                                 if ($result) {
                                     // 輸出查詢結果表單
-                                    while ($row = mysql_fetch_assoc($result)) {
+                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="post" action="update_landlord.php">'; // 修改後的資料提交到 update.php
+                                        echo '<form method="post">'; 
                                         foreach ($row as $key => $value) {
                                             if ($key === "uid" || $key === "uid") {
                                                 $key_text = "UID";
@@ -168,12 +163,12 @@
                                                 $key_text = "lineID";
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
-                                            if(!($key==="uid")){
-                                                echo "$key_text: <input type='text' name='$key' value='$value'><br>";
-                                            }
+                                            
+                                            echo "$key_text: $value <br>";
+                                            
                                         }
-                                        echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
-                                        echo "<input type='submit' value='更新'>";
+                                        // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
+                                        // echo "<input type='submit' value='更新'>";
                                         echo "</form>";
                                         echo "</div>";
                                     }
@@ -189,7 +184,9 @@
                 </div>
             </div>
         </div>
-       
+        <div>
+            <h1 class="fw-bolder"></h1>
+        </div>
 
 
         <!-- Footer-->
