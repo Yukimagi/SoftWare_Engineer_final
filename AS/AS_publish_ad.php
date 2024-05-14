@@ -72,7 +72,7 @@
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Mangement.php">廣告管理</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Management.php">廣告管理</a></li>
                         <?php
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
@@ -114,6 +114,22 @@
             <div class="container">
                 <div class="text-center my-5">
                     <h1 class="fw-bolder">刊登廣告</h1>
+                    <?php       
+                    // 從資料庫中檢索圖片數據
+                    $sql_query = "SELECT r_photo FROM `ad` WHERE luid = :uid";
+                    $stmt = $conn->prepare($sql_query);
+                    $stmt->bindParam(":uid", $uid);
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    // 解碼圖片數據
+                    $image_data = base64_decode($row['r_photo']);
+
+                    // 顯示圖片
+                    echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" />';
+
+                    
+                    ?>
                     
                 </div>
             </div>
@@ -149,27 +165,38 @@
                     $max_id = $row["max_id"];
                     $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
                 }
-                $sql_query = "INSERT INTO `ad` (rid, l_uid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_photo', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
-                // $sql_query = "INSERT INTO `ad` (rid, l_uid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-                if ($stmt = $mysqli->prepare($sql_query)) {
-                    // 綁定參數
-                    $stmt->bind_param("sssssssss", $new_id, $uid, $r_place, $r_photo, $r_format, $r_money, $r_deposit, $r_utilitybill, $content);
-                
-                    // 執行語句
-                    if ($stmt->execute()) {
-                        echo "Record inserted successfully.";
-                    } else {
-                        echo "Error: " . $stmt->error;
-                    }
-                
-                    // 關閉語句
-                    $stmt->close();
+                // 檢查地點是否已存在於資料庫中
+                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place";
+                $stmt_check = $conn->prepare($sql_check);
+                $stmt_check->bindParam(":r_place", $r_place);
+                $stmt_check->execute();
+                $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
+                $count = $row['count'];
+
+                if ($count > 0) {
+                    // echo "此地點已存在於資料庫中。";
+                    echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_Management.php';</script>";
+                    $stmt_check->close();
                 } else {
-                    echo "Error: " . $mysqli->error;
+                    // 如果地點不存在於資料庫中，則執行插入操作
+                    $sql_query = "INSERT INTO `ad` (rid, luid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_photo', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
+ 
+                    $result = $conn->prepare($sql_query);
+                    $result->bindParam(":new_id", $new_id);
+                    $result->bindParam(":uid", $uid);
+                    $result->bindParam(":r_place", $r_place);
+                    $result->bindParam(":r_photo", $r_photo);
+                    $result->bindParam(":r_format", $r_format);
+                    $result->bindParam(":r_money", $r_money);
+                    $result->bindParam(":r_deposit", $r_deposit);
+                    $result->bindParam(":r_utilitybill", $r_utilitybill);
+                    $result->bindParam(":content", $content);
+                    $result->execute();
+
+                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
                 }
 
-                // echo "<script>alert('廣告審核中！'); window.location.href='AS_Landlord.php';</script>";
         }
         ?>
 
@@ -206,6 +233,7 @@
                 </form>
             </div>
         </div>
+        
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
