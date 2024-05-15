@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,7 +56,7 @@
                 $row = $result->fetch(PDO::FETCH_ASSOC);
                 $name = $row["name"];
             }
-            ?>
+        ?>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -64,9 +66,7 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
 
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_Home.php">廣告</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_publish_ad.php">刊登</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_all_landlords_ad.php">所有廣告</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Management.php">廣告管理</a></li>
                         
                         <?php
                         if(!($identity === "訪客")){
@@ -106,22 +106,104 @@
         </nav>
         <!-- Page header with logo and tagline-->
         <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
+            <!-- <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">使用說明</h1>
-                    <!-- <p class="lead mb-0">歡迎使用!</p> -->
+                    <h1 class="fw-bolder">個人資料</h1>
                 </div>
-            </div>
+            </div> -->
         </header>
+
+
+       
         <!-- Page content-->
         <div class="container">
-            <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="assets/ad.jpg" alt="..." /></a>
-                    <div class="card-body">
+            <div class="row">
+                <!-- Blog entries-->
+               
+                <!-- Side widgets-->
+                <div class="col-lg-4">
+                   
+                    <!-- Side widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">personal profile</div>
+                        <?php
+                            if (!empty($identity) && !empty($uid)) {
+                                if ($identity === "L") {
+                                    // 設定查詢的資料表和欄位
+                                    $table = "ad";
+                                    $columns = "r_place";
+                                }
+
+
+                                // SQL 查詢
+                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid'";
+                                $result = $conn->query($sql_query);
+                                
+
+                                if ($result) {
+                                    // 輸出查詢結果表單
+                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<div class="card-body">';
+                                        echo '<form method="post">'; 
+                                        foreach ($row as $key => $value) {
+                                            if ($key === "r_place") {
+                                                $key_text = "地點";
+                                                echo "<input type='hidden' name='location' value='$value'>";
+                                            }
+                                            // 輸出表單欄位，讓使用者修改資料
+                                            
+                                            echo "$key_text: $value";
+                        
+                                            echo '<div style="text-align: right;">';
+                                                echo '<input type="submit" name="modify" value="修改" formaction="AS_AD_all_landlords_ad_modify.php">';
+                                                echo '<input type="submit" name="delete" value="刪除" onclick="return confirm(\'您確定要刪除嗎？\')">';
+                                            echo '</div>';
+                                            
+                                        }
+                                        // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
+                                        // echo "<input type='submit' value='更新'>";
+                                        echo "</form>";
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查失敗：" . mysql_error();
+                                }
+                            } else {
+                                echo "未提供足夠的訊息進行查詢";
+                            }
+                        ?>
+
+                        <?php
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            if (isset($_POST['delete'])) {
+                                // 檢查是否存在地點信息
+                                if (isset($_POST['location'])) {
+                                    $location = $_POST['location'];
+                                    // 在這裡執行刪除操作，例如：
+                                    // 執行刪除相關的程式碼
+                                    $sql_query = "DELETE FROM `ad` where r_place = $location";
+                                    $result = $conn->query($sql_query);
+                                    // $row = $result->fetch(PDO::FETCH_ASSOC);
+                                    echo "<script>alert('已成功刪除地點：$location');</script>";
+                                    // 重定向回原來的頁面
+                                    echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
+                                    exit();
+                                } else {
+                                    echo "無法找到要刪除的地點信息";
+                                }
+                            }
+                        }
+                        ?>
 
                     </div>
+                </div>
             </div>
         </div>
+        <div>
+            <h1 class="fw-bolder"></h1>
+        </div>
+
+
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
@@ -132,3 +214,7 @@
         <script src="js/scripts.js"></script>
     </body>
 </html>
+
+
+
+

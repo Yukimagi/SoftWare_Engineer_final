@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,7 +56,7 @@
                 $row = $result->fetch(PDO::FETCH_ASSOC);
                 $name = $row["name"];
             }
-            ?>
+        ?>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -62,12 +64,14 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
 
+
+                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
+                        <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
+                       
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_Home.php">廣告</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_publish_ad.php">刊登</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_all_landlords_ad.php">所有廣告</a></li>
-                        
+                        <!-- <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_OBJ.php">物件評價</a></li> -->
                         <?php
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
@@ -92,36 +96,99 @@
                         echo '<span style="color:#b0c4de; display: inline;">訪客</span>';
                     }
 
+
                     if (isset($identity) && $identity !== "SYS"&& $identity !== "訪客") {
                         echo '<br>';
                         echo '<span style="color:#b0c4de; display: inline;">使用者姓名：</span><span style="color:#b0c4de; display: inline;">' . $name . '</span>';
                     }
                 ?>
             </p>
-            
-            
+           
+           
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- Page header with logo and tagline-->
         <header class="py-5 bg-light border-bottom mb-4">
-            <div class="container">
+            <!-- <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">使用說明</h1>
-                    <!-- <p class="lead mb-0">歡迎使用!</p> -->
+                    <h1 class="fw-bolder">個人資料</h1>
                 </div>
-            </div>
+            </div> -->
         </header>
+
+
+       
         <!-- Page content-->
         <div class="container">
-            <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="assets/ad.jpg" alt="..." /></a>
-                    <div class="card-body">
+            <div class="row">
+                <!-- Blog entries-->
+               
+                <!-- Side widgets-->
+                <div class="col-lg-4">
+                   
+                    <!-- Side widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">ad information</div>
+                        <?php
+                            if (!empty($identity) && !empty($uid)) {
+                                if ($identity === "L") {
+                                    // 設定查詢的資料表和欄位
+                                    $table = "ad";
+                                    $columns = "r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
+                                }
 
+                                echo ($value);
+                                // SQL 查詢
+                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$value'";
+                                $result = $conn->query($sql_query);
+                                
+
+                                if ($result) {
+                                    // 輸出查詢結果表單
+                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<div class="card-body">';
+                                        echo '<form method="post">'; 
+                                        foreach ($row as $key => $value) {
+                                            if ($key === "uid" || $key === "uid") {
+                                                $key_text = "UID";
+                                            } else if ($key === "l_name") {
+                                                $key_text = "姓名";
+                                            } else if ($key === "l_gender") {
+                                                $key_text = "性別";
+                                            } else if ($key === "l_phone") {
+                                                $key_text = "電話";
+                                            } else if ($key === "l_line") {
+                                                $key_text = "lineID";
+                                            }
+                                            // 輸出表單欄位，讓使用者修改資料
+                                            
+                                            echo "$key_text: $value <br>";
+                                            
+                                        }
+                                        // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
+                                        // echo "<input type='submit' value='更新'>";
+                                        echo "</form>";
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查失敗：" . mysql_error();
+                                }
+                            } else {
+                                echo "未提供足夠的訊息進行查詢";
+                            }
+                        ?>
+                       
                     </div>
+                </div>
             </div>
         </div>
+        <div>
+            <h1 class="fw-bolder"></h1>
+        </div>
+
+
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
@@ -132,3 +199,7 @@
         <script src="js/scripts.js"></script>
     </body>
 </html>
+
+
+
+

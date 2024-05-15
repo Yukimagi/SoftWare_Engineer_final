@@ -129,13 +129,27 @@
             $r_money = $_POST["money"];
             $r_deposit = $_POST["deposit"];
             $r_utilitybill = $_POST["utilitybill"];
-            // $r_photo = $_POST["photo"];
 
             // 处理文件上传
-            $r_photo_tmp_name = $_FILES["photo"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
-            $r_photo = base64_encode($r_photo); // 对文件内容进行编码
+            $r_photo_tmp_name = $_FILES["post"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_post = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
+            $r_post = base64_encode($r_post); // 对文件内容进行编码
 
+            $r_photo_tmp_name1 = $_FILES["photo1"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo1 = file_get_contents($r_photo_tmp_name1); // 读取上传文件的内容
+            $r_photo1 = base64_encode($r_photo1); // 对文件内容进行编码
+
+            $r_photo_tmp_name2 = $_FILES["photo2"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo2 = file_get_contents($r_photo_tmp_name2); // 读取上传文件的内容
+            $r_photo2 = base64_encode($r_photo2); // 对文件内容进行编码
+
+            $r_photo_tmp_name3 = $_FILES["photo3"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo3 = file_get_contents($r_photo_tmp_name3); // 读取上传文件的内容
+            $r_photo3 = base64_encode($r_photo3); // 对文件内容进行编码
+
+            $r_photo_tmp_name4 = $_FILES["photo4"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo4 = file_get_contents($r_photo_tmp_name4); // 读取上传文件的内容
+            $r_photo4 = base64_encode($r_photo4); // 对文件内容进行编码
 
 
             $content = $_POST["content"];
@@ -169,17 +183,21 @@
 
                 if ($count > 0) {
                     // echo "此地點已存在於資料庫中。";
-                    echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_Management.php';</script>";
+                    echo "<script>alert('此地點已存在！'); window.location.href='AS_publish_ad.php';</script>";
                     $stmt_check->close();
                 } else {
                     // 如果地點不存在於資料庫中，則執行插入操作
-                    $sql_query = "INSERT INTO `ad` (rid, luid, r_place, r_photo, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_photo', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
+                    $sql_query = "INSERT INTO `ad` (rid, luid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_post', '$r_photo1', '$r_photo2', '$r_photo3', '$r_photo4', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
  
                     $result = $conn->prepare($sql_query);
                     $result->bindParam(":new_id", $new_id);
                     $result->bindParam(":uid", $uid);
                     $result->bindParam(":r_place", $r_place);
-                    $result->bindParam(":r_photo", $r_photo);
+                    $result->bindParam(":r_post", $r_post);
+                    $result->bindParam(":r_photo1", $r_photo1);
+                    $result->bindParam(":r_photo2", $r_photo2);
+                    $result->bindParam(":r_photo3", $r_photo3);
+                    $result->bindParam(":r_photo4", $r_photo4);
                     // $result->bindParam(":r_photo", $photo_data);
                     $result->bindParam(":r_format", $r_format);
                     $result->bindParam(":r_money", $r_money);
@@ -188,7 +206,7 @@
                     $result->bindParam(":content", $content);
                     $result->execute();
 
-                    // echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
+                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
                 }
 
         }
@@ -213,8 +231,20 @@
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">水電費：(如:台水台電)</span></label><br>
                     <input type="text" id="utilitybill" name="utilitybill" value="<?php echo $r_utilitybill; ?>"style="width: 800px; height: 40px;"><br><br>
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片：</span></label><br>
-                    <input type="file" id="photo" name="photo" value="<?php echo $r_photo; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">封面照：</span></label><br>
+                    <input type="file" id="post" name="post" value="<?php echo $r_post; ?>"style="width: 800px; height: 40px;"><br><br>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片1：</span></label><br>
+                    <input type="file" id="photo1" name="photo1" value="<?php echo $r_photo1; ?>"style="width: 800px; height: 40px;"><br><br>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片2：</span></label><br>
+                    <input type="file" id="photo2" name="photo2" value="<?php echo $r_photo2; ?>"style="width: 800px; height: 40px;"><br><br>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片3：</span></label><br>
+                    <input type="file" id="photo3" name="photo3" value="<?php echo $r_photo3; ?>"style="width: 800px; height: 40px;"><br><br>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">照片4：</span></label><br>
+                    <input type="file" id="photo4" name="photo4" value="<?php echo $r_photo4; ?>"style="width: 800px; height: 40px;"><br><br>
 
                     <label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">其他:</span></label><br>
                     <textarea id="content" name="content" style="width: 800px; height: 500px;"><?php echo $content; ?></textarea><br><br>
@@ -228,18 +258,18 @@
             </div>
         </div>
         <?php       
-                    // 從資料庫中檢索圖片數據
-                    $sql_query = "SELECT r_photo FROM `ad` WHERE luid = :uid";
-                    $stmt = $conn->prepare($sql_query);
-                    $stmt->bindParam(":uid", $uid);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    // // 從資料庫中檢索圖片數據
+                    // $sql_query = "SELECT r_photo FROM `ad` WHERE luid = :uid";
+                    // $stmt = $conn->prepare($sql_query);
+                    // $stmt->bindParam(":uid", $uid);
+                    // $stmt->execute();
+                    // $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                    // 解碼圖片數據
-                    $image_data = base64_decode($row['r_photo']);
+                    // // 解碼圖片數據
+                    // $image_data = base64_decode($row['r_photo']);
 
-                    // 顯示圖片
-                    echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" />';
+                    // // 顯示圖片
+                    // // echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" />';
 
                     
         ?>
