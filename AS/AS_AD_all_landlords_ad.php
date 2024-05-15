@@ -159,9 +159,9 @@
                                         }
                                         echo "</form>";
                             
-                                        echo '<form method="post" style="display:inline-block;">';
+                                        echo '<form method="post" style="text-align: right;">';
                                             echo "<input type='hidden' name='location' value='$value'>";
-                                            echo '<input type="submit" name="delete" value="刪除" onclick="return confirm(\'您確定要刪除嗎？\')">';
+                                            echo '<input type="submit" name="delete" value="下架" onclick="return confirm(\'您確定要刪除嗎？\')">';
                                         echo '</form>';
                             
                                         echo "</div>";

@@ -128,83 +128,84 @@
             $r_utilitybill = $_POST["r_utilitybill"];
             $rid = $_POST["rid"];
 
+
             // 处理文件上传
-            $r_photo_tmp_name = $_FILES["r_post"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_post = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
-            $r_post = base64_encode($r_post); // 对文件内容进行编码
-
-            $r_photo_tmp_name1 = $_FILES["r_photo1"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo1 = file_get_contents($r_photo_tmp_name1); // 读取上传文件的内容
-            $r_photo1 = base64_encode($r_photo1); // 对文件内容进行编码
-
-            $r_photo_tmp_name2 = $_FILES["r_photo2"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo2 = file_get_contents($r_photo_tmp_name2); // 读取上传文件的内容
-            $r_photo2 = base64_encode($r_photo2); // 对文件内容进行编码
-
-            $r_photo_tmp_name3 = $_FILES["r_photo3"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo3 = file_get_contents($r_photo_tmp_name3); // 读取上传文件的内容
-            $r_photo3 = base64_encode($r_photo3); // 对文件内容进行编码
-
-            $r_photo_tmp_name4 = $_FILES["r_photo4"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo4 = file_get_contents($r_photo_tmp_name4); // 读取上传文件的内容
-            $r_photo4 = base64_encode($r_photo4); // 对文件内容进行编码
-
+            $r_post = !empty($_FILES["r_post"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_post"]["tmp_name"])) : null;
+            $r_photo1 = !empty($_FILES["r_photo1"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo1"]["tmp_name"])) : null;
+            $r_photo2 = !empty($_FILES["r_photo2"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo2"]["tmp_name"])) : null;
+            $r_photo3 = !empty($_FILES["r_photo3"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo3"]["tmp_name"])) : null;
+            $r_photo4 = !empty($_FILES["r_photo4"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo4"]["tmp_name"])) : null;
 
             $content = $_POST["r_else"];
 
-            // $select_db = mysql_select_db("rentsystem");
-            // if (!$select_db) {
-            //     echo '<br>找不到資料庫!<br>';
-            // } else {
-                $sql_query = "SELECT COUNT(*) AS total_rows FROM `ad`";
-                $result = $conn->query($sql_query);
-                $row = $result->fetch(PDO::FETCH_ASSOC);
-                $total_rows = $row['total_rows'];
-
-                if ($total_rows == 0) {
-                    $new_id = "A00000";
-                } else {
-                    $sql_query = "SELECT MAX(rid) AS max_id FROM `ad`";
-                    $result = $conn->query($sql_query);
-                    $row = $result->fetch(PDO::FETCH_ASSOC);
-                    $max_id = $row["max_id"];
-                    $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
-                }
-
-                // 檢查地點是否已存在於資料庫中
-                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place";
+        
+                // 檢查地點是否已存在於資料庫中，但排除當前正在更新的記錄
+                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place AND rid != :rid";
                 $stmt_check = $conn->prepare($sql_check);
                 $stmt_check->bindParam(":r_place", $r_place);
+                $stmt_check->bindParam(":rid", $rid);
                 $stmt_check->execute();
                 $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
                 $count = $row['count'];
 
-                if ($count > 1) {
+                if ($count > 0) {
                     // echo "此地點已存在於資料庫中。";
-                    echo "<script>alert('此地點已存在！'); window.location.href='AS_publish_ad.php';</script>";
+                    echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
                     $stmt_check->close();
                 } else {
-                    // 如果地點不存在於資料庫中，則執行插入操作
-                    $sql_query = "UPDATE `ad` SET (luid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$uid', '$r_place', '$r_post', '$r_photo1', '$r_photo2', '$r_photo3', '$r_photo4', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content') WHERE rid=$rid";
- 
+                    // 先从数据库中获取当前记录的现有值
+                    $sql_select = "SELECT r_post, r_photo1, r_photo2, r_photo3, r_photo4 FROM `ad` WHERE rid = :rid";
+                    $stmt_select = $conn->prepare($sql_select);
+                    $stmt_select->bindParam(":rid", $rid);
+                    $stmt_select->execute();
+                    $current_row = $stmt_select->fetch(PDO::FETCH_ASSOC);
+
+                    // 如果没有新的文件上传，则保留现有的值
+                    if (is_null($r_post)) {
+                        $r_post = $current_row['r_post'];
+                    }
+                    if (is_null($r_photo1)) {
+                        $r_photo1 = $current_row['r_photo1'];
+                    }
+                    if (is_null($r_photo2)) {
+                        $r_photo2 = $current_row['r_photo2'];
+                    }
+                    if (is_null($r_photo3)) {
+                        $r_photo3 = $current_row['r_photo3'];
+                    }
+                    if (is_null($r_photo4)) {
+                        $r_photo4 = $current_row['r_photo4'];
+                    }
+
+                    echo "<script>
+                        if (confirm('該廣告即將下架，是否確定送出？')) {
+                            // window.location.href='AS_AD_all_landlords_ad_modify.php';
+                            
+                        } else {
+                            window.location.href='AS_AD_all_landlords_ad.php';
+                        }
+                        </script>";
+                    $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
                     $result = $conn->prepare($sql_query);
-                    $result->bindParam(":new_id", $new_id);
-                    $result->bindParam(":uid", $uid);
+
                     $result->bindParam(":r_place", $r_place);
                     $result->bindParam(":r_post", $r_post);
                     $result->bindParam(":r_photo1", $r_photo1);
                     $result->bindParam(":r_photo2", $r_photo2);
                     $result->bindParam(":r_photo3", $r_photo3);
                     $result->bindParam(":r_photo4", $r_photo4);
-                    // $result->bindParam(":r_photo", $photo_data);
                     $result->bindParam(":r_format", $r_format);
                     $result->bindParam(":r_money", $r_money);
                     $result->bindParam(":r_deposit", $r_deposit);
                     $result->bindParam(":r_utilitybill", $r_utilitybill);
                     $result->bindParam(":content", $content);
+                    $result->bindParam(":rid", $rid);
+
                     $result->execute();
 
-                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
+                    
+                    
+                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
                 }
 
         }
@@ -228,7 +229,7 @@
                                 if ($identity === "L") {
                                     // 設定查詢的資料表和欄位
                                     $table = "ad";
-                                    $columns = "r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
+                                    $columns = "rid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
                                 }
 
                                 
@@ -265,7 +266,7 @@
                                                 $key_text = "租金";
                                             }else if ($key === "r_deposit") {
                                                 $key_text = "押金";
-                                            }else if ($key === "r_utilitybull") {
+                                            }else if ($key === "r_utilitybill") {
                                                 $key_text = "水電費";
                                             }else if ($key === "r_else") {
                                                 $key_text = "其他";
