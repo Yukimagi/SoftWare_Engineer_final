@@ -117,6 +117,98 @@
                 </div>
             </div> -->
         </header>
+        <?php
+        $title = $content = $format = $money = $deposit = $utilitybill = $photo = "";
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $r_place = $_POST["r_place"];
+            $r_format = $_POST["r_format"];
+            $r_money = $_POST["r_money"];
+            $r_deposit = $_POST["r_deposit"];
+            $r_utilitybill = $_POST["r_utilitybill"];
+            $rid = $_POST["rid"];
+
+            // 处理文件上传
+            $r_photo_tmp_name = $_FILES["r_post"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_post = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
+            $r_post = base64_encode($r_post); // 对文件内容进行编码
+
+            $r_photo_tmp_name1 = $_FILES["r_photo1"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo1 = file_get_contents($r_photo_tmp_name1); // 读取上传文件的内容
+            $r_photo1 = base64_encode($r_photo1); // 对文件内容进行编码
+
+            $r_photo_tmp_name2 = $_FILES["r_photo2"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo2 = file_get_contents($r_photo_tmp_name2); // 读取上传文件的内容
+            $r_photo2 = base64_encode($r_photo2); // 对文件内容进行编码
+
+            $r_photo_tmp_name3 = $_FILES["r_photo3"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo3 = file_get_contents($r_photo_tmp_name3); // 读取上传文件的内容
+            $r_photo3 = base64_encode($r_photo3); // 对文件内容进行编码
+
+            $r_photo_tmp_name4 = $_FILES["r_photo4"]["tmp_name"]; // 获取上传文件的临时文件名
+            $r_photo4 = file_get_contents($r_photo_tmp_name4); // 读取上传文件的内容
+            $r_photo4 = base64_encode($r_photo4); // 对文件内容进行编码
+
+
+            $content = $_POST["r_else"];
+
+            // $select_db = mysql_select_db("rentsystem");
+            // if (!$select_db) {
+            //     echo '<br>找不到資料庫!<br>';
+            // } else {
+                $sql_query = "SELECT COUNT(*) AS total_rows FROM `ad`";
+                $result = $conn->query($sql_query);
+                $row = $result->fetch(PDO::FETCH_ASSOC);
+                $total_rows = $row['total_rows'];
+
+                if ($total_rows == 0) {
+                    $new_id = "A00000";
+                } else {
+                    $sql_query = "SELECT MAX(rid) AS max_id FROM `ad`";
+                    $result = $conn->query($sql_query);
+                    $row = $result->fetch(PDO::FETCH_ASSOC);
+                    $max_id = $row["max_id"];
+                    $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
+                }
+
+                // 檢查地點是否已存在於資料庫中
+                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place";
+                $stmt_check = $conn->prepare($sql_check);
+                $stmt_check->bindParam(":r_place", $r_place);
+                $stmt_check->execute();
+                $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
+                $count = $row['count'];
+
+                if ($count > 1) {
+                    // echo "此地點已存在於資料庫中。";
+                    echo "<script>alert('此地點已存在！'); window.location.href='AS_publish_ad.php';</script>";
+                    $stmt_check->close();
+                } else {
+                    // 如果地點不存在於資料庫中，則執行插入操作
+                    $sql_query = "UPDATE `ad` SET (luid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$uid', '$r_place', '$r_post', '$r_photo1', '$r_photo2', '$r_photo3', '$r_photo4', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content') WHERE rid=$rid";
+ 
+                    $result = $conn->prepare($sql_query);
+                    $result->bindParam(":new_id", $new_id);
+                    $result->bindParam(":uid", $uid);
+                    $result->bindParam(":r_place", $r_place);
+                    $result->bindParam(":r_post", $r_post);
+                    $result->bindParam(":r_photo1", $r_photo1);
+                    $result->bindParam(":r_photo2", $r_photo2);
+                    $result->bindParam(":r_photo3", $r_photo3);
+                    $result->bindParam(":r_photo4", $r_photo4);
+                    // $result->bindParam(":r_photo", $photo_data);
+                    $result->bindParam(":r_format", $r_format);
+                    $result->bindParam(":r_money", $r_money);
+                    $result->bindParam(":r_deposit", $r_deposit);
+                    $result->bindParam(":r_utilitybill", $r_utilitybill);
+                    $result->bindParam(":content", $content);
+                    $result->execute();
+
+                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
+                }
+
+        }
+        ?>
 
 
        
@@ -153,11 +245,11 @@
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="post">'; 
+                                        echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">';
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
-                                            } else if ($key === "r_post") {
+                                            }else if ($key === "r_post") {
                                                 $key_text = "封面照片";
                                             } else if ($key === "r_photo1") {
                                                 $key_text = "照片1";
@@ -167,9 +259,7 @@
                                                 $key_text = "照片3";
                                             }else if ($key === "r_photo4") {
                                                 $key_text = "照片4";
-                                            }else if ($key === "l_phone5") {
-                                                $key_text = "照片5";
-                                            } else if ($key === "r_format") {
+                                            }else if ($key === "r_format") {
                                                 $key_text = "規格";
                                             }else if ($key === "r_money") {
                                                 $key_text = "租金";
@@ -179,9 +269,29 @@
                                                 $key_text = "水電費";
                                             }else if ($key === "r_else") {
                                                 $key_text = "其他";
+                                            }else if($key === "rid"){
+                                                echo "<input type='hidden' name='$key' value='$value'>";
                                             }
-                                            // 輸出表單欄位，讓使用者修改資料
-                                            echo "$key_text: <input type='text' name='$key' value='$value'><br>";
+                                            
+                                            if ($key === "r_post" || $key === "r_photo1" || $key === "r_photo2" || $key === "r_photo3" || $key === "r_photo4") {
+                                                if (!empty($value)) {
+                                                    // 解碼圖片數據
+                                                    $image_data = base64_decode($value);
+                                                    echo "$key_text:<br>";
+                                                    
+                                                    // 顯示圖片
+                                                   
+                                                    echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" style="max-width:200px; max-height:200px;"/><br>';
+                                                    echo "<input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                                }
+                                                else{
+                                                    echo "$key_text: <input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                                }
+                                            } 
+                                            else {
+                                                // 輸出表單欄位，讓使用者修改資料
+                                                echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                            }
                                     
                                             // echo "$key_text: $value <br>";
                                             
