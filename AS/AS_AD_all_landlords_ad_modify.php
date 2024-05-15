@@ -139,10 +139,14 @@
                                     $columns = "r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
                                 }
 
-                                echo ($value);
+                                
+                                $location = $_GET['location'];
+       
                                 // SQL 查詢
-                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$value'";
+                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$location'";
                                 $result = $conn->query($sql_query);
+                                // echo($sql_query);
+                    
                                 
 
                                 if ($result) {
@@ -151,24 +155,39 @@
                                         echo '<div class="card-body">';
                                         echo '<form method="post">'; 
                                         foreach ($row as $key => $value) {
-                                            if ($key === "uid" || $key === "uid") {
-                                                $key_text = "UID";
-                                            } else if ($key === "l_name") {
-                                                $key_text = "姓名";
-                                            } else if ($key === "l_gender") {
-                                                $key_text = "性別";
-                                            } else if ($key === "l_phone") {
-                                                $key_text = "電話";
-                                            } else if ($key === "l_line") {
-                                                $key_text = "lineID";
+                                            if ($key === "r_place") {
+                                                $key_text = "地點";
+                                            } else if ($key === "r_post") {
+                                                $key_text = "封面照片";
+                                            } else if ($key === "r_photo1") {
+                                                $key_text = "照片1";
+                                            } else if ($key === "r_photo2") {
+                                                $key_text = "照片2";
+                                            }else if ($key === "r_photo3") {
+                                                $key_text = "照片3";
+                                            }else if ($key === "r_photo4") {
+                                                $key_text = "照片4";
+                                            }else if ($key === "l_phone5") {
+                                                $key_text = "照片5";
+                                            } else if ($key === "r_format") {
+                                                $key_text = "規格";
+                                            }else if ($key === "r_money") {
+                                                $key_text = "租金";
+                                            }else if ($key === "r_deposit") {
+                                                $key_text = "押金";
+                                            }else if ($key === "r_utilitybull") {
+                                                $key_text = "水電費";
+                                            }else if ($key === "r_else") {
+                                                $key_text = "其他";
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
-                                            
-                                            echo "$key_text: $value <br>";
+                                            echo "$key_text: <input type='text' name='$key' value='$value'><br>";
+                                    
+                                            // echo "$key_text: $value <br>";
                                             
                                         }
                                         // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
-                                        // echo "<input type='submit' value='更新'>";
+                                        echo "<input type='submit' value='修改'>";
                                         echo "</form>";
                                         echo "</div>";
                                     }

@@ -144,25 +144,26 @@
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="post">'; 
+                                        echo '<form method="get" action="AS_AD_all_landlords_ad_modify.php">';
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
                                                 echo "<input type='hidden' name='location' value='$value'>";
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
-                                            
                                             echo "$key_text: $value";
-                        
+                            
                                             echo '<div style="text-align: right;">';
-                                                echo '<input type="submit" name="modify" value="修改" formaction="AS_AD_all_landlords_ad_modify.php">';
-                                                echo '<input type="submit" name="delete" value="刪除" onclick="return confirm(\'您確定要刪除嗎？\')">';
+                                                echo '<input type="submit" name="modify" value="修改">';
                                             echo '</div>';
-                                            
                                         }
-                                        // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
-                                        // echo "<input type='submit' value='更新'>";
                                         echo "</form>";
+                            
+                                        echo '<form method="post" style="display:inline-block;">';
+                                            echo "<input type='hidden' name='location' value='$value'>";
+                                            echo '<input type="submit" name="delete" value="刪除" onclick="return confirm(\'您確定要刪除嗎？\')">';
+                                        echo '</form>';
+                            
                                         echo "</div>";
                                     }
                                 } else {
