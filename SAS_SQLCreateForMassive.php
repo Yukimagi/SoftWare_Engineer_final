@@ -80,7 +80,7 @@ if (isset($_POST['uid'])) {
             break;
     }
     if ($result->execute()) {
-        echo '<script>updatemsg()</script>';
+        echo '<script>updatemsg_relog()</script>';
     } else {
         echo '<script>warning4()</script>';
     }
