@@ -166,3 +166,9 @@ function login_invalid(){
     window.location.href="index.php";
 }
 ////////////////////////////////////////
+function registermsg(){
+    var message = '申請訊息已送出，請靜待管理員回復。\n審核過程可能需要1~3個工作天';
+    alert(message);
+    window.location.href="index.php";
+}
+////////////////////////////////////////
