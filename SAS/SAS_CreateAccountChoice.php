@@ -18,7 +18,6 @@
             <div id="choice_container">
                 <button type="submit" class="button" name="identity" value="S"><span>學生</span></button>
                 <button type="submit" class="button" id="rightbutton" name="identity" value="T"><span>教師</span></button>
-                <?php //<button type="submit" class="button" name="identity" value="SYS">系統管理者</button>?>
                 <button type="submit" class="button" id="rightbutton" name="identity" value="L"><span>房東</span></button>
             </div>
         </form>

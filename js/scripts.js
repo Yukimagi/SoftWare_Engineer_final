@@ -84,9 +84,21 @@ function showiframe4(){
     var iframe = document.getElementById('createaccountchoice');
     var disableiframe1 = document.getElementById('user_profile');
     var disableiframe2 = document.getElementById('user_delete');
+    var disableiframe3 = document.getElementById('createmassiveaccountchoice');
     iframe.style.display='block';
     disableiframe1.style.display='none';
     disableiframe2.style.display='none';
+    disableiframe3.style.display='none';
+}
+function showiframe5(){
+    var iframe = document.getElementById('createmassiveaccountchoice');
+    var disableiframe1 = document.getElementById('user_profile');
+    var disableiframe2 = document.getElementById('user_delete');
+    var disableiframe3 = document.getElementById('createaccountchoice');
+    iframe.style.display='block';
+    disableiframe1.style.display='none';
+    disableiframe2.style.display='none';
+    disableiframe3.style.display='none';
 }
 ////////////////////////////////////////
 function backtoSAS(){
