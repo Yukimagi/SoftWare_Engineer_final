@@ -35,42 +35,41 @@ include('connection.php')
        echo '<th>帳號</th>';
        echo '</tr>';
 
-       $user_identity = "";
-       $user_name = "";
-       $user_account = "";
-
        // 建立資料列
        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $user_identity = "";
+            $user_name = "";
+            $user_account = "";
            if ($row["identity"] !== "SYS") {
                switch ($row["identity"]) {
                    case 'T':
+                        $user_account = $row["account"];
                        $sql_query_2 = "select * from teacher_profile where t_uid='" . $row['uid'] . "'";
                        $result_2 = $conn->query($sql_query_2);
                        if ($result_2->rowCount() > 0) {
                            $row_2 = $result_2->fetch(PDO::FETCH_ASSOC);
                            $user_identity = $row_2["t_rank"];
                            $user_name = $row_2["t_name"];
-                           $user_account = $row["account"];
                        }
                        break;
                    case 'S':
+                        $user_identity = "學生";
+                        $user_account = $row["account"];
                        $sql_query_2 = "select * from basicinfo where uid='" . $row['uid'] . "'";
                        $result_2 = $conn->query($sql_query_2);
                        if ($result_2->rowCount() > 0) {
-                           $row_2 = $result_2->fetch(PDO::FETCH_ASSOC);
-                           $user_identity = "學生";
+                           $row_2 = $result_2->fetch(PDO::FETCH_ASSOC);     
                            $user_name = $row_2["name"];
-                           $user_account = $row["account"];
                        }
                        break;
                    case 'L':
+                        $user_identity = "房東";
+                        $user_account = $row["account"];
                        $sql_query_2 = "select * from landlord where uid='" . $row['uid'] . "'";
                        $result_2 = $conn->query($sql_query_2);
                        if ($result_2->rowCount() > 0) {
                            $row_2 = $result_2->fetch(PDO::FETCH_ASSOC);
-                           $user_identity = "房東";
                            $user_name = $row_2["l_name"];
-                           $user_account = $row["account"];
                        }
                        break;
                }
