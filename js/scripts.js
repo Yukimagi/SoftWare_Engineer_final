@@ -105,7 +105,7 @@ function backtoSAS(){
     window.location.href='SAS.php';
 }
 function backtolobby(){
-    window.top.location.href="lobby.php";
+    window.top.location.href="../lobby.php";
 }
 ////////////////////////////////////////
 function deleteconfirm(){
