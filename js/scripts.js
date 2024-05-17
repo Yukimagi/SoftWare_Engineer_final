@@ -144,4 +144,25 @@ function createconfirm(){
         return false;
     }
 }
-
+////////////////////////////////////////
+function PermissionEditConfirm(){
+    var confirmation = confirm('是否更改該使用者帳號權限?');
+    if(confirmation){
+        return true;
+    }else{
+        alert('已取消操作');
+        return false;
+    }
+}
+function updatemsg_permission(){
+    var message = '已更新權限';
+    alert(message);
+    window.location.href="SAS_UserPermissionEdit.php";
+}
+////////////////////////////////////////
+function login_invalid(){
+    var message = '此帳號已被凍結，請與網站管理員聯繫。\n連絡電話：0800-000-000。';
+    alert(message);
+    window.location.href="index.php";
+}
+////////////////////////////////////////
