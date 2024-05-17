@@ -46,12 +46,12 @@ function updatemsgForSAS(){
 function updatemsg(){
     var message = '已更新資料';
     alert(message);
-    window.location.href="lobby.php";
+    window.top.location.href="lobby.php";
 }
 function updatemsg_relog(){
     var message = '已更新資料，請重新登入';
     alert(message);
-    window.location.href="logoutprocess.php";
+    window.top.location.href="logoutprocess.php";
 }
 function createmsg(){
     var message = '已新增資料';
@@ -115,8 +115,6 @@ function deletemsg(){
 function updateconfirm(){
     var confirmation = confirm('是否更改該使用者帳號資訊?');
     if(confirmation){
-        window.top.location.href="lobby.php";
-        alert('已更新個人資料');
         return true;
     }else{
         alert('已取消操作');
