@@ -1,6 +1,6 @@
 <script src="js/scripts.js"></script>
 <?php
-include("connection.php");
+include("SAS/connection.php");
 
 session_start();
 $account = $_POST['account'];
