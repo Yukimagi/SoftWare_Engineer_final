@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>後台-帳號管理</title>
-    <link href="css/lobby.css" rel="stylesheet" />
+    <link href="../css/lobby.css" rel="stylesheet" />
     <style>
         .instruction-container {
             position: absolute;
@@ -90,7 +90,7 @@
         <h2>功能選單</h2>
         <ul>
             <div>
-                <li><a href="lobby.php">首頁</a></li>
+                <li><a href="../lobby.php">首頁</a></li>
             </div>
             <?php
             $managementlist = '
@@ -146,7 +146,7 @@
                 }
                 ?>
             </p>
-            <li class="LoginLink"><a href="logoutprocess.php">使用者登出</a></li>
+            <li class="LoginLink"><a href="../logoutprocess.php">使用者登出</a></li>
         </ul>
     </nav>
     <div class="content">

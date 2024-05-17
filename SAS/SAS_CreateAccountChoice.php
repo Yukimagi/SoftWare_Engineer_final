@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>後台-帳號管理</title>
-    <link href="css/SAS_CreateAccountChoice.css" rel="stylesheet" />
+    <link href="../css/SAS_CreateAccountChoice.css" rel="stylesheet" />
 </head>
 <body>
     <div class="content">

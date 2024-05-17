@@ -1,13 +1,13 @@
 <?php
-include ('connection.php')
+include('connection.php')
 ?>
 <!DOCTYPE>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link href="css/SAS_UserDelete.css" rel="stylesheet" />
-    <script src="js/scripts.js"></script>
+    <link href="../css/SAS_UserDelete.css" rel="stylesheet" />
+    <script src="../js/scripts.js"></script>
 </head>
 <body>
 <div id="title">

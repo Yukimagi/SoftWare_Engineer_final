@@ -1,4 +1,4 @@
-<script src="js/scripts.js"></script>
+<script src="../js/scripts.js"></script>
 <?php
 include("connection.php");
         
@@ -16,16 +16,22 @@ if (isset($_POST['uid'])) {
             $location = $_POST['office_location'];
             $phone = $_POST['office_phone'];
 
-            $sql_query = "INSERT INTO teacher_profile(t_uid, t_name, t_rank, t_tel, t_mail, t_address, t_officetel) VALUES ";
-            $sql_query .= "(:t_uid, :t_name, :t_rank, :t_tel, :t_mail, :t_address, :t_officetel)";
+            $sql_query = "UPDATE teacher_profile SET 
+                teacher_profile.t_name = :t_name,
+                teacher_profile.t_rank = :t_rank,
+                teacher_profile.t_tel = :t_tel,
+                teacher_profile.t_mail = :t_mail,
+                teacher_profile.t_address = :t_address,
+                teacher_profile.t_officetel = :t_officetel
+                WHERE teacher_profile.t_uid = :t_uid";
             $result = $conn->prepare($sql_query);
-            $result->bindParam(":t_uid", $user_id);
             $result->bindParam(":t_name", $name);
             $result->bindParam(":t_rank", $rank);
             $result->bindParam(":t_tel", $tel);
             $result->bindParam(":t_mail", $mail);
             $result->bindParam(":t_address", $location);
             $result->bindParam(":t_officetel", $phone);
+            $result->bindParam(":t_uid", $user_id);
             break;
         case 'S':
             $name = $_POST['student_name'];
@@ -40,18 +46,19 @@ if (isset($_POST['uid'])) {
             $cont = $_POST['student_cont'];
             $contphone = $_POST['student_contphone'];
 
-            $sql_query = "select * from teacher_profile where t_name='" . $Tname . "'";
-            $result = $conn->query($sql_query);
-            if ($result->rowCount() > 0) {
-                $teacher_profile = $result->fetch(PDO::FETCH_ASSOC);
-                $Tid = $teacher_profile['t_uid'];
-            }
-
-            $sql_query = "INSERT INTO basicinfo(`uid`, `tuid`, `SID`, `name`, `grade`, `gender`, `phone`, `email`, `HomeAddr`, `Hphone`, `Contactor`, `Cphone`) VALUES ";
-            $sql_query .= "(:uid, :tuid, :SID, :name, :grade, :gender, :phone, :email, :HomeAddr, :Hphone, :Contactor, :Cphone)";
+            $sql_query = "UPDATE basicinfo SET 
+                basicinfo.SID = :SID,
+                basicinfo.name = :name,
+                basicinfo.grade = :grade,
+                basicinfo.gender = :gender,
+                basicinfo.phone = :phone,
+                basicinfo.email = :email,
+                basicinfo.HomeAddr = :HomeAddr,
+                basicinfo.Hphone = :Hphone,
+                basicinfo.Contactor = :Contactor,
+                basicinfo.Cphone = :Cphone
+                WHERE basicinfo.uid = :uid";
             $result = $conn->prepare($sql_query);
-            $result->bindParam(":uid", $user_id);
-            $result->bindParam(":tuid", $Tid);
             $result->bindParam(":SID", $id);
             $result->bindParam(":name", $name);
             $result->bindParam(":grade", $grade);
@@ -62,6 +69,7 @@ if (isset($_POST['uid'])) {
             $result->bindParam(":Hphone", $htel);
             $result->bindParam(":Contactor", $cont);
             $result->bindParam(":Cphone", $contphone);
+            $result->bindParam(":uid", $user_id);
             break;
         case 'L':
             $name = $_POST['landlord_name'];
@@ -69,18 +77,38 @@ if (isset($_POST['uid'])) {
             $phone = $_POST['landlord_phone'];
             $line = $_POST['landlord_line'];
 
-            $sql_query = "INSERT INTO landlord(`uid`, `l_name`, `l_gender`, `l_phone`, `l_line`) VALUES ";
-            $sql_query .= "(:uid, :l_name, :l_gender, :l_phone, :l_line)";
+            $sql_query = "UPDATE landlord SET 
+                landlord.l_name = :l_name,
+                landlord.l_gender = :l_gender,
+                landlord.l_phone = :l_phone,
+                landlord.l_line = :l_line
+                WHERE landlord.uid = :uid";
             $result = $conn->prepare($sql_query);
-            $result->bindParam(":uid", $user_id);
             $result->bindParam(":l_name", $name);
             $result->bindParam(":l_gender", $gender);
             $result->bindParam(":l_phone", $phone);
             $result->bindParam(":l_line", $line);
+            $result->bindParam(":uid", $user_id);
             break;
     }
     if ($result->execute()) {
-        echo '<script>updatemsg_relog()</script>';
+        if (isset($_POST['NotSAS']) && $_POST['NotSAS'] === "true"){
+            $sql_query = "UPDATE user_profile SET 
+                user_profile.account = :account,
+                user_profile.password = :password
+                WHERE user_profile.uid = :uid";
+            $result = $conn->prepare($sql_query);
+            $result->bindParam(":account", $_POST['account']);
+            $result->bindParam(":password", $_POST['passwd']);
+            $result->bindParam(":uid", $user_id);
+            if ($result->execute()) {
+                echo '<script>updatemsg()</script>';
+            }else {
+                echo '<script>warning4()</script>';
+            }
+        }else{
+            echo '<script>updatemsgForSAS()</script>';
+        }
     } else {
         echo '<script>warning4()</script>';
     }

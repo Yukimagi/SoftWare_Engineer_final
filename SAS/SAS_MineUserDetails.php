@@ -10,8 +10,8 @@ $uid = $_SESSION['uid'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>用戶詳細資料</title>
-    <link href="css/SAS_MineUserDetails.css" rel="stylesheet" />
-    <script src="js/scripts.js"></script>
+    <link href="../css/SAS_MineUserDetails.css" rel="stylesheet" />
+    <script src="../js/scripts.js"></script>
 </head>
 <body>
 <div class="content">

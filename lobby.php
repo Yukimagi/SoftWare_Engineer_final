@@ -81,10 +81,10 @@ $name = $_SESSION['name'];
 </nav>
 <div class="content">
     <div id="iframe_container">
-        <iframe id="user_profile" src="SAS.php"></iframe>
-        <iframe id="user_delete" src="SAS_UserDelete.php"></iframe>
-        <iframe id="personaluserdetail" src="SAS_MineUserDetails.php"></iframe>
-        <iframe id="createaccountchoice" src="SAS_CreateAccountChoice.php"></iframe>
+        <iframe id="user_profile" src="SAS/SAS.php"></iframe>
+        <iframe id="user_delete" src="SAS/SAS_UserDelete.php"></iframe>
+        <iframe id="personaluserdetail" src="SAS/SAS_MineUserDetails.php"></iframe>
+        <iframe id="createaccountchoice" src="SAS/SAS_CreateAccountChoice.php"></iframe>
     </div>
 </div>
 </body>
