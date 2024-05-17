@@ -46,12 +46,12 @@ function updatemsgForSAS(){
 function updatemsg(){
     var message = '已更新資料';
     alert(message);
-    window.top.location.href="lobby.php";
+    window.top.location.href="../lobby.php";
 }
 function updatemsg_relog(){
     var message = '已更新資料，請重新登入';
     alert(message);
-    window.top.location.href="logoutprocess.php";
+    window.top.location.href="../logoutprocess.php";
 }
 function createmsg(){
     var message = '已新增資料';
