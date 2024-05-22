@@ -158,7 +158,6 @@
                 $stmt_select->execute();
                 $current_row = $stmt_select->fetch(PDO::FETCH_ASSOC);
 
-<<<<<<< HEAD
                 // 如果没有新的文件上传，则保留现有的值
                 if (is_null($r_post)) {
                     $r_post = $current_row['r_post'];
@@ -174,47 +173,6 @@
                 }
                 if (is_null($r_photo4)) {
                     $r_photo4 = $current_row['r_photo4'];
-=======
-                    // 如果没有新的文件上传，则保留现有的值
-                    if (is_null($r_post)) {
-                        $r_post = $current_row['r_post'];
-                    }
-                    if (is_null($r_photo1)) {
-                        $r_photo1 = $current_row['r_photo1'];
-                    }
-                    if (is_null($r_photo2)) {
-                        $r_photo2 = $current_row['r_photo2'];
-                    }
-                    if (is_null($r_photo3)) {
-                        $r_photo3 = $current_row['r_photo3'];
-                    }
-                    if (is_null($r_photo4)) {
-                        $r_photo4 = $current_row['r_photo4'];
-                    }
-
-                   
-                    $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
-                    $result = $conn->prepare($sql_query);
-
-                    $result->bindParam(":r_place", $r_place);
-                    $result->bindParam(":r_post", $r_post);
-                    $result->bindParam(":r_photo1", $r_photo1);
-                    $result->bindParam(":r_photo2", $r_photo2);
-                    $result->bindParam(":r_photo3", $r_photo3);
-                    $result->bindParam(":r_photo4", $r_photo4);
-                    $result->bindParam(":r_format", $r_format);
-                    $result->bindParam(":r_money", $r_money);
-                    $result->bindParam(":r_deposit", $r_deposit);
-                    $result->bindParam(":r_utilitybill", $r_utilitybill);
-                    $result->bindParam(":content", $content);
-                    $result->bindParam(":rid", $rid);
-
-                    $result->execute();
-
-                    
-                    
-                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
->>>>>>> caad33862a37a5bc8eae861efdcac615d0abb8cf
                 }
 
                 $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
@@ -327,15 +285,9 @@
                                 echo "未提供足夠的訊息進行查詢";
                             }
                         ?>
-<<<<<<< HEAD
                         <script>
                             function confirmSubmission() {
                                 return confirm('該廣告即將下架，是否確定送出？');
-=======
-                       <script>
-                            function goBack() {
-                                window.location.href = "AS_AD_all_landlords_ad.php";
->>>>>>> caad33862a37a5bc8eae861efdcac615d0abb8cf
                             }
                         </script>
                     </div>
