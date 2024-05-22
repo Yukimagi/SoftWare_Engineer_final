@@ -128,7 +128,6 @@
             $r_utilitybill = $_POST["r_utilitybill"];
             $rid = $_POST["rid"];
 
-
             // 处理文件上传
             $r_post = !empty($_FILES["r_post"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_post"]["tmp_name"])) : null;
             $r_photo1 = !empty($_FILES["r_photo1"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo1"]["tmp_name"])) : null;
@@ -138,89 +137,75 @@
 
             $content = $_POST["r_else"];
 
-        
-                // 檢查地點是否已存在於資料庫中，但排除當前正在更新的記錄
-                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place AND rid != :rid";
-                $stmt_check = $conn->prepare($sql_check);
-                $stmt_check->bindParam(":r_place", $r_place);
-                $stmt_check->bindParam(":rid", $rid);
-                $stmt_check->execute();
-                $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
-                $count = $row['count'];
+            // 检查地點是否已存在於資料庫中，但排除當前正在更新的記錄
+            $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place AND rid != :rid";
+            $stmt_check = $conn->prepare($sql_check);
+            $stmt_check->bindParam(":r_place", $r_place);
+            $stmt_check->bindParam(":rid", $rid);
+            $stmt_check->execute();
+            $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
+            $count = $row['count'];
 
-                if ($count > 0) {
-                    // echo "此地點已存在於資料庫中。";
-                    echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
-                    $stmt_check->close();
-                } else {
-                    // 先从数据库中获取当前记录的现有值
-                    $sql_select = "SELECT r_post, r_photo1, r_photo2, r_photo3, r_photo4 FROM `ad` WHERE rid = :rid";
-                    $stmt_select = $conn->prepare($sql_select);
-                    $stmt_select->bindParam(":rid", $rid);
-                    $stmt_select->execute();
-                    $current_row = $stmt_select->fetch(PDO::FETCH_ASSOC);
+            if ($count > 0) {
+                // echo "此地點已存在於資料庫中。";
+                echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
+                $stmt_check->close();
+            } else {
+                // 先从数据库中获取当前记录的现有值
+                $sql_select = "SELECT r_post, r_photo1, r_photo2, r_photo3, r_photo4 FROM `ad` WHERE rid = :rid";
+                $stmt_select = $conn->prepare($sql_select);
+                $stmt_select->bindParam(":rid", $rid);
+                $stmt_select->execute();
+                $current_row = $stmt_select->fetch(PDO::FETCH_ASSOC);
 
-                    // 如果没有新的文件上传，则保留现有的值
-                    if (is_null($r_post)) {
-                        $r_post = $current_row['r_post'];
-                    }
-                    if (is_null($r_photo1)) {
-                        $r_photo1 = $current_row['r_photo1'];
-                    }
-                    if (is_null($r_photo2)) {
-                        $r_photo2 = $current_row['r_photo2'];
-                    }
-                    if (is_null($r_photo3)) {
-                        $r_photo3 = $current_row['r_photo3'];
-                    }
-                    if (is_null($r_photo4)) {
-                        $r_photo4 = $current_row['r_photo4'];
-                    }
-
-                    echo "<script>
-                        if (confirm('該廣告即將下架，是否確定送出？')) {
-                            // window.location.href='AS_AD_all_landlords_ad_modify.php';
-                            
-                        } else {
-                            window.location.href='AS_AD_all_landlords_ad.php';
-                        }
-                        </script>";
-                    $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
-                    $result = $conn->prepare($sql_query);
-
-                    $result->bindParam(":r_place", $r_place);
-                    $result->bindParam(":r_post", $r_post);
-                    $result->bindParam(":r_photo1", $r_photo1);
-                    $result->bindParam(":r_photo2", $r_photo2);
-                    $result->bindParam(":r_photo3", $r_photo3);
-                    $result->bindParam(":r_photo4", $r_photo4);
-                    $result->bindParam(":r_format", $r_format);
-                    $result->bindParam(":r_money", $r_money);
-                    $result->bindParam(":r_deposit", $r_deposit);
-                    $result->bindParam(":r_utilitybill", $r_utilitybill);
-                    $result->bindParam(":content", $content);
-                    $result->bindParam(":rid", $rid);
-
-                    $result->execute();
-
-                    
-                    
-                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
+                // 如果没有新的文件上传，则保留现有的值
+                if (is_null($r_post)) {
+                    $r_post = $current_row['r_post'];
+                }
+                if (is_null($r_photo1)) {
+                    $r_photo1 = $current_row['r_photo1'];
+                }
+                if (is_null($r_photo2)) {
+                    $r_photo2 = $current_row['r_photo2'];
+                }
+                if (is_null($r_photo3)) {
+                    $r_photo3 = $current_row['r_photo3'];
+                }
+                if (is_null($r_photo4)) {
+                    $r_photo4 = $current_row['r_photo4'];
                 }
 
+                $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
+                $result = $conn->prepare($sql_query);
+
+                $result->bindParam(":r_place", $r_place);
+                $result->bindParam(":r_post", $r_post);
+                $result->bindParam(":r_photo1", $r_photo1);
+                $result->bindParam(":r_photo2", $r_photo2);
+                $result->bindParam(":r_photo3", $r_photo3);
+                $result->bindParam(":r_photo4", $r_photo4);
+                $result->bindParam(":r_format", $r_format);
+                $result->bindParam(":r_money", $r_money);
+                $result->bindParam(":r_deposit", $r_deposit);
+                $result->bindParam(":r_utilitybill", $r_utilitybill);
+                $result->bindParam(":content", $content);
+                $result->bindParam(":rid", $rid);
+
+                $result->execute();
+
+                echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
+            }
         }
         ?>
 
-
-       
         <!-- Page content-->
         <div class="container">
             <div class="row">
                 <!-- Blog entries-->
-               
+            
                 <!-- Side widgets-->
                 <div class="col-lg-4">
-                   
+                
                     <!-- Side widget-->
                     <div class="card mb-4">
                         <div class="card-header">ad information</div>
@@ -232,88 +217,84 @@
                                     $columns = "rid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
                                 }
 
-                                
                                 $location = $_GET['location'];
-       
+
                                 // SQL 查詢
                                 $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$location'";
                                 $result = $conn->query($sql_query);
                                 // echo($sql_query);
-                    
-                                
 
                                 if ($result) {
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '">';
+                                        echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" onsubmit="return confirmSubmission();">';
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
-                                            }else if ($key === "r_post") {
+                                            } else if ($key === "r_post") {
                                                 $key_text = "封面照片";
                                             } else if ($key === "r_photo1") {
                                                 $key_text = "照片1";
                                             } else if ($key === "r_photo2") {
                                                 $key_text = "照片2";
-                                            }else if ($key === "r_photo3") {
+                                            } else if ($key === "r_photo3") {
                                                 $key_text = "照片3";
-                                            }else if ($key === "r_photo4") {
+                                            } else if ($key === "r_photo4") {
                                                 $key_text = "照片4";
-                                            }else if ($key === "r_format") {
+                                            } else if ($key === "r_format") {
                                                 $key_text = "規格";
-                                            }else if ($key === "r_money") {
+                                            } else if ($key === "r_money") {
                                                 $key_text = "租金";
-                                            }else if ($key === "r_deposit") {
+                                            } else if ($key === "r_deposit") {
                                                 $key_text = "押金";
-                                            }else if ($key === "r_utilitybill") {
+                                            } else if ($key === "r_utilitybill") {
                                                 $key_text = "水電費";
-                                            }else if ($key === "r_else") {
+                                            } else if ($key === "r_else") {
                                                 $key_text = "其他";
-                                            }else if($key === "rid"){
+                                            } else if ($key === "rid") {
                                                 echo "<input type='hidden' name='$key' value='$value'>";
                                             }
-                                            
+
                                             if ($key === "r_post" || $key === "r_photo1" || $key === "r_photo2" || $key === "r_photo3" || $key === "r_photo4") {
                                                 if (!empty($value)) {
                                                     // 解碼圖片數據
                                                     $image_data = base64_decode($value);
                                                     echo "$key_text:<br>";
-                                                    
+
                                                     // 顯示圖片
-                                                   
                                                     echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" style="max-width:200px; max-height:200px;"/><br>';
                                                     echo "<input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
-                                                }
-                                                else{
+                                                } else {
                                                     echo "$key_text: <input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                                 }
-                                            } 
-                                            else {
+                                            } else {
                                                 // 輸出表單欄位，讓使用者修改資料
                                                 echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                             }
-                                    
-                                            // echo "$key_text: $value <br>";
-                                            
                                         }
-                                        // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
                                         echo "<input type='submit' value='修改'>";
                                         echo "</form>";
                                         echo "</div>";
                                     }
                                 } else {
-                                    echo "查失敗：" . mysql_error();
+                                    echo "查詢失敗：" . mysql_error();
                                 }
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }
                         ?>
-                       
+                        <script>
+                            function confirmSubmission() {
+                                return confirm('該廣告即將下架，是否確定送出？');
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
+
+            
         <div>
             <h1 class="fw-bolder"></h1>
         </div>
