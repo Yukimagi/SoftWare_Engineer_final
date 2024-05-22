@@ -120,16 +120,25 @@
                 <div class="col-lg-4">
                     <form>
                         <?php
-                            $sql = "SELECT r_post FROM `ad`";
+                            
+                            $sql = "SELECT r_place, r_post FROM `ad`";
                             $result = $conn->query($sql);
-                    
+
                             if ($result->rowCount() > 0) {
                                 echo "<table class='table table-striped'>";
-                                // echo "<thead><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>";
                                 echo "<tbody>";
-                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {   
-                                    echo '<a href="AS_AD_Home_ad_information.php?rid=' . $row["r_place"] . '">';                                 
-                                    echo '<img src="data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"/><br>';
+                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    // 创建链接并将 r_place 作为 URL 参数传递
+                                    echo '<tr><td>';
+                                    echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
+                                    
+                                    echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                    echo '</a>';
+                                    echo '<p>';
+                                    echo($row["r_place"]);
+                                    echo '</p>';
+                                    echo '</td></tr>';
+                                    
                                 }
                                 echo "</tbody></table>";
                             } else {
