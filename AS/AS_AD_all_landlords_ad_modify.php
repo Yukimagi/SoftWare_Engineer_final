@@ -177,14 +177,7 @@
                         $r_photo4 = $current_row['r_photo4'];
                     }
 
-                    echo "<script>
-                        if (confirm('該廣告即將下架，是否確定送出？')) {
-                            // window.location.href='AS_AD_all_landlords_ad_modify.php';
-                            
-                        } else {
-                            window.location.href='AS_AD_all_landlords_ad.php';
-                        }
-                        </script>";
+                   
                     $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
                     $result = $conn->prepare($sql_query);
 
@@ -299,6 +292,7 @@
                                         }
                                         // echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
                                         echo "<input type='submit' value='修改'>";
+                                        echo '<button onclick="goBack()">返回</button>';
                                         echo "</form>";
                                         echo "</div>";
                                     }
@@ -309,7 +303,11 @@
                                 echo "未提供足夠的訊息進行查詢";
                             }
                         ?>
-                       
+                       <script>
+                            function goBack() {
+                                window.location.href = "AS_AD_all_landlords_ad.php";
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
