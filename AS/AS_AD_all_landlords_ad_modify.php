@@ -268,19 +268,23 @@
                                                 } else {
                                                     echo "$key_text: <input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                                 }
-                                            } else {
+                                            } else if ($key === "rid"){
+                                                echo "<input type='hidden' name='$key' value='$value'>";
+                                            }
+                                            else {
                                                 // 輸出表單欄位，讓使用者修改資料
                                                 echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                             }
                                         }
                                         echo "<input type='submit' value='修改'>";
-                                        echo '<button onclick="goBack()">返回</button>';
+                                        
                                         echo "</form>";
                                         echo "</div>";
                                     }
                                 } else {
                                     echo "查詢失敗：" . mysql_error();
                                 }
+                                echo '<button onclick="goBack()">返回</button>';
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }
@@ -288,6 +292,11 @@
                         <script>
                             function confirmSubmission() {
                                 return confirm('該廣告即將下架，是否確定送出？');
+                            }
+                        </script>
+                        <script>
+                            function goBack() {
+                                window.location.href = "AS_AD_all_landlords_ad.php";
                             }
                         </script>
                     </div>
