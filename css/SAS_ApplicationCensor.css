@@ -106,3 +106,46 @@ form{
 .status.rejected {
     color: red;
 }
+h4{
+    margin: 0;
+    text-align: center;
+}
+.searchForm{
+    display:flex; 
+    align-items:center;
+}
+.searchstatus{
+    margin-right: 10px;
+}
+.searchid{
+    margin-right: 10px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+.pagination li {
+    margin: 0 5px;
+}
+.pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #000;
+}
+.pagination li a:hover{
+    color: darkviolet;
+}
+.pagination li a.disabled {
+    color: #999;
+    pointer-events: none;
+    cursor: default;
+}
+.search{
+    width: 60px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+}
