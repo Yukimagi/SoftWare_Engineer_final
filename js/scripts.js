@@ -64,41 +64,43 @@ function signmissing(){
     window.location.href="lobby.php";
 }
 ////////////////////////////////////////
+function iframemanipulate(currentIframeIndex){
+    const  iframes = document.querySelectorAll('iframe')
+    iframes.forEach((iframe, index) =>{
+        if (index === currentIframeIndex){
+            iframe.style.display = 'block';
+        }else{
+            iframe.style.display = 'none';
+        }
+    })
+}
 function showiframe1(){
-    var iframe = document.getElementById('user_profile');
-    var disableiframe1 = document.getElementById('user_delete');
-    iframe.style.display = 'block';
-    disableiframe1.style.display = 'none';
+    var currentIframeIndex = 0;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe2(){
-    var iframe = document.getElementById('user_delete');
-    var disableiframe1 = document.getElementById('user_profile');
-    iframe.style.display = 'block';
-    disableiframe1.style.display = 'none';
+    var currentIframeIndex = 1;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe3(){
-    var iframe = document.getElementById('personaluserdetail');
-    iframe.style.display='block';
+    var currentIframeIndex = 2;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe4(){
-    var iframe = document.getElementById('createaccountchoice');
-    var disableiframe1 = document.getElementById('user_profile');
-    var disableiframe2 = document.getElementById('user_delete');
-    var disableiframe3 = document.getElementById('createmassiveaccountchoice');
-    iframe.style.display='block';
-    disableiframe1.style.display='none';
-    disableiframe2.style.display='none';
-    disableiframe3.style.display='none';
+    var currentIframeIndex = 3;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe5(){
-    var iframe = document.getElementById('createmassiveaccountchoice');
-    var disableiframe1 = document.getElementById('user_profile');
-    var disableiframe2 = document.getElementById('user_delete');
-    var disableiframe3 = document.getElementById('createaccountchoice');
-    iframe.style.display='block';
-    disableiframe1.style.display='none';
-    disableiframe2.style.display='none';
-    disableiframe3.style.display='none';
+    var currentIframeIndex = 4;
+    iframemanipulate(currentIframeIndex);
+}
+function showiframe6(){
+    var currentIframeIndex = 5;
+    iframemanipulate(currentIframeIndex);
+}
+function showiframe7(){
+    var currentIframeIndex = 6;
+    iframemanipulate(currentIframeIndex);
 }
 ////////////////////////////////////////
 function backtoSAS(){
