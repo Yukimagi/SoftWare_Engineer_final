@@ -53,6 +53,16 @@ function updatemsg_relog(){
     alert(message);
     window.top.location.href="../logoutprocess.php";
 }
+function applicationsgranted(){
+    var message = '已核准該申請';
+    alert(message);
+    window.location.href='SAS_ApplicationCensor.php';
+}
+function applicationsdenied(){
+    var message = '已否決該申請';
+    alert(message);
+    window.location.href='SAS_ApplicationCensor.php';
+}
 function createmsg(){
     var message = '已新增資料';
     alert(message);
@@ -111,6 +121,9 @@ function backtolobby(){
 }
 function backtoindex(){
     window.location.href="index.php";
+}
+function backtocensor(){
+    window.location.href='SAS_ApplicationCensor.php';
 }
 ////////////////////////////////////////
 function deleteconfirm(){
