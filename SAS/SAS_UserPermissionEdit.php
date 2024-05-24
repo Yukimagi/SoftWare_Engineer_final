@@ -98,7 +98,7 @@ include('connection.php')
                     echo '<td class="status invalid">'. $user_status .'</td>';
                 }
                 echo '<td>';
-                echo '<input type="submit" value="變更"></td>';
+                echo '<input type="submit" value="變更" id="button"></td>';
                 echo '</form>';
                 echo '</tr>';
             }
