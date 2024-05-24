@@ -1,4 +1,3 @@
-
 <?php
 include('connection.php')
 ?>
@@ -37,7 +36,7 @@ include('connection.php')
                 echo '<th>申請序號</th>';
                 echo '<th>姓名</th>';
                 echo '<th>審核狀態</th>';
-                echo '</tr>';
+            echo '</tr>';
 
             // 建立資料列
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -46,9 +45,12 @@ include('connection.php')
                 $apply_status = $row['status'];
 
                 echo '<tr>';
+                echo '<td>';
                 echo '<form action="SAS_ApplicationsDetails.php" method="post">';
+                echo '<input type="hidden" name="apply_id" value="' . $apply_id . '">';
                 echo '<input type="submit" id="profilelink" value="' . $apply_id . '">';
                 echo '</form>';
+                echo '</td>';
                 echo '<td>' . $apply_name . '</td>';
                 echo '<td>' . $apply_status . '</td>';
                 echo '</tr>';
