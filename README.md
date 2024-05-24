@@ -10,9 +10,27 @@
 - applyprocess.php：填寫完後帳號申請表後，進行SQL查詢的中繼頁面
 
 後台相關PHP：
+- - 帳戶總覽相關
 - SAS.php：所有一般使用者帳戶總覽的頁面
 - SAS_UserDetails.php：在帳戶總覽葉面上點選某使用者帳號後，可以顯示該帳戶資料的頁面
-- SAS_CA
+- SAS_SQLUpdate.php：
+- - 個人帳戶資料修改相關
+- SAS_MineUserDetails.php：
+- SAS_SQLCreateForMassive.php：
+- - 新增帳戶相關
+- SAS_CreateAccountChoice.php：
+- SAS_CreateAccount.php：
+- SAS_SQLCreate.php：
+- - 新增大量帳戶相關
+- SAS_CreateMassiveAccountChoice.php：
+- SAS_SQLMassiveCreate.php：
+- SAS_CreateMassiveAccount.php：
+- - 刪除帳戶相關
+- SAS_UserDelete.php：
+- SAS_SQLDelete.php：
+- - 修改帳戶權限相關
+- SAS_UserPermissionEdit.php：
+- SAS_SQLPermissionEdit.php：
 ----------------------------------
 
 更新紀錄  
