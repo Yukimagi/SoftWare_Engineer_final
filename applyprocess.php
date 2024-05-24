@@ -1,6 +1,6 @@
 <script src="js/scripts.js"></script>
 <?php
-include("connection.php");
+include("SAS/connection.php");
         
 // 檢查是否有傳遞用戶ID
 if (isset($_POST['id'])) {
