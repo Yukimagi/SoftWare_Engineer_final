@@ -107,6 +107,9 @@ function backtoSAS(){
 function backtolobby(){
     window.top.location.href="../lobby.php";
 }
+function backtoindex(){
+    window.location.href="index.php";
+}
 ////////////////////////////////////////
 function deleteconfirm(){
     var confirmation = confirm('是否刪除該使用者帳號?');
