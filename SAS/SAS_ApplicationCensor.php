@@ -52,7 +52,13 @@ include('connection.php')
                 echo '</form>';
                 echo '</td>';
                 echo '<td>' . $apply_name . '</td>';
-                echo '<td>' . $apply_status . '</td>';
+                if ($apply_status == "pending") {
+                    echo '<td class="status pending">'. $apply_status .'</td>';
+                } elseif ($apply_status == "approved") {
+                    echo '<td class="status approved">'. $apply_status .'</td>';
+                } elseif ($apply_status == "rejected") {
+                    echo '<td class="status rejected">'. $apply_status .'</td>';
+                }
                 echo '</tr>';
             }
             // 建立 HTML 表格的結束標籤

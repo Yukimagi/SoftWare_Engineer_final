@@ -49,7 +49,13 @@ $name = $_SESSION['name'];
                             echo '<tr>';
                             echo '<th>案件狀態</th>';
                             echo '</tr>';
-                            echo '<td>'.$apply_profile['status'].'</td>';
+                            if ($apply_profile['status'] == "pending") {
+                                echo '<td class="status pending">'. $apply_profile['status'] .'</td>';
+                            } elseif ($apply_profile['status'] == "approved") {
+                                echo '<td class="status approved">'. $apply_profile['status'] .'</td>';
+                            } elseif ($apply_profile['status'] == "rejected") {
+                                echo '<td class="status rejected">'. $apply_profile['status'] .'</td>';
+                            }
                             echo '</table>';
                         echo '</div>';
                         echo '<div id="bottom_container">';
