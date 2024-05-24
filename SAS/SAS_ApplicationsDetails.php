@@ -8,7 +8,7 @@ $name = $_SESSION['name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link href="../css/SAS_UserDetails.css" rel="stylesheet" />
+    <link href="../css/SAS_ApplicationsDetails.css" rel="stylesheet" />
     <script src="../js/scripts.js"></script>
 </head>
 <body>
@@ -23,38 +23,47 @@ $name = $_SESSION['name'];
             $sql_query = "select * from account_applications where id='" . $apply_id . "'";
             $result = $conn->query($sql_query);
             if ($result->rowCount() > 0) {
-                $user_profile = $result->fetch(PDO::FETCH_ASSOC);
-                $user_profile_array = array_values($user_profile);
-                echo "<h1>帳號資料修改</h1>";// 在這裡顯示用戶詳細資料
+                $apply_profile = $result->fetch(PDO::FETCH_ASSOC);
+                echo "<h1>詳細申請資料</h1>";// 在這裡顯示用戶詳細資料
                 echo "<hr>";
-
                 echo '<div class="profile_form">';
-                echo '<form action="SAS_SQLUpdate.php" method="post" onsubmit="return updateconfirm()">';
-                echo '<table class="profile_table">';
-                echo '<tr>';
-                    echo '<th></th>';
-                    echo '<th></th>';
-                    echo '<th></th>';
-                    echo '<th></th>';
-                echo '</tr>';
-                echo '<tr>';
-                    echo '<td><label for="landlord_name">申請者姓名</label></td><td><input type="text" name="landlord_name" value="' . $user_profile_array[1] . '" readonly="true"></td>';
-                    echo '<td><label for="landlord_phone">申請者連絡電話</label></td><td><input type="text" name="landlord_phone" value="' . $user_profile_array[2] . '"></td>';
-                echo '</tr>';
-                echo '<tr>';
-                    echo '<td><label for="landlord_line">申請理由</label></td><td><input type="text" name="landlord_line" value="' . $user_profile_array[4] . '"></td>';
-                echo '</tr>';
-                echo '</table>';
-                echo '<br>';
-                echo '<hr>';
-                echo '<div class="buttonbox">';
-                echo '<input type="hidden" name="uid" value="' . $user_id . '">';
-                echo '<input type="hidden" name="identity" value="' . $user_identity . '">';
-                echo '<input type="hidden" name="NotSAS" value="false">';
-                echo '<input type="submit" value="儲存" class="leftbutton">';
-                echo '<input type="button" value="返回" onclick="backtoSAS()" class="rightbutton">';
-                echo '</div>';
-                echo '</form>';
+                    echo '<div id="left_container">';
+                        echo '<table id="reason_info">';
+                        echo '<tr>';
+                        echo '<th>申請原因</th>';
+                        echo '</tr>';
+                        echo '<td>'.$apply_profile['reason'].'</td>';
+                        echo '</table>';
+                    echo '</div>';
+                    echo '<div id="right_container">';
+                        echo '<div id="top_container">';
+                            echo '<table id="profile_info">';
+                            echo '<tr>';
+                            echo '<th>申請人姓名</th>';
+                            echo '</tr>';
+                            echo '<td>'.$apply_profile['name'].'</td>';
+                            echo '<tr>';
+                            echo '<th>申請人電話</th>';
+                            echo '</tr>';
+                            echo '<td>'.$apply_profile['phone'].'</td>';
+                            echo '<tr>';
+                            echo '<th>案件狀態</th>';
+                            echo '</tr>';
+                            echo '<td>'.$apply_profile['status'].'</td>';
+                            echo '</table>';
+                        echo '</div>';
+                        echo '<div id="bottom_container">';
+                            echo '<form action="SAS_SQLApplication.php" method="post">';
+                            echo '<input type="hidden" name="id" value="' . $apply_id . '">';
+                            echo '<input type="submit" class="button" name="approval" value="通過" id="access">';
+                            echo '<br>';
+                            echo '<input type="submit" class="button" name="approval" value="駁回" id="deny">';
+                            echo '<br>';
+                            echo '<input type="button" class="button" value="返回" id="backtocensor" onclick="backtocensor()">';
+                            echo '<br>';
+                            echo '</form>';
+                        echo '</div>';
+                    echo '</div>';
                 echo '</div>';
             } else {
                 echo "找不到該用戶的資料。";
