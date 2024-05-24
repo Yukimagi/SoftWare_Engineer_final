@@ -23,8 +23,8 @@ include('connection.php')
             <option value="L">房東</option>
         </select>
         <input type="text" name="Search_name" placeholder="輸入姓名" class="searchname">
-        <input type="submit" value="查詢">
-        <input type="reset" value="重置" onclick="">
+        <input type="submit" value="查詢" class="search" id="left_button">
+        <input type="submit" value="重置" class="search" id="right_button">
     </form>
     <hr>
 </div>
