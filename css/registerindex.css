@@ -178,3 +178,37 @@ header h1 {
         background-position-x: 250px;
     }
 }
+#submit_button{
+    margin-top: 30px;
+    padding: 0;
+}
+#backtoindex{
+    margin-top: 20px;
+    padding: 0;
+}
+.register_button{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+}
+#top_button{
+    background-color: springgreen;
+    color: black;
+}
+#top_button:hover{
+    background-color: #20c997;
+    color: white;
+    transition-duration: 0.3s;
+}
+#bottom_button{
+    background: white;
+    color: black;
+}
+#bottom_button:hover{
+    background-color: #b02a37;
+    color: white;
+    transition-duration: 0.3s;
+}
