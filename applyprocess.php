@@ -5,7 +5,6 @@ include("SAS/connection.php");
 // 檢查是否有傳遞用戶ID
 if (isset($_POST['id'])) {
     $apply_id = $_POST['id'];
-
     $apply_name = $_POST['name'];
     $apply_phone = $_POST['phone'];
     $apply_reason = $_POST['reason'];
@@ -19,7 +18,7 @@ if (isset($_POST['id'])) {
     $result->bindParam(":reason", $apply_reason);
 
     if ($result->execute()) {
-        echo '<script>registermsg()</script>';
+        echo '<script>registermsg("' . $apply_id . '");</script>';
     } else {
         echo '<script>warning4()</script>';
     }

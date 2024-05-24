@@ -184,9 +184,31 @@ function login_invalid(){
     window.location.href="index.php";
 }
 ////////////////////////////////////////
-function registermsg(){
-    var message = '申請訊息已送出，請靜待管理員回復。\n審核過程可能需要1~3個工作天';
+function registermsg(id){
+    var message = '申請訊息已送出，請靜待管理員回復。\n審核過程可能需要1~3個工作天\n';
+    message += '您的案件編號為：' + id;
+    message += '，請記住以上案件編號以便後續進度查詢';
     alert(message);
     window.location.href="index.php";
 }
-////////////////////////////////////////
+function id_check(){
+    var id = prompt("請輸入案件編號 (e.g. ap00001)：");
+    if (id != null) {
+        window.location.href="SAS/SAS_SQLApplicationStatusCheck.php?ap=" + id;
+    }
+}
+function result_pending(){
+    var message = '您的申請案件目前正在審理中。\n注意：審核過程可能需要1~3個工作天';
+    alert(message);
+    window.location.href="../registerindex.php";
+}
+function result_approved(){
+    var message = '恭喜！\n您的申請案件已通過審核';
+    alert(message);
+    window.location.href="../registerindex.php";
+}
+function result_rejected(){
+    var message = '很遺憾，您的申請案件已遭到駁回。\n請重新審視自己的個人簡介，並再度提出申請';
+    alert(message);
+    window.location.href="../registerindex.php";
+}

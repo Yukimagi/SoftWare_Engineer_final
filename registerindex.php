@@ -67,6 +67,9 @@ $new_id = "ap" . str_pad($newNumberPart, 5, "0", STR_PAD_LEFT); // 補齊零填�
                 <div id="backtoindex">
                     <input type="button" value="返回" class="register_button" id="bottom_button" onclick="backtoindex()">
                 </div>
+                <div id="backtoindex">
+                    <input type="button" value="案件進度查詢" class="register_button" id="check_button" onclick="id_check()">
+                </div>
             </form>
         </div>
     </div>

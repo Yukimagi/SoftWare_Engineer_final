@@ -212,3 +212,8 @@ header h1 {
     color: white;
     transition-duration: 0.3s;
 }
+#check_button:hover{
+    background-color: #06a5df;
+    color: white;
+    transition-duration: 0.3s;
+}
