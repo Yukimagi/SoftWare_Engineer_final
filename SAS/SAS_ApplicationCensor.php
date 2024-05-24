@@ -15,7 +15,7 @@ include('connection.php')
 </head>
 <body>
 <div id="title">
-    <h1>租屋管理系統</h1>
+    <h1>帳號申請審核</h1>
     <hr>
 </div>
 <div id="content">
@@ -46,7 +46,9 @@ include('connection.php')
                 $apply_status = $row['status'];
 
                 echo '<tr>';
-                echo '<td>' . $apply_id . '</td>';
+                echo '<form action="SAS_ApplicationsDetails.php" method="post">';
+                echo '<input type="submit" id="profilelink" value="' . $apply_id . '">';
+                echo '</form>';
                 echo '<td>' . $apply_name . '</td>';
                 echo '<td>' . $apply_status . '</td>';
                 echo '</tr>';
