@@ -30,7 +30,8 @@ $name = $_SESSION['name'];
                     <li><a href="#" id="sys_function" onclick="showiframe4()">新增使用者帳戶</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe5()">新增大量帳戶</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe2()">刪除使用者帳戶</a></li>
-                    <li><a href="#" id="sys_function">變更使用者權限</a></li>
+                    <li><a href="#" id="sys_function" onclick="showiframe6()">變更使用者權限</a></li>
+                    <li><a href="#" id="sys_function" onclick="showiframe7()">帳號申請審核</a></li>
                 </div>
             </div>
         ';
@@ -86,6 +87,8 @@ $name = $_SESSION['name'];
         <iframe id="personaluserdetail" src="SAS/SAS_MineUserDetails.php"></iframe>
         <iframe id="createaccountchoice" src="SAS/SAS_CreateAccountChoice.php"></iframe>
         <iframe id="createmassiveaccountchoice" src="SAS/SAS_CreateMassiveAccountChoice.php"></iframe>
+        <iframe id="permissionedit" src="SAS/SAS_UserPermissionEdit.php"></iframe>
+        <iframe id="applicationcensor" src="SAS/SAS_ApplicationCensor.php"></iframe>
     </div>
 </div>
 </body>
