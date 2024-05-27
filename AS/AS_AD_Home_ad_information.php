@@ -139,9 +139,15 @@
         } else {
             echo "No r_place specified.";
         }
+        echo '<button onclick="goBack()">返回</button>';
+        
         $conn = null;
         ?>
-
+        <script>
+            function goBack() {
+                 window.location.href = "AS_Home.php";
+            }
+        </script>
     </div>
 
     <!-- Bootstrap JS -->

@@ -120,40 +120,84 @@
                 <div class="col-lg-4">
                     <form>
                         <?php
+                            // if (isset($_POST['housing_type'])) {
+                            //     $searchTerm = $_POST['housing_type'];
+                            //     $sql = "SELECT r_place FROM `ad` WHERE r_place LIKE :searchTerm";
+                            //     $stmt = $conn->prepare($sql);
+                            //     $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
                             
-                            $sql = "SELECT r_place, r_post FROM `ad`";
-                            $result = $conn->query($sql);
-
-                            if ($result->rowCount() > 0) {
-                                echo "<table class='table table-striped'>";
-                                echo "<tbody>";
-                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                    $default_image = 'assets/house.jpg';
-                                    // 创建链接并将 r_place 作为 URL 参数传递
-                                    echo '<tr><td>';
-                                    echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
-
-                                    // 判断是否存在 r_post 数据，如果不存在则使用默认图片
-                                    // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
-                                    if(!empty($row["r_post"])){
-                                       echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
-                                    }
-                                    else{
-                                       echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
-                                    }
-                                    // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
-                                    
-                                    echo '</a>';
-                                    echo '<p>';
-                                    echo($row["r_place"]);
-                                    echo '</p>';
-                                    echo '</td></tr>';
-                                    
+                            //     if ($stmt->rowCount() > 0) {
+                            //         echo "<ul class='list-group'>";
+                            //         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            //             echo "<li class='list-group-item'>" . htmlspecialchars($row['r_place']) . "</li>";
+                            //         }
+                            //         echo "</ul>";
+                            //     } else {
+                            //         echo "<p>No results found for '" . htmlspecialchars($searchTerm) . "'</p>";
+                            //     }
+                            // } else {
+                            //     echo "<p>No search term provided.</p>";
+                            // }
+                        ?>
+                        <?php
+                            if (isset($_POST['housing_type'])||isset($_POST['rent'])||isset($_POST['air_conditioner'])||isset($_POST['refrigerator'])||isset($_POST['washing_machine'])||isset($_POST['internet'])||isset($_POST['heater'])) {
+                                $housing_type = $_POST['housing_type'];
+                                $rent = $_POST['rent'];
+                                $air_conditioner = $_POST['air_conditioner'];
+                                $refrigerator = $_POST['refrigerator'];
+                                $washing_machine = $_POST['washing_machine'];
+                                $internet = $_POST['internet'];
+                                $heater = $_POST['heater'];
+                                if ($rent === '<=5000') {
+                                    $rent = 5000;
+                                    $sql = "SELECT * FROM ad
+                                        WHERE r_format LIKE '%$housing_type%'
+                                        AND r_money <= $rent
+                                        AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
+                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')";
                                 }
-                                echo "</tbody></table>";
-                            } else {
-                                echo "0 results";
+                                else {
+                                    $rent = 5000;
+                                    $sql = "SELECT * FROM ad
+                                        WHERE r_format LIKE '%$housing_type%'
+                                        AND r_money >= $rent
+                                        AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
+                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')";
+                                }
+                                $result = $conn->query($sql);
+                                if ($result->rowCount() > 0) {
+                                    echo "<table class='table table-striped'>";
+                                    echo "<tbody>";
+                                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        $default_image = 'assets/house.jpg';
+                                        // 创建链接并将 r_place 作为 URL 参数传递
+                                        echo '<tr><td>';
+                                        echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
+
+                                        // 判断是否存在 r_post 数据，如果不存在则使用默认图片
+                                        // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
+                                        if(!empty($row["r_post"])){
+                                        echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        }
+                                        else{
+                                        echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
+                                        }
+                                        // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        
+                                        echo '</a>';
+                                        echo '<p>';
+                                        echo($row["r_place"]);
+                                        echo '</p>';
+                                        echo '</td></tr>';
+                                        
+                                    }
+                                    echo "</tbody></table>";
+                                } else {
+                                    echo "0 results";
+                                }
                             }
+
+                            
                         ?>
                     </form>
                 </div>
@@ -169,6 +213,14 @@
                                 <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
                             </div>
                         </form>
+
+                        <!-- <script>
+                            document.getElementById('button-search').addEventListener('click', function() {
+                                var searchTerm = document.getElementById('search-input').value;
+                                console.log('Search term:', searchTerm);
+                                // 这里你可以添加其他逻辑来处理搜索关键字，比如发起搜索请求等。
+                            });
+                        </script> -->
                         </div>
                     </div>
                     
@@ -219,7 +271,6 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

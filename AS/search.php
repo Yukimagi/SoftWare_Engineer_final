@@ -119,41 +119,53 @@
             <div class="row">
                 <div class="col-lg-4">
                     <form>
+                        
                         <?php
-                            
-                            $sql = "SELECT r_place, r_post FROM `ad`";
-                            $result = $conn->query($sql);
+                            if (isset($_POST['search-term'])) {
+                                $searchTerm = $_POST['search-term'];
+                                $sql = "SELECT * FROM ad
+                                        WHERE r_place LIKE :searchTerm
+                                        OR r_format LIKE :searchTerm
+                                        OR r_money LIKE :searchTerm
+                                        OR r_deposit LIKE :searchTerm
+                                        OR r_utilitybill LIKE :searchTerm
+                                        OR r_else LIKE :searchTerm";
+                                // $result = $conn->query($sql);
+                                $result = $conn->prepare($sql);
+                                $result->execute(['searchTerm' => '%' . $searchTerm . '%']);
+                                if ($result->rowCount() > 0) {
+                                    echo "<table class='table table-striped'>";
+                                    echo "<tbody>";
+                                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        $default_image = 'assets/house.jpg';
+                                        // 创建链接并将 r_place 作为 URL 参数传递
+                                        echo '<tr><td>';
+                                        echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
 
-                            if ($result->rowCount() > 0) {
-                                echo "<table class='table table-striped'>";
-                                echo "<tbody>";
-                                while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                    $default_image = 'assets/house.jpg';
-                                    // 创建链接并将 r_place 作为 URL 参数传递
-                                    echo '<tr><td>';
-                                    echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
-
-                                    // 判断是否存在 r_post 数据，如果不存在则使用默认图片
-                                    // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
-                                    if(!empty($row["r_post"])){
-                                       echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        // 判断是否存在 r_post 数据，如果不存在则使用默认图片
+                                        // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
+                                        if(!empty($row["r_post"])){
+                                        echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        }
+                                        else{
+                                        echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
+                                        }
+                                        // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        
+                                        echo '</a>';
+                                        echo '<p>';
+                                        echo($row["r_place"]);
+                                        echo '</p>';
+                                        echo '</td></tr>';
+                                        
                                     }
-                                    else{
-                                       echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
-                                    }
-                                    // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
-                                    
-                                    echo '</a>';
-                                    echo '<p>';
-                                    echo($row["r_place"]);
-                                    echo '</p>';
-                                    echo '</td></tr>';
-                                    
+                                    echo "</tbody></table>";
+                                } else {
+                                    echo "0 results";
                                 }
-                                echo "</tbody></table>";
-                            } else {
-                                echo "0 results";
                             }
+
+                            
                         ?>
                     </form>
                 </div>
@@ -169,6 +181,14 @@
                                 <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
                             </div>
                         </form>
+
+                        <!-- <script>
+                            document.getElementById('button-search').addEventListener('click', function() {
+                                var searchTerm = document.getElementById('search-input').value;
+                                console.log('Search term:', searchTerm);
+                                // 这里你可以添加其他逻辑来处理搜索关键字，比如发起搜索请求等。
+                            });
+                        </script> -->
                         </div>
                     </div>
                     
