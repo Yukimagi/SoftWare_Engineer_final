@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+/* 頁眉樣式 */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+/* 導航欄樣式 */
+nav {
+    float: left;
+    width: 200px;
+    background: #2c3e50;
+    color: #fff;
+    box-sizing: border-box;
+    height: 100vh;
+    overflow-y: auto;
+    transition: width 0.5s;
+    position: relative;
+}
+
+nav hr {
+    position: absolute;
+    bottom: 23vh;
+    width: 100%;
+}
+
+.LoginLink {
+    position: absolute;
+    bottom: 14vh;
+    padding-left: 20px;
+}
+
+.ApplyLink {
+    position: absolute;
+    bottom: 10vh;
+    padding-left: 20px;
+}
+
+/*
+nav:hover {
+    width: 250px;
+}
+*/
+
+nav h2 {
+    margin-top: 0;
+    padding-left: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+nav ul p {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    padding-left: 20px;
+    position: absolute;
+    bottom: 17vh;
+}
+
+nav ul li {
+    padding-left: 20px;
+}
+
+nav ul li a {
+    color: lightskyblue;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    padding: 10px 0;
+}
+
+nav ul li a:hover {
+    color: #3498db;
+}
+
+/* 內容區域樣式 */
+.content {
+    float: left;
+    width: calc(100% - 200px);
+    transition: width 0.5s;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+    z-index: -10;
+}
+
+/* 响应式样式 */
+@media only screen and (max-width: 768px) {
+    nav, .content {
+        width: 100%;
+    }
+
+    nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    nav:hover {
+        width: 100%;
+    }
+
+    .content {
+        width: 100%;
+
+    }
+}

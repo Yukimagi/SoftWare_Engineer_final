@@ -1,0 +1,172 @@
+body{
+    margin:0;
+    padding: 0;
+    position: relative;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+#backround{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 0;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+    z-index: -10;
+}
+#logincontainer{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    width: 25%;
+    height: 500px;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: #343a40;
+    border-radius: 30px;
+
+}
+#loginmsg{
+    overflow: auto;
+    padding-top: 10%;
+    height: 20%;
+}
+#loginiconbox{
+    margin: 0;
+    width: 40%;
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+#icon{
+    width: 70px;
+    height: 70px;
+}
+#logintextbox{
+    margin: 0;
+    width: 40%;
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 微軟正黑體;
+    font-size: 30px;
+    color: white;
+}
+#login{
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.msgcontainer{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+.identifiertext{
+    padding-top: 5%;
+    padding-left: 20%;
+    color: #bacbe6;
+}
+.identifierinput{
+    padding-top: 2px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.textinput{
+    width: 60%;
+    height: 34px;
+    line-height: 34px;
+    outline-style: none;
+    font-size: 16px;
+    font-family: 微軟正黑體;
+    color: #343a40;
+    border: none;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 5px;
+
+}
+.line{
+    width: 0;
+    height: 3px;
+    display: block;
+    background-color: #343a40;
+    background-image: linear-gradient(90deg, #bacbe6 0%, #C850C0 48%, #FFCC70 100%);
+    transition: all 0.24s ease-in-out;
+}
+input:focus+.line,input:valid+.line{
+    width: 60%;
+}
+#submitbox{
+    margin: 0;
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#trigger{
+    width: 60%;
+    height: 40px;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+    color: #343a40;
+    border: none;
+    border-radius: 20px;
+    background-color: springgreen;
+    box-shadow: none;
+}
+#trigger:hover{
+    transition-duration: 0.28s;
+    background-color: #20c997;
+    cursor: pointer;
+}
+#back{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+#backtohome{
+    width: 60%;
+    height: 40px;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+    color: #343a40;
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: none;
+}
+#backtohome:hover{
+    transition-duration: 0.28s;
+    background-color: #b02a37;
+    color: white;
+    cursor: pointer;
+}
