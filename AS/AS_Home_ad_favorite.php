@@ -27,7 +27,7 @@
         ?>
         <?php
             session_start(); // 啟動 session
-
+            $_SESSION['previous_page'] = $_SERVER['REQUEST_URI'];
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
             if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
@@ -65,8 +65,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
-
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Management.php">廣告管理</a></li>
                         
                         <?php
                         if(!($identity === "訪客")){
@@ -125,18 +123,12 @@
                    
                     <!-- Side widget-->
                     <div class="card mb-4">
-                        <div class="card-header">Advertisement</div>
+                        <div class="card-header">我的最愛</div>
                         <?php
-                            if (!empty($identity) && !empty($uid)) {
-                                if ($identity === "L") {
-                                    // 設定查詢的資料表和欄位
-                                    $table = "ad";
-                                    $columns = "r_place";
-                                }
-
+                            if ($identity === "S" && !empty($uid)) {
 
                                 // SQL 查詢
-                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid'";
+                                $sql_query = "SELECT r_place FROM ad join favorite WHERE ad.rid =favorite.rid AND favorite.uid='$uid'";
                                 $result = $conn->query($sql_query);
                                 
 
@@ -144,24 +136,25 @@
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="get" action="AS_AD_all_landlords_ad_modify.php">';
+                                        echo '<form method="get" action="AS_Home_ad_information.php">';
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
-                                                echo "<input type='hidden' name='location' value='$value'>";
+                                                echo "<input type='hidden' name='r_place' value='$value'>";
+                                                // echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
                                             echo "$key_text: $value";
                             
                                             echo '<div style="text-align: right;">';
-                                                echo '<input type="submit" name="modify" value="修改">';
+                                                echo '<input type="submit" name="modify" value="查看">';
                                             echo '</div>';
                                         }
                                         echo "</form>";
                             
                                         echo '<form method="post" style="text-align: right;">';
                                             echo "<input type='hidden' name='location' value='$value'>";
-                                            echo '<input type="submit" name="delete" value="下架" onclick="return confirm(\'您確定要刪除嗎？\')">';
+                                            echo '<input type="submit" name="delete" value="刪除" onclick="return confirm(\'您確定要刪除嗎？\')">';
                                         echo '</form>';
                             
                                         echo "</div>";
@@ -182,12 +175,16 @@
                                     $location = $_POST['location'];
                                     // 在這裡執行刪除操作，例如：
                                     // 執行刪除相關的程式碼
-                                    $sql_query = "DELETE FROM `ad` where r_place = $location";
+                                    $sql_query = "DELETE favorite
+                                    FROM favorite
+                                    JOIN ad ON favorite.rid = ad.rid
+                                    WHERE ad.r_place = '$location' AND favorite.uid = '$uid';";
+
                                     $result = $conn->query($sql_query);
                                     // $row = $result->fetch(PDO::FETCH_ASSOC);
-                                    echo "<script>alert('已成功刪除地點：$location');</script>";
+                                    echo "<script>alert('已成功刪除最愛：$location');</script>";
                                     // 重定向回原來的頁面
-                                    echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
+                                    echo "<script>window.location.href = 'AS_Home_ad_favorite.php';</script>";
                                     exit();
                                 } else {
                                     echo "無法找到要刪除的地點信息";

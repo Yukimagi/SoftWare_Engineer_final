@@ -14,7 +14,7 @@
         ?>
         <?php
             session_start(); // 啟動 session
-
+            $previous_page = isset($_SESSION['previous_page']) ? $_SESSION['previous_page'] : 'AS_Home.php';
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
             if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
@@ -97,9 +97,9 @@
     <div class="container">
         <h1 class="mt-5"></h1>
         <?php
+
         if (isset($_GET["r_place"])) {
             $r_place = $_GET["r_place"];
-
             $sql = "SELECT * FROM ad WHERE r_place = :r_place";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":r_place", $r_place);
@@ -140,12 +140,39 @@
             echo "No r_place specified.";
         }
         echo '<button onclick="goBack()">返回</button>';
-        
+        echo '<form method="post">';
+            echo "<input type='hidden' name='location' value='$r_place'>";
+            if ($identity === "S") echo '<input type="submit" name="collection" value="收藏">';
+        echo '</form>';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST['collection'])) {
+                // 檢查是否存在地點信息
+                if (isset($_POST['location'])) {
+                    $location = $_POST['location'];
+                    // 在這裡執行刪除操作，例如：
+                    // 執行插入相關的程式碼
+                    $sql_query = "INSERT into favorite (uid, rid) select '$uid', rid FROM ad where r_place = '$location';";
+                    
+                    $result = $conn->query($sql_query);
+                    // $row = $result->fetch(PDO::FETCH_ASSOC);
+                    echo "<script>alert('已成功收藏最愛：$location');</script>";
+                    // 重定向回原來的頁面
+                    echo '<a href="AS_Home_ad_information.php?r_place=' . ($location) . '">';
+                    exit();
+                } else {
+                    echo "無法找到要刪除的地點信息";
+                }
+            }
+        }
         $conn = null;
         ?>
         <script>
             function goBack() {
-                 window.location.href = "AS_Home.php";
+                var previousPage = "<?php echo $previous_page; ?>";
+                window.location.href = previousPage;
+            }
+            function collection() {
+                
             }
         </script>
     </div>

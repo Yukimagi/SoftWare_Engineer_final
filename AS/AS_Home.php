@@ -25,7 +25,7 @@
         ?>
         <?php
             session_start(); // 啟動 session
-
+            $_SESSION['previous_page'] = $_SERVER['REQUEST_URI'];
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
             if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
                 $identity = "訪客";
@@ -69,6 +69,12 @@
                         if(($identity === "L")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../AS/AS_AD_Management.php">廣告管理</a></li>';
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../AS/AS_Landlord.php">個人資料</a></li>';
+                        }
+                        else if ($identity === "S"){
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../AS/AS_Home_ad_favorite.php">收藏清單</a></li>';
+                        }
+                        else if ($identity === "SYS"){
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../AS/AS_Home_review_ads.php">審核廣告</a></li>';
                         }
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
@@ -131,7 +137,7 @@
                                     $default_image = 'assets/house.jpg';
                                     // 创建链接并将 r_place 作为 URL 参数传递
                                     echo '<tr><td>';
-                                    echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
+                                    echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
 
                                     // 判断是否存在 r_post 数据，如果不存在则使用默认图片
                                     // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
@@ -219,7 +225,19 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <script>
+                        document.querySelectorAll('input[type=radio]').forEach(function(radio) {
+                            radio.addEventListener('click', function() {
+                                if (this.previousChecked) {
+                                    this.checked = false;
+                                    this.previousChecked = false;
+                                } else {
+                                    this.previousChecked = true;
+                                    // let isAnySelected = true;
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

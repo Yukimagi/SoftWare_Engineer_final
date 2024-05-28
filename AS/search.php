@@ -140,7 +140,7 @@
                                         $default_image = 'assets/house.jpg';
                                         // 创建链接并将 r_place 作为 URL 参数传递
                                         echo '<tr><td>';
-                                        echo '<a href="AS_AD_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
+                                        echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
 
                                         // 判断是否存在 r_post 数据，如果不存在则使用默认图片
                                         // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
