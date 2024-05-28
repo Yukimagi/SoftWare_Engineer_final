@@ -139,28 +139,48 @@
         } else {
             echo "No r_place specified.";
         }
-        echo '<button onclick="goBack()">返回</button>';
+        
         // $previous_page = isset($_SESSION['previous_page']);
         
         echo '<form method="post">';
             echo "<input type='hidden' name='location' value='$r_place'>";
-            if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") echo '<input type="submit" name="collection" value="收藏">';
+            echo '<input type="submit" name="pass" value="通過">';
+            echo '<input type="submit" name="fail" value="不通過">';
         echo '</form>';
 
+        echo '<button onclick="goBack()">返回</button>';
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST['collection'])) {
+            if (isset($_POST['pass'])) {
                 // 檢查是否存在地點信息
                 if (isset($_POST['location'])) {
                     $location = $_POST['location'];
                     // 在這裡執行刪除操作，例如：
                     // 執行插入相關的程式碼
-                    $sql_query = "INSERT into favorite (uid, rid) select '$uid', rid FROM ad where r_place = '$location';";
+                    $sql_update = "UPDATE ad SET r_up = 1 where r_place = '$location';";
                     
-                    $result = $conn->query($sql_query);
+                    $result = $conn->query($sql_update);
                     // $row = $result->fetch(PDO::FETCH_ASSOC);
-                    echo "<script>alert('已成功收藏最愛：$location');</script>";
-                    // 重定向回原來的頁面
-                    echo '<a href="AS_Home_ad_information.php?r_place=' . ($location) . '">';
+                    echo "<script>alert('審核完成！'); window.location.href='AS_Home_review_ads.php';</script>";
+
+                    exit();
+                } else {
+                    echo "無法找到要刪除的地點信息";
+                }
+            }
+        }
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (isset($_POST['fail'])) {
+                // 檢查是否存在地點信息
+                if (isset($_POST['location'])) {
+                    $location = $_POST['location'];
+                    // 在這裡執行刪除操作，例如：
+                    // 執行插入相關的程式碼
+                    $sql_update = "UPDATE ad SET r_up = -1 where r_place = '$location';";
+                    
+                    $result = $conn->query($sql_update);
+                    // $row = $result->fetch(PDO::FETCH_ASSOC);
+                    echo "<script>alert('審核完成！'); window.location.href='AS_Home_review_ads.php';</script>";
                     exit();
                 } else {
                     echo "無法找到要刪除的地點信息";

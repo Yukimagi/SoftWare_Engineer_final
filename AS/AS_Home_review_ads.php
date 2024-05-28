@@ -66,7 +66,6 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
 
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="AS_AD_Management.php">廣告管理</a></li>
                         
                         <?php
                         if(!($identity === "訪客")){
@@ -128,7 +127,7 @@
                         <div class="card-header">Advertisement</div>
                         <?php
                             if (!empty($identity) && !empty($uid)) {
-                                if ($identity === "L") {
+                                if ($identity === "SYS") {
                                     // 設定查詢的資料表和欄位
                                     $table = "ad";
                                     $columns = "r_place";
@@ -136,35 +135,56 @@
 
 
                                 // SQL 查詢
-                                $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid'";
+                                $sql_query = "SELECT $columns FROM $table where r_up = 0";
                                 $result = $conn->query($sql_query);
                                 
 
                                 if ($result) {
                                     // 輸出查詢結果表單
-                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                        echo '<div class="card-body">';
-                                        echo '<form method="get" action="AS_AD_all_landlords_ad_modify.php">';
-                                        foreach ($row as $key => $value) {
-                                            if ($key === "r_place") {
-                                                $key_text = "地點";
-                                                echo "<input type='hidden' name='location' value='$value'>";
-                                            }
-                                            // 輸出表單欄位，讓使用者修改資料
-                                            echo "$key_text: $value";
+                                    // while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    //     echo '<div class="card-body">';
+                                    //     echo '<form method="get" action="AS_Home_review_information.php">';
+                                    //     foreach ($row as $key => $value) {
+                                    //         if ($key === "r_place") {
+                                    //             $key_text = "地點";
+                                    //             echo "<input type='hidden' name='r_place' value='$value'>";
+                                    //         }
+                                    //         // 輸出表單欄位，讓使用者修改資料
+                                    //         echo "$key_text: $value";
                             
-                                            echo '<div style="text-align: right;">';
-                                                echo '<input type="submit" name="modify" value="修改">';
+                                    //         echo '<div style="text-align: right;">';
+                                    //             echo '<input type="submit" name="modify" value="查看">';
+                                    //         echo '</div>';
+                                    //     }
+                                    //     echo "</form>";
+                            
+
+                            
+                                    //     echo "</div>";
+                                    // }
+                                    if ($result->rowCount() > 0) {
+                                        // 輸出查詢結果表單
+                                        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                            echo '<div class="card-body">';
+                                            echo '<form method="get" action="AS_Home_review_information.php">';
+                                            foreach ($row as $key => $value) {
+                                                if ($key === "r_place") {
+                                                    $key_text = "地點";
+                                                    echo "<input type='hidden' name='r_place' value='" . htmlspecialchars($value) . "'>";
+                                                }
+                                                // 輸出表單欄位，讓使用者修改資料
+                                                echo "$key_text: " . htmlspecialchars($value);
+                            
+                                                echo '<div style="text-align: right;">';
+                                                echo '<input type="submit" name="modify" value="查看">';
+                                                echo '</div>';
+                                            }
+                                            echo '</form>';
                                             echo '</div>';
                                         }
-                                        echo "</form>";
-                            
-                                        echo '<form method="post" style="text-align: right;">';
-                                            echo "<input type='hidden' name='location' value='$value'>";
-                                            echo '<input type="submit" name="delete" value="下架" onclick="return confirm(\'您確定要刪除嗎？\')">';
-                                        echo '</form>';
-                            
-                                        echo "</div>";
+                                    } else {
+                                        // 沒有需要審核的廣告
+                                        echo "<p>所有廣告已審核完畢</p>";
                                     }
                                 } else {
                                     echo "查失敗：" . mysql_error();
@@ -174,27 +194,7 @@
                             }
                         ?>
 
-                        <?php
-                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                            if (isset($_POST['delete'])) {
-                                // 檢查是否存在地點信息
-                                if (isset($_POST['location'])) {
-                                    $location = $_POST['location'];
-                                    // 在這裡執行刪除操作，例如：
-                                    // 執行刪除相關的程式碼
-                                    $sql_query = "DELETE FROM `ad` where r_place = $location";
-                                    $result = $conn->query($sql_query);
-                                    // $row = $result->fetch(PDO::FETCH_ASSOC);
-                                    echo "<script>alert('已成功刪除地點：$location');</script>";
-                                    // 重定向回原來的頁面
-                                    echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
-                                    exit();
-                                } else {
-                                    echo "無法找到要刪除的地點信息";
-                                }
-                            }
-                        }
-                        ?>
+
 
                     </div>
                 </div>
