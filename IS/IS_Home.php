@@ -115,94 +115,51 @@
             </div>
         </header>
         <!-- Page content-->
-        <?php
-        $title = $content = $format = $money = $deposit = $utilitybill = $photo = "";
+        <?php       
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $r_place = $_POST["title"];
-            $r_format = $_POST["format"];
-            $r_money = $_POST["money"];
-            $r_deposit = $_POST["deposit"];
-            $r_utilitybill = $_POST["utilitybill"];
+            $landlord_name = $_POST["landlord_name"];
+            $landlord_phone = $_POST["landlord_phone"];
+            $address = $_POST["address"];
+            $housing_type = $_POST["housing_type"];
+            $room_type = $_POST["room_type"];
+            $money = $_POST["rent"];
+            $deposit = $_POST["deposit"];
+            $q0 = $_POST["Q0"];
+            $q1 = $_POST["Q1"];
+            $q2 = $_POST["Q2"];
+            $q3 = $_POST["Q3"];
+            $q4 = $_POST["Q4"];
+            $q5 = $_POST["Q5"];
+            $q6 = $_POST["Q6"];
+            $q7 = $_POST["Q7"];
+            $q8 = $_POST["Q8"];
+            $q9 = $_POST["Q9"];
+            $q10 = $_POST["Q10"];
+            $q11 = $_POST["Q11"];
+            $q12 = $_POST["Q12"];
+            $q13 = $_POST["Q13"];
 
-            // 处理文件上传
-            $r_photo_tmp_name = $_FILES["post"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_post = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
-            $r_post = base64_encode($r_post); // 对文件内容进行编码
+            $sql_query = "SELECT COUNT(*) AS total_rows FROM `interview_record`";
+            $result = $conn->query($sql_query);
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            $total_rows = $row['total_rows'];
 
-            $r_photo_tmp_name1 = $_FILES["photo1"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo1 = file_get_contents($r_photo_tmp_name1); // 读取上传文件的内容
-            $r_photo1 = base64_encode($r_photo1); // 对文件内容进行编码
-
-            $r_photo_tmp_name2 = $_FILES["photo2"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo2 = file_get_contents($r_photo_tmp_name2); // 读取上传文件的内容
-            $r_photo2 = base64_encode($r_photo2); // 对文件内容进行编码
-
-            $r_photo_tmp_name3 = $_FILES["photo3"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo3 = file_get_contents($r_photo_tmp_name3); // 读取上传文件的内容
-            $r_photo3 = base64_encode($r_photo3); // 对文件内容进行编码
-
-            $r_photo_tmp_name4 = $_FILES["photo4"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo4 = file_get_contents($r_photo_tmp_name4); // 读取上传文件的内容
-            $r_photo4 = base64_encode($r_photo4); // 对文件内容进行编码
-
-
-            $content = $_POST["content"];
-
-            // $select_db = mysql_select_db("rentsystem");
-            // if (!$select_db) {
-            //     echo '<br>找不到資料庫!<br>';
-            // } else {
-                $sql_query = "SELECT COUNT(*) AS total_rows FROM `ad`";
+            if ($total_rows == 0) {
+                $new_id = "I00000";
+            } else {
+                $sql_query = "SELECT MAX(record_uid) AS max_id FROM `interview_record`";
                 $result = $conn->query($sql_query);
                 $row = $result->fetch(PDO::FETCH_ASSOC);
-                $total_rows = $row['total_rows'];
+                $max_id = $row["max_id"];
+                $new_id = "I" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
+            }
 
-                if ($total_rows == 0) {
-                    $new_id = "A00000";
-                } else {
-                    $sql_query = "SELECT MAX(rid) AS max_id FROM `ad`";
-                    $result = $conn->query($sql_query);
-                    $row = $result->fetch(PDO::FETCH_ASSOC);
-                    $max_id = $row["max_id"];
-                    $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
-                }
-
-                // 檢查地點是否已存在於資料庫中
-                $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place";
-                $stmt_check = $conn->prepare($sql_check);
-                $stmt_check->bindParam(":r_place", $r_place);
-                $stmt_check->execute();
-                $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
-                $count = $row['count'];
-
-                if ($count > 0) {
-                    // echo "此地點已存在於資料庫中。";
-                    echo "<script>alert('此地點已存在！'); window.location.href='AS_publish_ad.php';</script>";
-                    $stmt_check->close();
-                } else {
-                    // 如果地點不存在於資料庫中，則執行插入操作
-                    $sql_query = "INSERT INTO `ad` (rid, luid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else) VALUES ('$new_id','$uid', '$r_place', '$r_post', '$r_photo1', '$r_photo2', '$r_photo3', '$r_photo4', '$r_format', '$r_money', '$r_deposit', '$r_utilitybill', '$content')";
- 
-                    $result = $conn->prepare($sql_query);
-                    $result->bindParam(":new_id", $new_id);
-                    $result->bindParam(":uid", $uid);
-                    $result->bindParam(":r_place", $r_place);
-                    $result->bindParam(":r_post", $r_post);
-                    $result->bindParam(":r_photo1", $r_photo1);
-                    $result->bindParam(":r_photo2", $r_photo2);
-                    $result->bindParam(":r_photo3", $r_photo3);
-                    $result->bindParam(":r_photo4", $r_photo4);
-                    // $result->bindParam(":r_photo", $photo_data);
-                    $result->bindParam(":r_format", $r_format);
-                    $result->bindParam(":r_money", $r_money);
-                    $result->bindParam(":r_deposit", $r_deposit);
-                    $result->bindParam(":r_utilitybill", $r_utilitybill);
-                    $result->bindParam(":content", $content);
-                    $result->execute();
-
-                    echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_Management.php';</script>";
-                }
+            $sql_insert = "INSERT INTO interview_record values ('$new_id', '$uid', '$landlord_name', '$landlord_phone', '$address', '$housing_type',
+            '$room_type', '$money', '$deposit', '$q0', '$q1', '$q2', '$q3', '$q4', '$q5', '$q6', '$q7', '$q8', '$q9', '$q10', '$q11', '$q12', '$q13')";
+            echo($sql_insert);
+            $result = $conn->query($sql_insert);
+            echo "<script>alert('訪談填寫完成！'); window.location.href='IS_Home.php';</script>";
 
         }
         ?>
@@ -210,19 +167,19 @@
         
         <div class="container">
             <div class="center"> 
-                <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">校外賃居資料</span></label><br>
                     <p></p> 
 
                     <div class="form-row">
-                        <label for="format"><span style="color: black; font-weight: bold;">房東姓名：</span></label>
-                        <input type="text" id="format" name="format" value="<?php echo $r_format; ?>" class="underline-input">
+                        <label for="titile"><span style="color: black; font-weight: bold;">房東姓名：</span></label>
+                        <input type="text" id="landlord_name" name="landlord_name" value="<?php echo $r_format; ?>" class="underline-input">
                         
-                        <label for="format"><span style="color: black; font-weight: bold;">房東電話：</span></label>
-                        <input type="text" id="money" name="money" value="<?php echo $r_money; ?>" class="underline-input">
+                        <label for="titile"><span style="color: black; font-weight: bold;">房東電話：</span></label>
+                        <input type="text" id="landlord_phone" name="landlord_phone" value="<?php echo $r_money; ?>" class="underline-input">
 
-                        <label for="format"><span style="color: black; font-weight: bold;">租賃地址：</span></label>
-                        <input type="text" id="money" name="money" value="<?php echo $r_money; ?>" class="underline-input"  style="width: 400px;"><br><br>
+                        <label for="titile"><span style="color: black; font-weight: bold;">租賃地址：</span></label>
+                        <input type="text" id="address" name="address" value="<?php echo $r_money; ?>" class="underline-input"  style="width: 400px;"><br><br>
                     </div>
 
 
@@ -249,11 +206,29 @@
                             <span style="color: black; font-weight: bold;">房間類型：</span>
                         </label>
 
-                        <input type="radio" id="detached" name="housing_type" value="獨棟透天">
-                        <label for="detached" style="margin-right: 10px;">套房</label>
+                        <input type="radio" id="suite" name="room_type" value="套房">
+                        <label for="suite" style="margin-right: 10px;">套房</label>
 
-                        <input type="radio" id="apartment" name="housing_type" value="公寓(五樓以下)">
-                        <label for="apartment" style="margin-right: 10px;">雅房</label><br><br>
+                        <input type="radio" id="elegant_house" name="room_type" value="雅房">
+                        <label for="elegant_house" style="margin-right: 10px;">雅房</label><br><br>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="rent"><span style="color: black; font-weight: bold;">每月租金：</span></label>
+                        <input type="text" id="rent" name="rent" value="<?php echo $r_format; ?>" class="underline-input">
+                        
+                        <label for="deposit"><span style="color: black; font-weight: bold;">押金：</span></label>
+                        <input type="text" id="deposit" name="deposit" value="<?php echo $r_money; ?>" class="underline-input">
+
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">是否推薦其他同學租賃？</span>
+                        </label>
+
+                        <input type="radio" id="yes0" name="Q0" value="是">
+                        <label for="yes0" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no0" name="Q0" value="否">
+                        <label for="no0" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <p><p>
@@ -265,11 +240,11 @@
                             <span style="color: black; font-weight: bold;">木造隔間或鐵皮加蓋：</span>
                         </label>
 
-                        <input type="radio" id="detached" name="housing_type" value="獨棟透天">
-                        <label for="detached" style="margin-right: 10px;">是</label>
+                        <input type="radio" id="yes1" name="Q1" value="是">
+                        <label for="yes1" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="apartment" name="housing_type" value="公寓(五樓以下)">
-                        <label for="apartment" style="margin-right: 10px;">否</label><br><br>
+                        <input type="radio" id="no1" name="Q1" value="否">
+                        <label for="no1" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -277,21 +252,158 @@
                             <span style="color: black; font-weight: bold;">有火警警報器或偵煙器：</span>
                         </label>
 
-                        <input type="radio" id="detached" name="housing_type" value="獨棟透天">
-                        <label for="detached" style="margin-right: 10px;">是</label>
+                        <input type="radio" id="yes2" name="Q2" value="是">
+                        <label for="yes2" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="apartment" name="housing_type" value="公寓(五樓以下)">
-                        <label for="apartment" style="margin-right: 10px;">否</label><br><br>
+                        <input type="radio" id="no2" name="Q2" value="否">
+                        <label for="no2" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">逃生通道暢通且標示清楚：</span>
+                        </label>
 
+                        <input type="radio" id="yes3" name="Q3" value="是">
+                        <label for="yes3" style="margin-right: 10px;">是</label>
 
+                        <input type="radio" id="no3" name="Q3" value="否">
+                        <label for="no3" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">門禁及鎖具良好管理：</span>
+                        </label>
+
+                        <input type="radio" id="yes4" name="Q4" value="是">
+                        <label for="yes4" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no4" name="Q4" value="否">
+                        <label for="no4" style="margin-right: 10px;">否</label><br><br>
+                    </div>
                     
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">有安裝照明設備(停車場及周邊)：</span>
+                        </label>
+
+                        <input type="radio" id="yes5" name="Q5" value="是">
+                        <label for="yes5" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no5" name="Q5" value="否">
+                        <label for="no5" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">瞭解熟悉電路安全及逃生要領：</span>
+                        </label>
+
+                        <input type="radio" id="yes6" name="Q6" value="是">
+                        <label for="yes6" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no6" name="Q6" value="否">
+                        <label for="no6" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">熟悉派出所、醫療、消防隊、學校校安專線電話：</span>
+                        </label>
+
+                        <input type="radio" id="yes7" name="Q7" value="是">
+                        <label for="yes7" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no7" name="Q7" value="否">
+                        <label for="no7" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">使用多種電器(高耗能)、是否同時插在同一條延長線：</span>
+                        </label>
+
+                        <input type="radio" id="yes8" name="Q8" value="是">
+                        <label for="yes8" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no8" name="Q8" value="否">
+                        <label for="no8" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">有滅火器且功能正常：</span>
+                        </label>
+
+                        <input type="radio" id="yes9" name="Q9" value="是">
+                        <label for="yes9" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no9" name="Q9" value="否">
+                        <label for="no9" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">熱水器(電熱式及瓦斯式)安全良好、無一氧化碳中毒疑慮：</span>
+                        </label>
+
+                        <input type="radio" id="yes10" name="Q10" value="是">
+                        <label for="yes10" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no10" name="Q10" value="否">
+                        <label for="no10" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">分開六個以上房間或十個以上床位：</span>
+                        </label>
+
+                        <input type="radio" id="yes11" name="Q11" value="是">
+                        <label for="yes11" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no11" name="Q11" value="否">
+                        <label for="no11" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">有安裝監視器設備：</span>
+                        </label>
+
+                        <input type="radio" id="yes12" name="Q12" value="是">
+                        <label for="yes12" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no12" name="Q12" value="否">
+                        <label for="no12" style="margin-right: 10px;">否</label><br><br>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="title" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">使用內政部定型化租賃契約：</span>
+                        </label>
+
+                        <input type="radio" id="yes13" name="Q13" value="是">
+                        <label for="yes13" style="margin-right: 10px;">是</label>
+
+                        <input type="radio" id="no13" name="Q13" value="否">
+                        <label for="no13" style="margin-right: 10px;">否</label><br><br>
+                    </div>
 
                     <div style="text-align: right;">
-                        <input type="submit" value="送出">
+                        <input type="submit" value="送出" onclick="confirmSubmission(event)">
                     </div>
-                    <!-- <input class="submitbutton" type="submit" value="送出"> -->
+                    <script>
+                        function confirmSubmission(event) {
+                            event.preventDefault(); // 阻止表单的默认提交行为
+                            const userConfirmed = confirm("你确定要提交吗？");
+
+                            if (userConfirmed) {
+                                document.getElementById("myForm").submit(); // 如果用户确认，则提交表单
+                            }
+                        }
+                    </script>
                 </form>
             </div>
         </div>
