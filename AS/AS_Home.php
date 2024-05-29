@@ -127,7 +127,7 @@
                     <form>
                         <?php
                             
-                            $sql = "SELECT r_place, r_post FROM `ad`";
+                            $sql = "SELECT r_place, r_post FROM `ad` where r_up = 1";
                             $result = $conn->query($sql);
 
                             if ($result->rowCount() > 0) {

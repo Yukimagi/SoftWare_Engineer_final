@@ -16,7 +16,7 @@
             session_start(); // 啟動 session
             $previous_page = isset($_SESSION['previous_page']) ? $_SESSION['previous_page'] : 'AS_Home.php';
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)) {
+            if (!(isset($_SESSION['loggedin']) && $_SESSION['loggedin'])) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -105,6 +105,7 @@
             $stmt->bindParam(":r_place", $r_place);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $luid=$row["luid"];
 
             if ($row) {
                 echo "<h2>" . htmlspecialchars($r_place) . "</h2>";
@@ -136,11 +137,31 @@
             } else {
                 echo "No details found for r_place: " . htmlspecialchars($r_place);
             }
+            echo'<div class="card mb-4">';
+            echo'<div class="card-header">房東資訊</div>
+                <div class="card-body">';
+            $sql1 = "SELECT * FROM ad join landlord WHERE landlord.uid = :luid and r_place = :r_place";
+            $stmt1 = $conn->prepare($sql1);
+            $stmt1->bindParam(":r_place", $r_place);
+            $stmt1->bindParam(":luid", $luid);
+            $stmt1->execute();
+            $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+            if ($row1) {                
+                echo "<p>" . htmlspecialchars($row1["l_name"]) . "</p>";
+                echo "<p>性別： " . htmlspecialchars($row1["l_gender"]) . "</p>";
+                echo "<p>電話： " . htmlspecialchars($row1["l_phone"]) . "</p>";
+                echo "<p>line： " . htmlspecialchars($row1["l_line"]) . "</p>";
+                
+            } else {
+                echo "No details found for r_place: " . htmlspecialchars($r_place);
+            }
+            echo'</div>';
+            echo'</div>';
+            echo'</div>';
         } else {
             echo "No r_place specified.";
         }
         echo '<button onclick="goBack()">返回</button>';
-        // $previous_page = isset($_SESSION['previous_page']);
         
         echo '<form method="post">';
             echo "<input type='hidden' name='location' value='$r_place'>";
@@ -174,10 +195,8 @@
                 var previousPage = "<?php echo $previous_page; ?>";
                 window.location.href = previousPage;
             }
-            function collection() {
-                
-            }
         </script>
+        
     </div>
 
     <!-- Bootstrap JS -->

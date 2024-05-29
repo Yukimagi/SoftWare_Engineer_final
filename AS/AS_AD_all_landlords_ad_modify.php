@@ -145,6 +145,7 @@
             $stmt_check->execute();
             $row = $stmt_check->fetch(PDO::FETCH_ASSOC);
             $count = $row['count'];
+            $r_up = $row["r_up"];
 
             if ($count > 0) {
                 // echo "此地點已存在於資料庫中。";
@@ -174,8 +175,9 @@
                 if (is_null($r_photo4)) {
                     $r_photo4 = $current_row['r_photo4'];
                 }
+                if ($r_up !== 0) $r_up = 0;
 
-                $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content WHERE rid = :rid";
+                $sql_query = "UPDATE `ad` SET r_place = :r_place, r_post = :r_post, r_photo1 = :r_photo1, r_photo2 = :r_photo2, r_photo3 = :r_photo3, r_photo4 = :r_photo4, r_format = :r_format, r_money = :r_money, r_deposit = :r_deposit, r_utilitybill = :r_utilitybill, r_else = :content, r_up = :r_up WHERE rid = :rid";
                 $result = $conn->prepare($sql_query);
 
                 $result->bindParam(":r_place", $r_place);
@@ -190,6 +192,7 @@
                 $result->bindParam(":r_utilitybill", $r_utilitybill);
                 $result->bindParam(":content", $content);
                 $result->bindParam(":rid", $rid);
+                $result->bindParam(":r_up", $r_up);
 
                 $result->execute();
 
@@ -214,7 +217,7 @@
                                 if ($identity === "L") {
                                     // 設定查詢的資料表和欄位
                                     $table = "ad";
-                                    $columns = "rid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else";
+                                    $columns = "rid, r_place, r_post, r_photo1, r_photo2, r_photo3, r_photo4, r_format, r_money, r_deposit, r_utilitybill, r_else, r_up";
                                 }
 
                                 $location = $_GET['location'];
@@ -222,13 +225,16 @@
                                 // SQL 查詢
                                 $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$location'";
                                 $result = $conn->query($sql_query);
-                                // echo($sql_query);
+                                
 
                                 if ($result) {
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
-                                        echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" onsubmit="return confirmSubmission();">';
+                                        echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '"';
+                                        if ($r_up === 1) {
+                                            echo ' onsubmit="return confirmSubmission();"';
+                                        }
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
@@ -293,6 +299,7 @@
                             function confirmSubmission() {
                                 return confirm('該廣告即將下架，是否確定送出？');
                             }
+                            
                         </script>
                         <script>
                             function goBack() {
