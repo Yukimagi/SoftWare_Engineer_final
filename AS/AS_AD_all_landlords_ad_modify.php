@@ -226,15 +226,18 @@
                                 $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid' and r_place = '$location'";
                                 $result = $conn->query($sql_query);
                                 
+                                
 
                                 if ($result) {
                                     // 輸出查詢結果表單
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<div class="card-body">';
                                         echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '"';
-                                        if ($r_up === 1) {
+                                        echo($row['r_up']);
+                                        if ($row['r_up'] == 1) {
                                             echo ' onsubmit="return confirmSubmission();"';
                                         }
+                                        echo '>';
                                         foreach ($row as $key => $value) {
                                             if ($key === "r_place") {
                                                 $key_text = "地點";

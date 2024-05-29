@@ -131,14 +131,12 @@
                                 if ($identity === "L") {
                                     // 設定查詢的資料表和欄位
                                     $table = "ad";
-                                    $columns = "r_place";
+                                    $columns = "r_place, r_up";
                                 }
-
 
                                 // SQL 查詢
                                 $sql_query = "SELECT $columns FROM `$table` WHERE luid = '$uid'";
                                 $result = $conn->query($sql_query);
-                                
 
                                 if ($result) {
                                     // 輸出查詢結果表單
@@ -149,25 +147,39 @@
                                             if ($key === "r_place") {
                                                 $key_text = "地點";
                                                 echo "<input type='hidden' name='location' value='$value'>";
+                                                echo "$key_text: $value<br>";
+                                            } elseif ($key === "r_up") {
+                                                $review_status = '';
+                                                if ($value == 0) {
+                                                    $review_status = '審核中';
+                                                } elseif ($value == 1) {
+                                                    $review_status = '審核通過';
+                                                } elseif ($value == -1) {
+                                                    $review_status = '未通過';
+                                                }
                                             }
-                                            // 輸出表單欄位，讓使用者修改資料
-                                            echo "$key_text: $value";
-                            
-                                            echo '<div style="text-align: right;">';
-                                                echo '<input type="submit" name="modify" value="修改">';
-                                            echo '</div>';
                                         }
-                                        echo "</form>";
-                            
+                                        // 顯示修改按鈕和審核狀態
+                                        
+                                        echo '<div style="text-align: right;">';
+                                        if (!empty($review_status)) {
+                                            echo " $review_status";
+                                        }
+                                        echo '<input type="submit" name="modify" value="修改">';
+                                        
+                                        echo '</div>';
+                                        echo '</form>';
+
+                                        // 顯示刪除按鈕
                                         echo '<form method="post" style="text-align: right;">';
-                                            echo "<input type='hidden' name='location' value='$value'>";
+                                            echo "<input type='hidden' name='location' value='{$row['r_place']}'>";
                                             echo '<input type="submit" name="delete" value="下架" onclick="return confirm(\'您確定要刪除嗎？\')">';
                                         echo '</form>';
-                            
+
                                         echo "</div>";
                                     }
                                 } else {
-                                    echo "查失敗：" . mysql_error();
+                                    echo "查詢失敗：" . $conn->errorInfo()[2];
                                 }
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
@@ -180,15 +192,32 @@
                                 // 檢查是否存在地點信息
                                 if (isset($_POST['location'])) {
                                     $location = $_POST['location'];
-                                    // 在這裡執行刪除操作，例如：
-                                    // 執行刪除相關的程式碼
-                                    $sql_query = "DELETE FROM `ad` where r_place = $location";
-                                    $result = $conn->query($sql_query);
-                                    // $row = $result->fetch(PDO::FETCH_ASSOC);
-                                    echo "<script>alert('已成功刪除地點：$location');</script>";
-                                    // 重定向回原來的頁面
-                                    echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
-                                    exit();
+                                    try {
+                                        // 開始事務
+                                        $conn->beginTransaction();
+
+                                        // 刪除所有引用該地點的 favorite 表中的記錄
+                                        $sql_delete_favorite = "DELETE FROM `favorite` WHERE rid IN (SELECT rid FROM `ad` WHERE r_place = :location)";
+                                        $stmt_favorite = $conn->prepare($sql_delete_favorite);
+                                        $stmt_favorite->execute(['location' => $location]);
+
+                                        // 刪除 ad 表中的記錄
+                                        $sql_delete_ad = "DELETE FROM `ad` WHERE r_place = :location";
+                                        $stmt_ad = $conn->prepare($sql_delete_ad);
+                                        $stmt_ad->execute(['location' => $location]);
+
+                                        // 提交事務
+                                        $conn->commit();
+
+                                        echo "<script>alert('已成功刪除地點：$location');</script>";
+                                        // 重定向回原來的頁面
+                                        echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
+                                        exit();
+                                    } catch (Exception $e) {
+                                        // 回滾事務
+                                        $conn->rollBack();
+                                        echo "刪除失敗：" . $e->getMessage();
+                                    }
                                 } else {
                                     echo "無法找到要刪除的地點信息";
                                 }
