@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -196,6 +194,11 @@
 
                 $result->execute();
 
+                $sql_delete_favorite = "DELETE FROM `favorite` WHERE rid IN (SELECT rid FROM `ad` WHERE r_place = :location)";
+                $stmt_favorite = $conn->prepare($sql_delete_favorite);
+                $stmt_favorite->bindParam(":location", $r_place);
+                $stmt_favorite->execute();
+
                 echo "<script>alert('廣告審核中！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
             }
         }
@@ -236,6 +239,9 @@
                                         echo($row['r_up']);
                                         if ($row['r_up'] == 1) {
                                             echo ' onsubmit="return confirmSubmission();"';
+                                        }
+                                        else {
+                                            echo ' onsubmit="return confirmSubmission2();"';
                                         }
                                         echo '>';
                                         foreach ($row as $key => $value) {
@@ -302,13 +308,16 @@
                             function confirmSubmission() {
                                 return confirm('該廣告即將下架，是否確定送出？');
                             }
-                            
+                            function confirmSubmission2() {
+                                return confirm('是否確定修改？');
+                            }
                         </script>
                         <script>
                             function goBack() {
                                 window.location.href = "AS_AD_all_landlords_ad.php";
                             }
                         </script>
+                        
                     </div>
                 </div>
             </div>
