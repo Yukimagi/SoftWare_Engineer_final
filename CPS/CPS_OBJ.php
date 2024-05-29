@@ -158,20 +158,9 @@
                                     echo '<div class="card-body">';
                                     echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
                                     echo '<p class="card-text">物件 ID: ' . $objID . '</p>';
-                                    echo '<p class="card-text">平均分數: ' . $avg_score . '</p>';
+                                    echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
                                     echo '</div>';
                                     echo '</div>';
-
-                                    //原本的
-                                    /*if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                        echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="leavereview(\'' . $articleID . '\')">評價</button></li>';
-                                    }*/
-                                    //echo '<span>Likes: ' . $lovenum . '</span>';
-                                    //echo '';
-                                    //echo '<li><span>Keeps: ' . $keepnum . '</span>';
-                                    /*if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                        echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
-                                    }*/
                                         
                                     if (($identity === "SYS")) {
                                         echo '<li><span>是否不符規範:</span>';
@@ -181,103 +170,18 @@
                                     echo'<ul class="list-unstyled mb-0">';
                                     echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
                                     echo'</ul>';
-                                    echo '</div>';
-                                    echo '</div>';
+                                    echo '</br>';
+                                    //echo '</div>';
+                                    //echo '</div>';
                                 }
                             }
                         }
-                        /*
-                        else
-                        {//查table
-                            $sql_query = "SELECT * FROM `contact_object`";
-                            $result = mysql_query($sql_query);
-
-                            // 查所有文章
-                            while ($row = mysql_fetch_assoc($result)) {
-                                
-                                //$articleID = $row['articleID'];
-                                //$articleIname = $row['articleIname'];
-                                //$articleIcontent = $row['articleIcontent'];
-                                //$lovenum = $row['lovenum'];
-                                //$keepnum = $row['keepnum'];
-                                $objID = $row['objID'];
-                                $name = $row['name'];
-                                
-
-                                // 輸出文章
-                                echo '<div class="card mb-4">';
-                                echo '<div class="card-body">';
-                                echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
-                                echo '<p class="card-text">' . $articleIcontent . '</p>';
-                                echo'<ul class="list-unstyled mb-0">';
-                                echo '<li><span>Likes: ' . $lovenum . '</span>';
-                                //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
-                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
-                                }
-                                //echo '<span>Likes: ' . $lovenum . '</span>';
-                                //echo '';
-                                echo '<li><span>Keeps: ' . $keepnum . '</span>';
-                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
-                                }
-                                
-                                if (($identity === "SYS")) {
-                                echo '<li><span>是否不符規範:</span>';
-                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                }
-                                echo'</ul>';
-                                echo'<ul class="list-unstyled mb-0">';
-                                echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Response.php?articleID=' . $articleID . '">Read more →</a></li>';
-                                echo'</ul>';
-                                echo '</div>';
-                                echo '</div>';
-                            }
-                        }*/
+                        
                     ?>
                     <!-- 記得引入函數-->
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
-                    function leavereview(articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_love.php', 
-                            type: 'POST',
-                            data: { articleID: articleID }, 
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();
-                            }
-                        });
-                    }
-
-                    
-                    function keepArticle(uid, articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_keep.php', 
-                            type: 'POST',
-                            data: { uid: uid, articleID: articleID },
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();      
-                            }
-                        });
-                    }
-
-                    function DeleteArticle(uid,articleID) {
-                        $.ajax({
-                            url: 'CPS_dataProcess/delete_article.php', 
-                            type: 'POST',
-                            data: { uid: uid, articleID: articleID },
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();      
-                            }
-                        });
-                    }
-
                     </script>
                 </div>
                 <!-- Side widgets-->

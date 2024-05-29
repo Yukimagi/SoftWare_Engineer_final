@@ -250,7 +250,8 @@
                                         }
                                     }
                                 }
-                                
+                                echo '</div>';
+                                echo '</div>';
                                 //印出所有在該物件裡面的評價
                                 $sql_query4 = "SELECT * FROM `user_obj` WHERE objID = '$objID'";
                                 $result4 = mysql_query($sql_query4);
