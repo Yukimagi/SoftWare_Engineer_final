@@ -67,7 +67,7 @@
 
                         <?php
                         if(($identity === "S" || $identity === "T")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_personal_infprmation.php">個人資料</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_personal_information.php">個人資料</a></li>';
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_record.php">查詢紀錄</a></li>';
                         }
                         if(!($identity === "訪客")){

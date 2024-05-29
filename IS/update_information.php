@@ -48,9 +48,9 @@ try {
 
         // 检查是否更新成功
         if ($stmt->rowCount() > 0) {
-            echo "<script>alert('資料已更新'); window.location.href='IS_personal_infprmation.php';</script>";
+            echo "<script>alert('資料已更新'); window.location.href='IS_personal_information.php';</script>";
         } else {
-            echo "<script>alert('資料未更新，可能是因為沒有改變'); window.location.href='IS_personal_infprmation.php';</script>";
+            echo "<script>alert('資料未更新，可能是因為沒有改變'); window.location.href='IS_personal_information.php';</script>";
         }
     } else {
         throw new Exception("缺少必要的表單數據");
