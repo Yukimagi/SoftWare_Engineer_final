@@ -1,0 +1,29 @@
+.rating {
+    direction: ltr; /* 元素從左到右排列 */
+    unicode-bidi: bidi-override;
+    display: inline-block;
+}
+
+.rating input {
+    display: none; /* 隱藏單選按鈕 */
+}
+
+.rating label {
+    font-size: 30px; /* 星星大小 */
+    color: #ddd; /* 默認顏色 */
+    cursor: pointer; /* 鼠標指針樣式 */
+}
+
+/* 將選中的星星及其左邊的所有星星設置為金色 */
+.rating input:checked ~ label {
+    color: gold;
+}
+
+/* 將懸停的星星及其左邊的所有星星設置為金色 */
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
+}
+.rating label:before {
+    content: '★'; /* 使用星星作為內容 */
+}

@@ -120,58 +120,61 @@
             </div>
         </header>
         <?php
-        //$title = $content = "";
         $name = "";
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-            //$title = $_POST["title"];
-            //$content = $_POST["content"];
             $name = $_POST["name"];
-            $select_db=@mysql_select_db("rentsystem");//選擇資料庫
-            if(!$select_db)
-            {
-            echo'<br>找不到資料庫!<br>';
-            }
-            else
-            {
+            $select_db = @mysql_select_db("rentsystem"); // 選擇資料庫
+            if (!$select_db) {
+                echo '<br>找不到資料庫!<br>';
+            } 
+            else {
+                // 檢查名稱是否已存在於資料庫
+                $check_query = "SELECT COUNT(*) AS existing_rows FROM `contact_object` WHERE `name` = '$name'";
+                $check_result = mysql_query($check_query);
+                $check_row = mysql_fetch_assoc($check_result);
+                $existing_rows = $check_row['existing_rows'];
 
-            $sql_query = "SELECT COUNT(*) AS total_rows FROM `contact_object`";
-            $result = mysql_query($sql_query);
-            $row = mysql_fetch_assoc($result);
-            $total_rows = $row['total_rows'];
+                if ($existing_rows > 0) {
+                    // 如果名稱已存在，顯示提示訊息並結束程式
+                    echo "<script>alert('此物件已存在!');</script>";
+                    //echo "<p>此物件已存在!</p>";
+                } else {
+                    // 如果名稱不存在，則執行插入新物件到資料庫的操作
+                    $sql_query = "SELECT COUNT(*) AS total_rows FROM `contact_object`";
+                    $result = mysql_query($sql_query);
+                    $row = mysql_fetch_assoc($result);
+                    $total_rows = $row['total_rows'];
 
-            if ($total_rows == 0) {
-                $new_id = "A00000";
-            } else {
-                // db是否有data
-                $sql_query = "SELECT MAX(objID) AS max_id FROM `contact_object`";
-                $result = mysql_query($sql_query);
-                $row = mysql_fetch_array($result);
-                $max_id = $row["max_id"];
-                $new_id = "A" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
-            }
-            
-            // 插入新文章到db
-            $sql_query = "INSERT INTO `contact_object` (objID, name) VALUES ('$new_id', '$name')";
-            mysql_query($sql_query);
-            
-            
-            // 插入到 user_article 表
-            //$sql_query = "INSERT INTO user_article (uid, articleID) VALUES ('$uid', '$new_id')";
-            //mysql_query($sql_query);
-            //$sql_query = "INSERT INTO user_obj (uid, articleID) VALUES ('$uid', '$new_id')";
-            //mysql_query($sql_query);
-            
-            // 提示用戶文章已發布！
-            echo "<p>物件已新增！</p>";
-            echo '<script>
-                    setTimeout(function() {
-                        window.location.href = "CPS_OBJ.php"; // 跳回CPS_OBJ.php
-                    }, 2000); // 2000ms（即2秒）
-                  </script>';
+                    if ($total_rows == 0) {
+                        $new_id = "O00000";
+                    } else {
+                        // db是否有data
+                        $sql_query = "SELECT MAX(objID) AS max_id FROM `contact_object`";
+                        $result = mysql_query($sql_query);
+                        $row = mysql_fetch_array($result);
+                        $max_id = $row["max_id"];
+                        $new_id = "O" . str_pad(substr($max_id, 1) + 1, 5, "0", STR_PAD_LEFT);
+                    }
+
+                    // 插入新物件到資料庫
+                    $sql_query = "INSERT INTO `contact_object` (objID, name) VALUES ('$new_id', '$name')";
+                    mysql_query($sql_query);
+
+                    // 提示用戶物件已新增
+                    echo '<script language="JavaScript">alert("物件新增成功!");location.href="CPS_OBJ.php";</script>';
+                    //echo "<script>物件新增成功！('物件新增成功!');</script>";
+                    //echo "<p>物件新增成功！</p>";
+                    /*echo '<script>
+                            setTimeout(function() {
+                                window.location.href = "CPS_OBJ.php"; // 跳回CPS_OBJ.php
+                            }, 2000); // 2000ms（即2秒）
+                        </script>';
+                    */
+                }
             }
         }
         ?>
+
         
         <div class="container">
             <div class="center"> 

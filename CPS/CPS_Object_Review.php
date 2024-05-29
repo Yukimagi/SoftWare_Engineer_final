@@ -10,6 +10,7 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/star.css" rel="stylesheet" />
         <style>
         .vertical-line {
           border-left: 1px solid #808080; /* 顏色與寬度等 */
@@ -66,8 +67,8 @@
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         <?php
-                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Publish_Artical.php">刊登文章</a></li>';
+                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) { //這裡的href="CPS_Publish_Artical.php"改成
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_addobj.php">新增物件</a></li>';
                         }
                         ?>
                         <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
@@ -111,7 +112,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">文章回覆</h1>
+                    <h1 class="fw-bolder">物件評價</h1>
                     
                 </div>
             </div>
@@ -124,87 +125,184 @@
 
                     <?php
                         //$title = $content = "";
-                        // 檢查是否前一個頁面獲得articleID
-                        if(isset($_GET['articleID'])) {
-                            $articleID = $_GET['articleID'];
+                        // 檢查是否前一個頁面獲得objID
+                        if(isset($_GET['objID'])) {
+                            $objID = $_GET['objID'];
                         }
 
-                        ?>
+                    ?>
 
                     <?php
                         $select_db=@mysql_select_db("rentsystem");//選擇資料庫
                         if(!$select_db)
                         {
-                        echo'<br>找不到資料庫!<br>';
+                            echo'<br>找不到資料庫!<br>';
                         }
                         else
                         {//查table
+                            $sql_query2 = "SELECT * FROM `contact_object` WHERE objID = '$objID'";
+                            $result2 = mysql_query($sql_query2);
+                            while ($row2 = mysql_fetch_assoc($result2)) {
+                                $name = $row2['name'];  //物件名稱(地址)
+
+                                // 輸出物件名
+                                echo '<div class="card mb-4">';
+                                echo '<div class="card-body">';
+                                echo '<h2 class="card-title h4">' . $name . '</h2>';
+                                //echo '<p class="card-text">' . $articleIcontent . '</p>';
+                                //echo'<ul class="list-unstyled mb-0">';
+                                //echo '<li><span>Likes: ' . $lovenum . '</span>';
+                                //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
+                                
+                                /* 不知道會不會用到
+                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
+                                }
+                                //echo '<span>Likes: ' . $lovenum . '</span>';
+                                //echo '';
+                                echo '<li><span>Keeps: ' . $keepnum . '</span>';
+                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
+                                }
+                                //$content="";
+                                echo'</ul>';
+                                */
+                                echo'<ul class="list-unstyled mb-0">';
+                                //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
+                                //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
+                                //$objID = "";
 
                                 
-                                $sql_query2 = "SELECT * FROM `contact article` WHERE articleID = '$articleID'";
-                                $result2 = mysql_query($sql_query2);
-                                while ($row2 = mysql_fetch_assoc($result2)) {
-                                    $articleIname = $row2['articleIname'];
-                                    $articleIcontent = $row2['articleIcontent'];
-                                    $lovenum = $row2['lovenum'];
-                                    $keepnum = $row2['keepnum'];
+                                if (!($identity === "SYS" || $identity === "L" || $identity === "訪客")) {
+                                    // 获取当前用户和物件ID
+                                    //$uid = ""; // 请确保在适当位置获取并赋值给 $uid
+                                    //$objID = ""; // 请确保在适当位置获取并赋值给 $objID
+                                
+                                    // 檢查是否已經評價過
+                                    $check_query = "SELECT * FROM `user_obj` WHERE `uid` = '$uid' AND `objID` = '$objID'";
+                                    $check_result = mysql_query($check_query);
+                                    $existing_row = mysql_fetch_assoc($check_result);
+                                
+                                    if ($existing_row) {
+                                        // 如果已經評價過，顯示提示訊息並填入已有評價
+                                        $existing_rating = $existing_row['score'];
+                                        $existing_content = $existing_row['msg'];
+                                
+                                        echo "<script>alert('您已評價過這個物件!');</script>";
+                                
+                                        echo '<div class="container">';
+                                        echo '<div class="center">';
+                                        echo '<form method="post" action="">'; // 将 action 设置为空字符串
+                                        echo '<input type="hidden" name="objID" value="' . $objID . '">';
+                                
+                                        // 星級評分系統
+                                        echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">修改您的評價:</span></label><br>';
+                                        echo '<div class="rating">';
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            $checked = ($i == $existing_rating) ? 'checked' : '';
+                                            echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '" ' . $checked . '>';
+                                            echo '<label for="star' . $i . '"></label>';
+                                        }
+                                        echo '</div><br>';
+                                
+                                        // 文字輸入框
+                                        echo '<textarea id="content" name="content" style="width: 1200px; height: 50px;">' . $existing_content . '</textarea><br><br>';
+                                
+                                        echo '<input type="submit" name="action" value="修改">';
+                                        echo '<input type="submit" name="action" value="刪除">';
+                                        echo '</form>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    } else {
+                                        // 显示空的评价表单
+                                        echo '<div class="container">';
+                                        echo '<div class="center">';
+                                        echo '<form method="post" action="">'; // 将 action 设置为空字符串
+                                        echo '<input type="hidden" name="objID" value="' . $objID . '">';
+                                
+                                        // 星級評分系統
+                                        echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">留下您的評價:</span></label><br>';
+                                        echo '<div class="rating">';
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
+                                            echo '<label for="star' . $i . '"></label>';
+                                        }
+                                        echo '</div><br>';
+                                
+                                        // 文字輸入框
+                                        echo '<textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
+                                
+                                        echo '<input type="submit" name="action" value="送出">';
+                                        echo '</form>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    }
+                                }
+                                
+                                // 表單提交後處理
+                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                    $rating = $_POST['rating'];
+                                    $content = $_POST['content'];
+                                    $objID = $_POST['objID']; // 从表单中获取 objID
+                                    $action = $_POST['action']; // 获取操作类型（送出、修改、刪除）
+                                
+                                    // 再次檢查是否已經評價過
+                                    $check_query = "SELECT * FROM `user_obj` WHERE `uid` = '$uid' AND `objID` = '$objID'";
+                                    $check_result = mysql_query($check_query);
+                                    $existing_row = mysql_fetch_assoc($check_result);
+                                
+                                    if ($existing_row) {
+                                        if ($action == '修改') {
+                                            // 修改现有评价
+                                            $update_query = "UPDATE `user_obj` SET `score` = '$rating', `msg` = '$content' WHERE `uid` = '$uid' AND `objID` = '$objID'";
+                                            mysql_query($update_query);
+                                            echo '<script language="JavaScript">alert("評論修改成功!");location.href="CPS_OBJ.php";</script>';
+                                        } elseif ($action == '刪除') {
+                                            // 删除现有评价
+                                            $delete_query = "DELETE FROM `user_obj` WHERE `uid` = '$uid' AND `objID` = '$objID'";
+                                            mysql_query($delete_query);
+                                            echo '<script language="JavaScript">alert("評論刪除成功!");location.href="CPS_OBJ.php";</script>';
+                                        }
+                                    } else {
+                                        if ($action == '送出') {
+                                            // 插入新评价
+                                            $insert_query = "INSERT INTO `user_obj` (uid, objID, score, msg) VALUES ('$uid', '$objID', '$rating', '$content')";
+                                            mysql_query($insert_query);
+                                            echo '<script language="JavaScript">alert("評論新增成功!");location.href="CPS_OBJ.php";</script>';
+                                        }
+                                    }
+                                }
+                                
+                                //印出所有在該物件裡面的評價
+                                //$num=1;
+                                $sql_query4 = "SELECT * FROM `user_obj` WHERE objID = '$objID'";
+                                $result4 = mysql_query($sql_query4);
+                                while ($row4 = mysql_fetch_assoc($result4)) {
+                                    $uid = $row4['uid'];
+                                    $score = $row4['score'];
+                                    $msg = $row4['msg'];
 
                                     // 輸出文章
                                     echo '<div class="card mb-4">';
                                     echo '<div class="card-body">';
-                                    echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
-                                    echo '<p class="card-text">' . $articleIcontent . '</p>';
-                                    echo'<ul class="list-unstyled mb-0">';
-                                    echo '<li><span>Likes: ' . $lovenum . '</span>';
-                                    //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
-                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
+                                    echo '<p class="card-text"><strong>' . $uid . '</strong>:</p>';
+                                    
+                                    // 顯示星等
+                                    echo '<div class="star-rating" style="margin-left: 20px;">';
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $score) {
+                                            echo '<span class="star" style="color: gold;">&#9733;</span>'; // 填滿的星星
+                                        } else {
+                                            echo '<span class="star" style="color: lightgray;">&#9734;</span>'; // 空的星星
+                                        }
                                     }
-                                    //echo '<span>Likes: ' . $lovenum . '</span>';
-                                    //echo '';
-                                    echo '<li><span>Keeps: ' . $keepnum . '</span>';
-                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
-                                    }
-                                    //$content="";
-                                    echo'</ul>';
-                                    echo'<ul class="list-unstyled mb-0">';
-                                    //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
-                                    //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                    if(!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo'<div class="container">';
-                                        echo'<div class="center">'; 
-                                            echo'<form method="post" action="CPS_Artical_Response2.php">';
-                                                echo '<input type="hidden" name="articleID" value="' . $articleID . '">';
-                                                echo'<label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">回覆:</span></label><br>';
-                                                echo'<textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
-                                                
-                                                echo'<input type="submit" value="送出">';
-                                            echo'</form>';
-                                        echo'</div>';
-                                    echo'</div>';
-                                    echo'</ul>';
-                                    }
+                                    echo '</div>';
+                                    
+                                    echo '<p class="card-text" style="margin-left: 20px;">' . $msg . '</p>';
                                     echo '</div>';
                                     echo '</div>';
                                 }
-                                $num=1;
-                                $sql_query3 = "SELECT * FROM `article_msg` WHERE articleID = '$articleID'";
-                                $result3 = mysql_query($sql_query3);
-                                while ($row3 = mysql_fetch_assoc($result3)) {
-                                    $msg = $row3['msg'];
-
-
-                                    // 輸出文章
-                                    echo '<div class="card mb-4">';
-                                    echo '<div class="card-body">';
-                                    echo '<p class="card-text">回覆' . $num . ':</p>';
-                                    echo '<p class="card-text">' . $msg . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                    $num++;
-                                }
-                            
+                            }
                         }
                     ?>
                     
