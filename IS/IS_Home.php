@@ -178,247 +178,238 @@
 
         
         <div class="container">
-            <div class="center"> 
+            <div class="center">
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">校外賃居資料</span></label><br>
-                    <p></p> 
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
+                    <p></p>
 
                     <div class="form-row">
-                        <label for="titile"><span style="color: black; font-weight: bold;">房東姓名：</span></label>
-                        <input type="text" id="landlord_name" name="landlord_name" value="<?php echo $r_format; ?>" class="underline-input">
+                        <label for="landlord_name"><span style="color: black; font-weight: bold;">房東姓名：</span></label>
+                        <input type="text" id="landlord_name" name="landlord_name" value="" class="underline-input" required>
                         
-                        <label for="titile"><span style="color: black; font-weight: bold;">房東電話：</span></label>
-                        <input type="text" id="landlord_phone" name="landlord_phone" value="<?php echo $r_money; ?>" class="underline-input">
+                        <label for="landlord_phone"><span style="color: black; font-weight: bold;">房東電話：</span></label>
+                        <input type="text" id="landlord_phone" name="landlord_phone" value="" class="underline-input" required>
 
-                        <label for="titile"><span style="color: black; font-weight: bold;">租賃地址：</span></label>
-                        <input type="text" id="address" name="address" value="<?php echo $r_money; ?>" class="underline-input"  style="width: 400px;"><br><br>
+                        <label for="address"><span style="color: black; font-weight: bold;">租賃地址：</span></label>
+                        <input type="text" id="address" name="address" value="" class="underline-input" style="width: 400px;" required><br><br>
                     </div>
 
-
                     <div class="form-row" style="display: flex; align-items: center;">
-                        <label for="title" style="margin-right: 10px;">
+                        <label for="housing_type" style="margin-right: 10px;">
                             <span style="color: black; font-weight: bold;">租屋型態：</span>
                         </label>
 
-                        <input type="radio" id="detached" name="housing_type" value="獨棟透天">
+                        <input type="radio" id="detached" name="housing_type" value="獨棟透天" required>
                         <label for="detached" style="margin-right: 10px;">獨棟透天</label>
 
-                        <input type="radio" id="apartment" name="housing_type" value="公寓(五樓以下)">
+                        <input type="radio" id="apartment" name="housing_type" value="公寓(五樓以下)" required>
                         <label for="apartment" style="margin-right: 10px;">公寓(五樓以下)</label>
 
-                        <input type="radio" id="highrise" name="housing_type" value="大樓(六樓以上)">
+                        <input type="radio" id="highrise" name="housing_type" value="大樓(六樓以上)" required>
                         <label for="highrise" style="margin-right: 10px;">大樓(六樓以上)</label>
 
-                        <input type="radio" id="dorm" name="housing_type" value="大型學舍(位學生建設的宿舍)">
+                        <input type="radio" id="dorm" name="housing_type" value="大型學舍(為學生建設的宿舍)" required>
                         <label for="dorm" style="margin-right: 10px;">大型學舍(為學生建設的宿舍)</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
-                        <label for="title" style="margin-right: 10px;">
+                        <label for="room_type" style="margin-right: 10px;">
                             <span style="color: black; font-weight: bold;">房間類型：</span>
                         </label>
 
-                        <input type="radio" id="suite" name="room_type" value="套房">
+                        <input type="radio" id="suite" name="room_type" value="套房" required>
                         <label for="suite" style="margin-right: 10px;">套房</label>
 
-                        <input type="radio" id="elegant_house" name="room_type" value="雅房">
+                        <input type="radio" id="elegant_house" name="room_type" value="雅房" required>
                         <label for="elegant_house" style="margin-right: 10px;">雅房</label><br><br>
                     </div>
 
                     <div class="form-row">
                         <label for="rent"><span style="color: black; font-weight: bold;">每月租金：</span></label>
-                        <input type="text" id="rent" name="rent" value="<?php echo $r_format; ?>" class="underline-input">
+                        <input type="text" id="rent" name="rent" value="" class="underline-input" required>
                         
                         <label for="deposit"><span style="color: black; font-weight: bold;">押金：</span></label>
-                        <input type="text" id="deposit" name="deposit" value="<?php echo $r_money; ?>" class="underline-input">
+                        <input type="text" id="deposit" name="deposit" value="" class="underline-input" required>
 
-                        <label for="title" style="margin-right: 10px;">
+                        <label for="Q0" style="margin-right: 10px;">
                             <span style="color: black; font-weight: bold;">是否推薦其他同學租賃？</span>
                         </label>
 
-                        <input type="radio" id="yes0" name="Q0" value="是">
+                        <input type="radio" id="yes0" name="Q0" value="是" required>
                         <label for="yes0" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no0" name="Q0" value="否">
+                        <input type="radio" id="no0" name="Q0" value="否" required>
                         <label for="no0" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
-                    <p><p>
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">賃居安全自主管理檢視資料</span></label><br>
-                    <p></p> 
+                    <p></p>
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">賃居安全自主管理檢視資料</span></label><br>
+                    <p></p>
 
-                    <div class="form-row" style="display: flex; align-items: center;">
-                        <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">木造隔間或鐵皮加蓋：</span>
+                    <div class="form-row">
+                        <label for="Q1" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">租賃處所消防設備是否符合標準：</span>
                         </label>
 
-                        <input type="radio" id="yes1" name="Q1" value="是">
+                        <input type="radio" id="yes1" name="Q1" value="是" required>
                         <label for="yes1" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no1" name="Q1" value="否">
+                        <input type="radio" id="no1" name="Q1" value="否" required>
                         <label for="no1" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">有火警警報器或偵煙器：</span>
+                            <span style="color: black; font-weight: bold;">有火災警報器：</span>
                         </label>
 
-                        <input type="radio" id="yes2" name="Q2" value="是">
+                        <input type="radio" id="yes2" name="Q2" value="是" required>
                         <label for="yes2" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no2" name="Q2" value="否">
+                        <input type="radio" id="no2" name="Q2" value="否" required>
                         <label for="no2" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">逃生通道暢通且標示清楚：</span>
+                            <span style="color: black; font-weight: bold;">有消防栓、滅火器：</span>
                         </label>
 
-                        <input type="radio" id="yes3" name="Q3" value="是">
+                        <input type="radio" id="yes3" name="Q3" value="是" required>
                         <label for="yes3" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no3" name="Q3" value="否">
+                        <input type="radio" id="no3" name="Q3" value="否" required>
                         <label for="no3" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">門禁及鎖具良好管理：</span>
+                            <span style="color: black; font-weight: bold;">有防火避難方向標示、逃生設備：</span>
                         </label>
 
-                        <input type="radio" id="yes4" name="Q4" value="是">
+                        <input type="radio" id="yes4" name="Q4" value="是" required>
                         <label for="yes4" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no4" name="Q4" value="否">
+                        <input type="radio" id="no4" name="Q4" value="否" required>
                         <label for="no4" style="margin-right: 10px;">否</label><br><br>
                     </div>
-                    
+
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">有安裝照明設備(停車場及周邊)：</span>
+                            <span style="color: black; font-weight: bold;">房東或租賃處所是否有投保火災保險：</span>
                         </label>
 
-                        <input type="radio" id="yes5" name="Q5" value="是">
+                        <input type="radio" id="yes5" name="Q5" value="是" required>
                         <label for="yes5" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no5" name="Q5" value="否">
+                        <input type="radio" id="no5" name="Q5" value="否" required>
                         <label for="no5" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">瞭解熟悉電路安全及逃生要領：</span>
+                            <span style="color: black; font-weight: bold;">電線走火是否為套管走火或有整齊固定：</span>
                         </label>
 
-                        <input type="radio" id="yes6" name="Q6" value="是">
+                        <input type="radio" id="yes6" name="Q6" value="是" required>
                         <label for="yes6" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no6" name="Q6" value="否">
+                        <input type="radio" id="no6" name="Q6" value="否" required>
                         <label for="no6" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">熟悉派出所、醫療、消防隊、學校校安專線電話：</span>
+                            <span style="color: black; font-weight: bold;">大樓出入口或主要出口是否有鐵捲門或鐵柵門：</span>
                         </label>
 
-                        <input type="radio" id="yes7" name="Q7" value="是">
+                        <input type="radio" id="yes7" name="Q7" value="是" required>
                         <label for="yes7" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no7" name="Q7" value="否">
+                        <input type="radio" id="no7" name="Q7" value="否" required>
                         <label for="no7" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">使用多種電器(高耗能)、是否同時插在同一條延長線：</span>
+                            <span style="color: black; font-weight: bold;">租賃處所是否有公安檢查合格或其他相關證明：</span>
                         </label>
 
-                        <input type="radio" id="yes8" name="Q8" value="是">
+                        <input type="radio" id="yes8" name="Q8" value="是" required>
                         <label for="yes8" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no8" name="Q8" value="否">
+                        <input type="radio" id="no8" name="Q8" value="否" required>
                         <label for="no8" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">有滅火器且功能正常：</span>
+                            <span style="color: black; font-weight: bold;">是否有對外窗戶或通風口：</span>
                         </label>
 
-                        <input type="radio" id="yes9" name="Q9" value="是">
+                        <input type="radio" id="yes9" name="Q9" value="是" required>
                         <label for="yes9" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no9" name="Q9" value="否">
+                        <input type="radio" id="no9" name="Q9" value="否" required>
                         <label for="no9" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">熱水器(電熱式及瓦斯式)安全良好、無一氧化碳中毒疑慮：</span>
+                            <span style="color: black; font-weight: bold;">房間內是否有廚房、瓦斯爐具：</span>
                         </label>
 
-                        <input type="radio" id="yes10" name="Q10" value="是">
+                        <input type="radio" id="yes10" name="Q10" value="是" required>
                         <label for="yes10" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no10" name="Q10" value="否">
+                        <input type="radio" id="no10" name="Q10" value="否" required>
                         <label for="no10" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">分開六個以上房間或十個以上床位：</span>
+                            <span style="color: black; font-weight: bold;">房間是否設置簡易型瓦斯警報器：</span>
                         </label>
 
-                        <input type="radio" id="yes11" name="Q11" value="是">
+                        <input type="radio" id="yes11" name="Q11" value="是" required>
                         <label for="yes11" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no11" name="Q11" value="否">
+                        <input type="radio" id="no11" name="Q11" value="否" required>
                         <label for="no11" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">有安裝監視器設備：</span>
+                            <span style="color: black; font-weight: bold;">房間內是否有配置飲水機：</span>
                         </label>
 
-                        <input type="radio" id="yes12" name="Q12" value="是">
+                        <input type="radio" id="yes12" name="Q12" value="是" required>
                         <label for="yes12" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no12" name="Q12" value="否">
+                        <input type="radio" id="no12" name="Q12" value="否" required>
                         <label for="no12" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
                         <label for="title" style="margin-right: 10px;">
-                            <span style="color: black; font-weight: bold;">使用內政部定型化租賃契約：</span>
+                            <span style="color: black; font-weight: bold;">租賃處所附近生活機能良好：</span>
                         </label>
 
-                        <input type="radio" id="yes13" name="Q13" value="是">
+                        <input type="radio" id="yes13" name="Q13" value="是" required>
                         <label for="yes13" style="margin-right: 10px;">是</label>
 
-                        <input type="radio" id="no13" name="Q13" value="否">
+                        <input type="radio" id="no13" name="Q13" value="否" required>
                         <label for="no13" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
-                    <div style="text-align: right;">
-                        <input type="submit" value="送出" onclick="confirmSubmission(event)">
+                    <p></p>
+                    <div class="center">
+                        <button type="submit" class="submit-button">提交</button>
                     </div>
-                    <script>
-                        function confirmSubmission(event) {
-                            event.preventDefault(); // 阻止表单的默认提交行为
-                            const userConfirmed = confirm("你确定要提交吗？");
-
-                            if (userConfirmed) {
-                                document.getElementById("myForm").submit(); // 如果用户确认，则提交表单
-                            }
-                        }
-                    </script>
                 </form>
             </div>
         </div>
+
         <?php
         } else {
             echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
