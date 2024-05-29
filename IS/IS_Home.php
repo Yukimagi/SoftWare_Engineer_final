@@ -162,6 +162,18 @@
             echo "<script>alert('訪談填寫完成！'); window.location.href='IS_Home.php';</script>";
 
         }
+        // Assuming $uid is already set for the current user
+        // $uid = 'current_student_id'; // This should be set to the actual current student's UID
+
+        // Check if the student has already filled out the form
+        $sql_check = "SELECT COUNT(*) AS count FROM `interview_record` WHERE s_uid = '$uid'";
+        $stmt = $conn->prepare($sql_check);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $has_filled_form = $row['count'] > 0;
+
+        if (!$has_filled_form) {
         ?>
 
         
@@ -407,6 +419,11 @@
                 </form>
             </div>
         </div>
+        <?php
+        } else {
+            echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
+        }
+        ?>
         
         <!-- Footer-->
         <footer class="py-5 bg-dark">
