@@ -149,34 +149,10 @@
                                 echo '<div class="card mb-4">';
                                 echo '<div class="card-body">';
                                 echo '<h2 class="card-title h4">' . $name . '</h2>';
-                                //echo '<p class="card-text">' . $articleIcontent . '</p>';
-                                //echo'<ul class="list-unstyled mb-0">';
-                                //echo '<li><span>Likes: ' . $lovenum . '</span>';
-                                //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
                                 
-                                /* 不知道會不會用到
-                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
-                                }
-                                //echo '<span>Likes: ' . $lovenum . '</span>';
-                                //echo '';
-                                echo '<li><span>Keeps: ' . $keepnum . '</span>';
-                                if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
-                                }
-                                //$content="";
-                                echo'</ul>';
-                                */
                                 echo'<ul class="list-unstyled mb-0">';
-                                //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
-                                //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                //$objID = "";
 
-                                
                                 if (!($identity === "SYS" || $identity === "L" || $identity === "訪客")) {
-                                    // 获取当前用户和物件ID
-                                    //$uid = ""; // 请确保在适当位置获取并赋值给 $uid
-                                    //$objID = ""; // 请确保在适当位置获取并赋值给 $objID
                                 
                                     // 檢查是否已經評價過
                                     $check_query = "SELECT * FROM `user_obj` WHERE `uid` = '$uid' AND `objID` = '$objID'";
@@ -188,7 +164,7 @@
                                         $existing_rating = $existing_row['score'];
                                         $existing_content = $existing_row['msg'];
                                 
-                                        echo "<script>alert('您已評價過這個物件!');</script>";
+                                        //echo "<script>alert('您已評價過這個物件!');</script>";
                                 
                                         echo '<div class="container">';
                                         echo '<div class="center">';
@@ -198,7 +174,8 @@
                                         // 星級評分系統
                                         echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">修改您的評價:</span></label><br>';
                                         echo '<div class="rating">';
-                                        for ($i = 1; $i <= 5; $i++) {
+                                        
+                                        for ($i = 5; $i >= 1; $i--) {
                                             $checked = ($i == $existing_rating) ? 'checked' : '';
                                             echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '" ' . $checked . '>';
                                             echo '<label for="star' . $i . '"></label>';
@@ -223,7 +200,8 @@
                                         // 星級評分系統
                                         echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">留下您的評價:</span></label><br>';
                                         echo '<div class="rating">';
-                                        for ($i = 1; $i <= 5; $i++) {
+                                        
+                                        for ($i = 5; $i >= 1; $i--) {
                                             echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
                                             echo '<label for="star' . $i . '"></label>';
                                         }
@@ -274,7 +252,6 @@
                                 }
                                 
                                 //印出所有在該物件裡面的評價
-                                //$num=1;
                                 $sql_query4 = "SELECT * FROM `user_obj` WHERE objID = '$objID'";
                                 $result4 = mysql_query($sql_query4);
                                 while ($row4 = mysql_fetch_assoc($result4)) {

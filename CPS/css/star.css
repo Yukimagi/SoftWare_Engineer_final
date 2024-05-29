@@ -9,6 +9,7 @@
 }
 
 .rating label {
+    float: right;
     font-size: 30px; /* 星星大小 */
     color: #ddd; /* 默認顏色 */
     cursor: pointer; /* 鼠標指針樣式 */
