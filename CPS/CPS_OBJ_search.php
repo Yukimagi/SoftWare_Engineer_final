@@ -106,6 +106,8 @@
                     }
                 ?>
             </p>
+            
+            
                     </ul>
                 </div>
             </div>
@@ -131,58 +133,40 @@
 
                         </div>
                     </div>
-                    <!--new-->
                     <?php
                         $select_db=@mysql_select_db("rentsystem");//選擇資料庫
                         if(!$select_db)
                         {
                         echo'<br>找不到資料庫!<br>';
                         }
-                        else {
-                            // Fetch the names and average scores for each object
-                            $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
-                                          FROM contact_object 
-                                          LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
-                                          GROUP BY contact_object.objID, contact_object.name";
-                            $result = mysql_query($sql_query);
-                        
-                            // Check if query execution is successful
-                            if (!$result) {
-                                echo '<br>查詢失敗!<br>';
-                                echo "<script>alert('查詢失敗!');</script>";
-                            } else {
-                                // Fetch the names and average scores for each object
-                                $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'objID';
+                        else
+                        {//查table
+                            // 檢查是否收到關鍵字
+                            if (!isset($_POST['searchTerm'])) {
+                                header("Location: CPS_OBJ.php");
+                                exit();
+                            }
+                            // 檢查是否收到關鍵字
+                            else if(isset($_POST['searchTerm'])) {
+                                // 獲取傳過來的關鍵字
+                                $searchTerm = $_POST['searchTerm'];
 
+                                // 查關鍵字用%%
                                 $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
                                             FROM contact_object 
                                             LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
-                                            GROUP BY contact_object.objID, contact_object.name
-                                            ORDER BY ";
-
-                                // 根據排序選項選擇 SQL 排序方式
-                                switch ($sortOption) {
-                                    case 'maxScore':
-                                        $sql_query .= "avg_score DESC";
-                                        break;
-                                    case 'minScore':
-                                        $sql_query .= "avg_score ASC";
-                                        break;
-                                    default:
-                                        $sql_query .= "contact_object.objID ASC";
-                                        break;
-                                }
+                                            WHERE contact_object.name LIKE '%$searchTerm%' 
+                                            GROUP BY contact_object.objID, contact_object.name";
 
                                 $result = mysql_query($sql_query);
 
-                                
-                                // Fetch and display the results
+                                // 输出匹配的文章
                                 while ($row = mysql_fetch_assoc($result)) {
                                     $objID = $row['objID'];
                                     $name = $row['name'];
-                                    $avg_score = number_format($row['avg_score'], 1); // Format the average score to 2 decimal places
-                        
-                                    // Output the data
+                                    $avg_score = $row['avg_score'];
+
+                                    // 输出資料
                                     echo '<div class="card mb-4">';
                                     echo '<div class="card-body">';
                                     echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
@@ -190,30 +174,80 @@
                                     echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
                                     echo '</div>';
                                     echo '</div>';
-                                        
-                                    /*if (($identity === "SYS")) {
-                                        echo '<li><span>是否不符規範:</span>';
-                                        echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                    }*/
+                                 
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
-                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
+                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more →</a></li>';
                                     echo'</ul>';
                                     echo '</br>';
                                     //echo '</div>';
                                     //echo '</div>';
                                 }
-                            }
-                        }
-                        
-                    ?>
 
-                    
+                            } 
+                            else {
+                                //echo "未收到關鍵字";
+                                //echo '<a href="CPS_OBJ.php">點擊返回</a>';
+                                //return;
+                                header("Location: CPS_OBJ.php");
+                                exit();
+                            }
+                            //echo '<a href="CPS_OBJ.php">查無此筆資物件，點擊返回</a>';
+
+                        }
+                    ?>
                     <!-- 記得引入函數-->
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
+                    function loveArticle(articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_love.php', 
+                            type: 'POST',
+                            data: { articleID: articleID }, 
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();
+                            }
+                        });
+                    }
+
+                    
+                    function keepArticle(uid, articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
+                            }
+                        });
+                    }
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                    $(document).ready(function() {
+                        $('#search-form').submit(function(event) {
+                            event.preventDefault(); 
+                            var searchTerm = $('#search-term').val().trim();
+
+                            if (searchTerm === '') {
+                                // 若 searchTerm 為空，直接跳轉到 CPS_OBJ.php
+                                window.location.href = 'CPS_OBJ.php';
+                            } else {
+                                // POST
+                                $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
+                                    // 處理返回的回應
+                                    console.log(response);
+                                });
+                            }
+                        });
+                    });
                     </script>
+
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
@@ -231,6 +265,7 @@
                     </div>
 
                     <!-- Sorting widget-->
+                    <!--
                     <div class="card mb-4">
                         <div class="card-header">評價排序</div>
                         <div class="card-body">
@@ -244,24 +279,10 @@
                             </form>
                         </div>
                     </div>
+                    -->
                 </div>
-
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    $('#search-form').submit(function(event) {
-                        event.preventDefault(); /
-                        var searchTerm = $('#search-term').val();
-                        // POST
-                        $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
-                            
-                            console.log(response);
-                        });
-                    });
-                });
-            </script>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>

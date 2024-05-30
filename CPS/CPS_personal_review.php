@@ -10,6 +10,7 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/star.css" rel="stylesheet" />
         <style>
         .vertical-line {
           border-left: 1px solid #808080; /* 顏色與寬度等 */
@@ -62,13 +63,21 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
                         <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Communicate.php">交流平台</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>
+                        <?php
+                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_addobj.php">新增物件</a></li>';
+                        }
+                        ?>
+                        <?php
+                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>';
+                        }
+                        ?>
+                        <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
                         <?php
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
@@ -109,30 +118,11 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">租屋交流平台</h1>
-                    <p class="lead mb-0">歡迎使用!</p>
+                    <h1 class="fw-bolder">個人評論紀錄</h1>
+                    
                 </div>
             </div>
         </header>
-        <?php
-        if(($identity === "SYS"||$identity === "L"|| $identity === "訪客")){
-            
-        echo'<div class="container">';
-            echo'<div class="row">';
-                echo'<!-- Blog entries-->';
-                echo'<div class="col-lg-8">';
-                    echo'<!-- Featured blog post-->';
-                    echo'<div class="card mb-4">';
-                        echo'<a href="#!"><img class="card-img-top" src="assets/CPS_INFO_WARN.png" alt="..." /></a>';
-                        echo'<div class="card-body">';
-                        echo'</div>';
-                    echo'</div>';
-                echo'</div>';
-            echo'</div>';
-        echo'</div>';
-        }
-        else{
-        ?>
         <!-- Page content-->
         <div class="container">
             <div class="row">
@@ -140,37 +130,99 @@
                 <div class="col-lg-8">
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="assets/CPS_INFO_WARN.png" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="assets/review_warn.png" alt="..." /></a>
                         <div class="card-body">
+
                         </div>
                     </div>
-                    <!-- Nested row for non-featured blog posts-->
-                    <div class="row">
+                    <?php
+                        $select_db=@mysql_select_db("rentsystem");//選擇資料庫
+                        if(!$select_db) {
+                            echo'<br>找不到資料庫!<br>';
+                        } else {
+                            
+                            
+                            // 查table
+                            $sql_query = "SELECT * FROM `user_obj` WHERE uid = '$uid'";
+                            $result = mysql_query($sql_query);
 
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="small text-muted">個人發布文章</div>
-                                    <a class="btn btn-primary btn-sm custom-btn" href="CPS_personal_publish_article.php">Read more →</a>
-                                </div>
-                            </div>
-                            <!-- Blog post-->
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="small text-muted">個人收藏文章</div>
-                                    <a class="btn btn-primary btn-sm custom-btn" href="CPS_personal_keep_article.php">Read more →</a>
-                                </div>
-                            </div>
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="small text-muted">個人評價物件</div>
-                                    <a class="btn btn-primary btn-sm custom-btn" href="CPS_personal_review.php">Read more →</a>
-                                </div>
-                            </div>
+                            // 查所有文章
+                            while ($row = mysql_fetch_assoc($result)) {
+                                $objID = $row['objID'];
+                                $score = $row['score'];
+                                $msg = $row['msg'];
 
-                        
-                    </div>
+                                $sql_query2 = "SELECT * FROM `contact_object` WHERE objID = '$objID'";
+                                $result2 = mysql_query($sql_query2);
+                                while ($row2 = mysql_fetch_assoc($result2)) {
+                                    $name = $row2['name'];
 
+                                    // 輸出文章
+                                    echo '<div class="card mb-4">';
+                                    echo '<div class="card-body">';
+                                    echo '<p class="card-text"><strong>' . $name . '</strong>:</p>';
+                                    
+                                    // 顯示星等
+                                    echo '<div class="star-rating" style="margin-left: 20px;">';
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $score) {
+                                            echo '<span class="star" style="color: gold;">&#9733;</span>'; // 填滿的星星
+                                        } else {
+                                            echo '<span class="star" style="color: lightgray;">&#9734;</span>'; // 空的星星
+                                        }
+                                    }
+                                    echo '</div>';
+                                    
+                                    echo '<p class="card-text" style="margin-left: 20px;">' . $msg . '</p>';
+                                    // 包含表單的編輯按鈕
+                                    //echo '<form action="CPS_review_modify.php" method="post" style="margin-left: 20px;">';
+                                    //echo '<input type="hidden" name="objID" value="' . $objID . '">';
+                                    //echo '<input type="submit" name="action" value="編輯">';
+                                    echo'<a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
+                                    echo '</form>';
+
+                                    echo '</div>';
+                                    echo '</div>';
+                                }
+                            }
+                            // 表單提交後處理
+                            /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                $rating = $_POST['rating'];
+                                $content = $_POST['content'];
+                                $objID = $_POST['objID']; // 从表单中获取 objID
+                                $action = $_POST['action']; // 获取操作类型（送出、修改、刪除）
+                                echo '<script language="javascript">';
+                                echo 'alert("objID is ' . $objID . '");';
+                                echo 'alert("rating is ' . $rating . '");';
+                                echo 'alert("content is ' . $content . '");';
+                                echo '</script>';
+                                
+                                if ($action == '編輯') {
+                                    // 編輯评价
+                                    $update_query = "UPDATE `user_obj` SET `score` = '$rating', `msg` = '$content' WHERE `uid` = '$uid' AND `objID` = '$objID'";
+                                    mysql_query($update_query);
+                                    echo '<script language="JavaScript">alert("評論修改成功!");location.href="CPS_personal_review.php";</script>';
+                                } 
+                            }*/
+                        }
+                    ?>
+                    <!-- 記得引入函數-->
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                    // JavaScript 
+                    function DeleteKeep(uid,articleID) {
+                        $.ajax({
+                            url: 'CPS_dataProcess/delete_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
+                            }
+                        });
+                    }
+                    </script>
+                    
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
@@ -181,16 +233,16 @@
                         <?php
                             if (!empty($identity) && !empty($uid)) {
                                 if ($identity === "T") {
-                                    // 查教師訊息
+                                    // 查教師的資料
                                     $table = "teacher_profile";
                                     $columns = "t_uid, t_name, t_rank, t_tel, t_mail, t_officetel";
                                 } elseif ($identity === "S") {
-                                    // 查學生訊息
+                                    // 查學生的資料
                                     $table = "basicinfo";
                                     $columns = "uid, SID, name, grade, gender, phone, email";
                                 }
                             
-                                // SQL 查詢
+                                // SQL 查
                                 $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
                                 if ($identity === "S") {
                                     $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
@@ -199,7 +251,7 @@
                                 $result = mysql_query($sql_query);
                             
                                 if ($result) {
-                                    // 輸出查詢結果
+                                    // 輸出結果
                                     while ($row = mysql_fetch_assoc($result)) {
                                         // 输出指定的列
                                         echo '<div class="card-body">';
@@ -231,7 +283,7 @@
                                     echo "查失敗：" . mysql_error();
                                 }
                             } else {
-                                echo "未提供足夠的訊息進行查詢";
+                                echo "為提供殂購的訊息進行查詢";
                             }
                             
                         ?>
@@ -240,9 +292,6 @@
                 </div>
             </div>
         </div>
-        <?php
-        }
-        ?>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>
