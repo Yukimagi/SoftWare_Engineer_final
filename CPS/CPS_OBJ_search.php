@@ -142,7 +142,12 @@
                         else
                         {//查table
                             // 檢查是否收到關鍵字
-                            if(isset($_POST['searchTerm'])) {
+                            if (!isset($_POST['searchTerm'])) {
+                                header("Location: CPS_OBJ.php");
+                                exit();
+                            }
+                            // 檢查是否收到關鍵字
+                            else if(isset($_POST['searchTerm'])) {
                                 // 獲取傳過來的關鍵字
                                 $searchTerm = $_POST['searchTerm'];
 
@@ -222,21 +227,27 @@
                         });
                     }
 
-                    </script>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
-                        $(document).ready(function() {
-                            $('#search-form').submit(function(event) {
-                                event.preventDefault(); /
-                                var searchTerm = $('#search-term').val();
+                    $(document).ready(function() {
+                        $('#search-form').submit(function(event) {
+                            event.preventDefault(); 
+                            var searchTerm = $('#search-term').val().trim();
+
+                            if (searchTerm === '') {
+                                // 若 searchTerm 為空，直接跳轉到 CPS_OBJ.php
+                                window.location.href = 'CPS_OBJ.php';
+                            } else {
                                 // POST
-                                $.post('CPS_Communicate_search.php', { searchTerm: searchTerm }, function(response) {
-                                    
+                                $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
+                                    // 處理返回的回應
                                     console.log(response);
                                 });
-                            });
+                            }
                         });
+                    });
                     </script>
+
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
