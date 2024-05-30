@@ -39,7 +39,18 @@ $name = $_SESSION['name'];
         }
         ?>
         <div>
-            <li><a href="IS/IS_Home.php">訪談紀錄</a></li>
+            <?php 
+            if (($identity === "S")){
+                echo'<li><a href="IS/IS_Home.php">訪談紀錄</a></li>';
+            }
+            else if($identity === "T"){
+                echo'<li><a href="IS/IS_teacher_records.php">訪談紀錄</a></li>';
+            }
+            else if (($identity === "SYS")){
+                echo'<li><a href="IS/IS_sys_records.php">訪談紀錄</a></li>';
+            }
+            ?>
+
         </div>
         <div>
             <li><a href="#">交流平台</a></li>
