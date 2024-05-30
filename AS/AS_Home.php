@@ -77,7 +77,7 @@
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../AS/AS_Home_review_ads.php">審核廣告</a></li>';
                         }
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../logoutprocess.php?logged_in=false">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
