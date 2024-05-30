@@ -140,7 +140,7 @@
                         }
                         else {
                             // Fetch the names and average scores for each object
-                            $sql_query = "SELECT contact_object.objID, contact_object.name, AVG(user_obj.score) AS avg_score 
+                            $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
                                           FROM contact_object 
                                           LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
                                           GROUP BY contact_object.objID, contact_object.name";
@@ -154,7 +154,7 @@
                                 // Fetch the names and average scores for each object
                                 $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'objID';
 
-                                $sql_query = "SELECT contact_object.objID, contact_object.name, AVG(user_obj.score) AS avg_score 
+                                $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
                                             FROM contact_object 
                                             LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
                                             GROUP BY contact_object.objID, contact_object.name
@@ -180,7 +180,7 @@
                                 while ($row = mysql_fetch_assoc($result)) {
                                     $objID = $row['objID'];
                                     $name = $row['name'];
-                                    $avg_score = number_format($row['avg_score'], 2); // Format the average score to 2 decimal places
+                                    $avg_score = number_format($row['avg_score'], 1); // Format the average score to 2 decimal places
                         
                                     // Output the data
                                     echo '<div class="card mb-4">';
