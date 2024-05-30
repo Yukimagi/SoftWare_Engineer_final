@@ -172,7 +172,7 @@
                                         echo '<input type="hidden" name="objID" value="' . $objID . '">';
                                 
                                         // 星級評分系統
-                                        echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">修改您的評價:</span></label><br>';
+                                        echo '<label for="rating"><span style="color: black; font-weight: bold; font-size: 24px;">您的評價:</span></label><br>';
                                         echo '<div class="rating">';
                                         
                                         for ($i = 5; $i >= 1; $i--) {
@@ -183,7 +183,7 @@
                                         echo '</div><br>';
                                 
                                         // 文字輸入框
-                                        echo '<textarea id="content" name="content" style="width: 1200px; height: 50px;">' . $existing_content . '</textarea><br><br>';
+                                        echo '<textarea id="content" name="content" style="width: 1025px; height: 50px;">' . $existing_content . '</textarea><br><br>';
                                 
                                         echo '<input type="submit" name="action" value="修改">';
                                         echo '<input type="submit" name="action" value="刪除">';
@@ -208,7 +208,7 @@
                                         echo '</div><br>';
                                 
                                         // 文字輸入框
-                                        echo '<textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
+                                        echo '<textarea id="content" name="content" style="width: 1025px; height: 50px;"></textarea><br><br>';
                                 
                                         echo '<input type="submit" name="action" value="送出">';
                                         echo '</form>';

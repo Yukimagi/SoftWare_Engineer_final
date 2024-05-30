@@ -67,6 +67,11 @@
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         <?php
                         if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Home.php">個人</a></li>';
+                        }
+                        ?>
+                        <?php
+                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
                         echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_addobj.php">新增物件</a></li>';
                         }
                         ?>
@@ -101,8 +106,6 @@
                     }
                 ?>
             </p>
-            
-            
                     </ul>
                 </div>
             </div>
@@ -123,12 +126,12 @@
                 <div class="col-lg-8">
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="assets/article_warn.png" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="assets/review_warn.png" alt="..." /></a>
                         <div class="card-body">
 
                         </div>
                     </div>
-                    
+                    <!--new-->
                     <?php
                         $select_db=@mysql_select_db("rentsystem");//選擇資料庫
                         if(!$select_db)
@@ -146,7 +149,33 @@
                             // Check if query execution is successful
                             if (!$result) {
                                 echo '<br>查詢失敗!<br>';
+                                echo "<script>alert('查詢失敗!');</script>";
                             } else {
+                                // Fetch the names and average scores for each object
+                                $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'objID';
+
+                                $sql_query = "SELECT contact_object.objID, contact_object.name, AVG(user_obj.score) AS avg_score 
+                                            FROM contact_object 
+                                            LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
+                                            GROUP BY contact_object.objID, contact_object.name
+                                            ORDER BY ";
+
+                                // 根據排序選項選擇 SQL 排序方式
+                                switch ($sortOption) {
+                                    case 'maxScore':
+                                        $sql_query .= "avg_score DESC";
+                                        break;
+                                    case 'minScore':
+                                        $sql_query .= "avg_score ASC";
+                                        break;
+                                    default:
+                                        $sql_query .= "contact_object.objID ASC";
+                                        break;
+                                }
+
+                                $result = mysql_query($sql_query);
+
+                                
                                 // Fetch and display the results
                                 while ($row = mysql_fetch_assoc($result)) {
                                     $objID = $row['objID'];
@@ -178,6 +207,8 @@
                         }
                         
                     ?>
+
+                    
                     <!-- 記得引入函數-->
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
@@ -188,7 +219,7 @@
                 <div class="col-lg-4">
                     <!-- Search widget-->
                     <div class="card mb-4">
-                    <div class="card-header">找物件</div>
+                        <div class="card-header">找物件</div>
                         <div class="card-body">
                             <form id="search-form" method="post" action="CPS_OBJ_search.php">
                                 <div class="input-group">
@@ -199,7 +230,22 @@
                         </div>
                     </div>
 
+                    <!-- Sorting widget-->
+                    <div class="card mb-4">
+                        <div class="card-header">評價排序</div>
+                        <div class="card-body">
+                            <form id="sort-form" method="get" action="CPS_OBJ.php">
+                                <select class="form-select" id="sort-by" name="sortOption">
+                                    <option value="objID">按物件代號</option>
+                                    <option value="maxScore">最高分</option>
+                                    <option value="minScore">最低分</option>
+                                </select>
+                                <button class="btn btn-primary mt-2" type="submit">排序</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
