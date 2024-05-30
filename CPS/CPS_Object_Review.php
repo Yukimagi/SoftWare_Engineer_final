@@ -257,6 +257,7 @@
                                 $result4 = mysql_query($sql_query4);
                                 while ($row4 = mysql_fetch_assoc($result4)) {
                                     $uid = $row4['uid'];
+                                    $objID = $row4['objID'];
                                     $score = $row4['score'];
                                     $msg = $row4['msg'];
 
@@ -277,6 +278,11 @@
                                     echo '</div>';
                                     
                                     echo '<p class="card-text" style="margin-left: 20px;">' . $msg . '</p>';
+                                    if (($identity === "SYS")) {
+                                        echo '<span>是否不符規範:</span>';
+                                        //echo '<input type="submit" name="action" value="刪除">';
+                                        echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteReview(\'' . $uid . '\', \'' . $objID . '\')">刪除</button></li>';
+                                    }
                                     echo '</div>';
                                     echo '</div>';
                                 }
@@ -288,6 +294,23 @@
 
             </div>
         </div>
+        <!-- 記得引入函數-->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+            // JavaScript 
+            function DeleteReview(uid,objID) {
+                $.ajax({
+                    url: 'CPS_dataProcess/delete_review.php', 
+                    type: 'POST',
+                    data: { uid: uid, objID: objID },
+                    success: function(response) {
+                        // 重新加載頁面
+                        location.reload();      
+                    }
+                });
+            }
+
+            </script>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>

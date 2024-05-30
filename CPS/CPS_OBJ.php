@@ -191,10 +191,10 @@
                                     echo '</div>';
                                     echo '</div>';
                                         
-                                    if (($identity === "SYS")) {
+                                    /*if (($identity === "SYS")) {
                                         echo '<li><span>是否不符規範:</span>';
                                         echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                    }
+                                    }*/
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
                                     echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';

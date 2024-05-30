@@ -174,12 +174,19 @@
                                     echo '</div>';
                                     
                                     echo '<p class="card-text" style="margin-left: 20px;">' . $msg . '</p>';
+                                    // 包含表單的編輯按鈕
+                                    //echo '<form action="CPS_review_modify.php" method="post" style="margin-left: 20px;">';
+                                    //echo '<input type="hidden" name="objID" value="' . $objID . '">';
+                                    //echo '<input type="submit" name="action" value="編輯">';
+                                    echo'<a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
+                                    echo '</form>';
+
                                     echo '</div>';
                                     echo '</div>';
                                 }
                             }
                             // 表單提交後處理
-                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $rating = $_POST['rating'];
                                 $content = $_POST['content'];
                                 $objID = $_POST['objID']; // 从表单中获取 objID
@@ -190,18 +197,13 @@
                                 echo 'alert("content is ' . $content . '");';
                                 echo '</script>';
                                 
-                                if ($action == '修改') {
-                                    // 修改评价
+                                if ($action == '編輯') {
+                                    // 編輯评价
                                     $update_query = "UPDATE `user_obj` SET `score` = '$rating', `msg` = '$content' WHERE `uid` = '$uid' AND `objID` = '$objID'";
                                     mysql_query($update_query);
                                     echo '<script language="JavaScript">alert("評論修改成功!");location.href="CPS_personal_review.php";</script>';
-                                } elseif ($action == '刪除') {
-                                    // 刪除评价
-                                    $delete_query = "DELETE FROM `user_obj` WHERE `uid` = '$uid' AND `objID` = '$objID'";
-                                    mysql_query($delete_query);
-                                    echo '<script language="JavaScript">alert("評論刪除成功!");location.href="CPS_personal_review.php";</script>';
-                                }
-                            }
+                                } 
+                            }*/
                         }
                     ?>
                     <!-- 記得引入函數-->
