@@ -200,32 +200,7 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
-                    function loveArticle(articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_love.php', 
-                            type: 'POST',
-                            data: { articleID: articleID }, 
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();
-                            }
-                        });
-                    }
-
                     
-                    function keepArticle(uid, articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_keep.php', 
-                            type: 'POST',
-                            data: { uid: uid, articleID: articleID },
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();      
-                            }
-                        });
-                    }
 
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
