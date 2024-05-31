@@ -156,8 +156,10 @@
             }
             
 
-            $sql_insert = "INSERT INTO interview_record values ('$new_id', '$uid', (SELECT tuid FROM basicinfo WHERE uid = '$uid'), '$landlord_name', '$landlord_phone', '$address', '$housing_type',
-            '$room_type', '$money', '$deposit', '$q0', '$q1', '$q2', '$q3', '$q4', '$q5', '$q6', '$q7', '$q8', '$q9', '$q10', '$q11', '$q12', '$q13', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')";
+            $sql_insert = "INSERT INTO interview_record values ('$new_id', '$uid', '2024', '2', (SELECT tuid FROM basicinfo WHERE uid = '$uid'), 
+            '$landlord_name', '$landlord_phone', '$address', '$housing_type', '$room_type', '$money', '$deposit', '$q0', '$q1', '$q2', 
+            '$q3', '$q4', '$q5', '$q6', '$q7', '$q8', '$q9', '$q10', '$q11', '$q12', '$q13', '', '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '')";
             echo($sql_insert);
             $result = $conn->query($sql_insert);
             echo "<script>alert('訪談填寫完成！'); window.location.href='IS_Home.php';</script>";
