@@ -66,9 +66,13 @@
                         <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
 
                         <?php
-                        if(($identity === "S" || $identity === "T")){
+                        if(($identity === "S")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_personal_information.php">個人資料</a></li>';
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_record.php">查詢紀錄</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_student_search_record.php">查詢紀錄</a></li>';
+                        }
+                        else if($identity === "T"){
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_personal_information.php">個人資料</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_teacher_search_record.php">查詢紀錄</a></li>';
                         }
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../logoutprocess.php?logged_in=false">使用者登出</a></li>';
