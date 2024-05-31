@@ -40,7 +40,7 @@ $name = $_SESSION['name'];
         }
         ?>
         <div>
-            <li><a href="#">租屋管理</a></li>
+            <li><a href="#">訪談紀錄</a></li>
         </div>
         <div>
             <li><a href="#">交流平台</a></li>
