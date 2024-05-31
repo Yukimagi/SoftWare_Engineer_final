@@ -22,6 +22,7 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1){
         <ul>
             <li><a href="index.php">首頁</a></li>
             <li><a href="#">廣告平台</a></li>
+            <li><a href="#">交流平台</a></li>
             <!-- 添加更多功能連結 -->
             <hr> <!-- 添加分隔線 -->
             <p>現在身分為：<span style="color:#b0c4de; display: inline;">訪客</span></p>
