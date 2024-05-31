@@ -58,7 +58,7 @@
         <!-- 上面的標籤-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="IS_teacher_records.php">IS</a>
+                <a class="navbar-brand" href="IS_sys_records.php">IS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -73,6 +73,9 @@
                         else if($identity === "T"){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_personal_information.php">個人資料</a></li>';
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_teacher_search_record.php">查詢紀錄</a></li>';
+                        }
+                        else if($identity === "SYS"){
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../IS/IS_sys_search_record.php">查詢紀錄</a></li>';
                         }
                         if(!($identity === "訪客")){
                             echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../logoutprocess.php?logged_in=false">使用者登出</a></li>';
@@ -125,10 +128,33 @@
 
         // Fetch all student s_uids for the dropdown
         // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
-        $sql_students = "SELECT basicinfo.sid, school_year, semester FROM interview_record join basicinfo where basicinfo.uid=interview_record.s_uid AND s_uid='$uid' ";
-        // echo($sql_students);
-        $result_students = $conn->query($sql_students);
-        $students = $result_students->fetchAll(PDO::FETCH_ASSOC);
+
+        $sql_school_year = "SELECT DISTINCT school_year FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid";
+        $stmt_school_year = $conn->query($sql_school_year);
+        $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);
+
+        // Step 2: Prepare the SQL query for fetching distinct semesters
+        $sql_semester = "SELECT DISTINCT semester FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid WHERE interview_record.school_year = :school_year";
+        $stmt_semester = $conn->prepare($sql_semester);
+
+        // Step 3: Initialize an array to hold semesters for each school year
+        $all_semesters = [];
+
+        foreach ($school_years as $year) {
+            // Step 4: Bind the school year parameter and execute the query
+            $stmt_semester->bindParam(':school_year', $year['school_year']);
+            $stmt_semester->execute();
+            
+            // Step 5: Fetch semesters for the current school year
+            $semesters = $stmt_semester->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Step 6: Add the result to the all_semesters array
+            $all_semesters[$year['school_year']] = $semesters;
+        }
+
+        $sql_sid = "SELECT distinct basicinfo.sid FROM interview_record join basicinfo where basicinfo.uid=interview_record.s_uid AND interview_record.school_year = :school_year AND interview_record.semester = :semester";
+        $stmt_semester = $conn->prepare($sql_sid);
+        $stmt_semester->bindParam(':school_year', $year['school_year']);
 
         ?>
         <?php       
@@ -136,22 +162,22 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
+                $selected_student = $_POST['s_uid'];
                 $selected_school_year = $_POST['school_year'];
                 $selected_semester = $_POST['semester'];
-                $sql_records = "SELECT interview_record.* , basicinfo.sid FROM interview_record join basicinfo WHERE interview_record.s_uid=basicinfo.uid and interview_record.s_uid = :sid
+                $sql_records = "SELECT interview_record.* FROM interview_record join basicinfo WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :sid
                     and interview_record.school_year = :school_year and interview_record.semester = :semester";
-                // echo($sql_records);
+                
                 $stmt_records = $conn->prepare($sql_records);
-                $stmt_records->bindParam(':sid', $uid);
+                $stmt_records->bindParam(':sid', $selected_student);
                 $stmt_records->bindParam(':school_year', $selected_school_year);
                 $stmt_records->bindParam(':semester', $selected_semester);
                 $stmt_records->execute();
                 $records = $stmt_records->fetch(PDO::FETCH_ASSOC);
                 
-                $name = $records['sid'];
                 $s_uid = $records['s_uid'];
-                $school_year = $selected_school_year;
-                $semester = $selected_semester;
+                $school_year = $records['school_year'];
+                $semester = $records['semester'];
                 $landlord_name = $records['landlord_name'];
                 $landlord_phone = $records['landlord_phone'];
                 $address = $records['address'];
@@ -174,6 +200,23 @@
                 $q12 = $records['q12'];
                 $q13 = $records['q13'];
 
+                $tq0 = $records["tq0"];
+                $tq1 = $records["tq1"];
+                $tq2 = $records["tq2"];
+                $tq2_detail = $records["tq2_detail"];
+                $tq3 = $records["tq3"];
+                $tq3_detail = $records["tq3_detail"];
+                $tq4 = $records["tq4"];
+                $tq4_detail = $records["tq4_detail"];
+                $tq5 = $records["tq5"];
+                $tq6 = $records["tq6"];
+                $tq6_detail = $records["tq6_detail"];
+                $tq7 = $records["tq7"];
+                $tq8_1 = $records["tq8_1"];
+                $tq8_2 = $records["tq8_2"];
+                $tq8_3 = $records["tq8_3"];
+                $tq8_4 = $records["tq8_4"];
+                $tq8_detail = $records["tq8_detail"];
             }
         }        
         ?>
@@ -187,21 +230,49 @@
                 <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
                 <select id="school_year" name="school_year" required>
                     <option value="" disabled selected>選擇學年</option>
-                    <?php foreach ($students as $row) { ?>
-                        <option value="<?php echo $row['school_year']; ?>"><?php echo $row['school_year']; ?></option>
+                    <?php foreach ($school_years as $row1) { ?>
+                        <option value="<?php echo $row1['school_year']; ?>"><?php echo $row1['school_year']; ?></option>
                     <?php } ?>
                 </select>
 
                 <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
                 <select id="semester" name="semester" required>
                     <option value="" disabled selected>選擇學期</option>
-                    <?php foreach ($students as $row) { ?>
-                        <option value="<?php echo $row['semester']; ?>"><?php echo $row['semester']; ?></option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+
+                <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學生：</span></label>
+                <select id="s_uid" name="s_uid" required>
+                    <option value="" disabled selected>選擇學生</option>
+                    <?php foreach ($sids as $row3) { ?>
+                        <option value="<?php echo $row3['sid']; ?>"><?php echo $row3['sid']; ?></option>
                     <?php } ?>
                 </select>
 
                 <button type="submit" class="send-button">送出</button>
             </form>
+            <script>
+                // JavaScript to dynamically update the semester dropdown
+                const allSemesters = <?php echo json_encode($all_semesters); ?>;
+
+                document.getElementById('school_year').addEventListener('change', function() {
+                    const schoolYear = this.value;
+                    const semesterDropdown = document.getElementById('semester');
+
+                    // Clear the current options
+                    semesterDropdown.innerHTML = '<option value="" disabled selected>選擇學期</option>';
+
+                    // Add new options based on the selected school year
+                    if (allSemesters[schoolYear]) {
+                        allSemesters[schoolYear].forEach(function(semester) {
+                            const option = document.createElement('option');
+                            option.value = semester.semester;
+                            option.textContent = semester.semester;
+                            semesterDropdown.appendChild(option);
+                        });
+                    }
+                });
+            </script>
 
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
@@ -209,7 +280,7 @@
                     <p></p>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($name);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_student);?></span></label>
                     <p></p>
                     <p></p>
 
@@ -434,7 +505,151 @@
                         <input type="radio" id="no13" name="Q13" value="否" <?php if($q13 == "否") echo "checked"; ?> disabled>
                         <label for="no13" style="margin-right: 10px; <?php if($q13 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
+                    
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估(導師填寫)</span></label><br>
+                    <p></p>
 
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">押金要求：</span>
+                        </label>
+
+                        <input type="radio" id="makesense" name="tq0" value="合理" <?php if($tq0 == "合理") echo "checked"; ?> disabled>
+                        <label for="makesense" style="margin-right: 10px; <?php if($tq0 == "合理") echo "color: blue"; ?>">合理</label>
+
+                        <input type="radio" id="nonsense" name="tq0" value="不合理(兩個月以上租金)" <?php if($tq0 == "不合理(兩個月以上租金)") echo "checked"; ?> disabled>
+                        <label for="nonsense" style="margin-right: 10px; <?php if($tq0 == "不合理(兩個月以上租金)") echo "color: blue"; ?>">不合理(兩個月以上租金)</label>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">水電費要求：</span>
+                        </label>
+
+                        <input type="radio" id="makesense1" name="tq1" value="合理" <?php if($tq1 == "合理") echo "checked"; ?> disabled>
+                        <label for="makesense1" style="margin-right: 10px; <?php if($tq1 == "合理") echo "color: blue"; ?>">合理</label>
+
+                        <input type="radio" id="nonsense1" name="tq1" value="不合理" <?php if($tq1 == "不合理") echo "checked"; ?> disabled>
+                        <label for="nonsense1" style="margin-right: 10px; <?php if($tq1 == "不合理") echo "color: blue"; ?>">不合理</label>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">居家環境：</span>
+                        </label>
+
+                        <input type="radio" id="makesense2" name="tq2" value="佳" <?php if($tq2 == "佳") echo "checked"; ?> disabled>
+                        <label for="makesense2" style="margin-right: 10px; <?php if($tq2 == "佳") echo "color: blue"; ?>">佳</label>
+
+                        <input type="radio" id="soso2" name="tq2" value="適中" <?php if($tq2 == "適中") echo "checked"; ?> disabled>
+                        <label for="soso2" style="margin-right: 10px; <?php if($tq2 == "適中") echo "color: blue"; ?>">適中</label>
+
+                        <input type="radio" id="nonsense2" name="tq2" value="欠佳" <?php if($tq2 == "欠佳") echo "checked"; ?> disabled>
+                        <label for="nonsense2" style="margin-right: 10px; <?php if($tq2 == "欠佳") echo "color: blue"; ?>">欠佳</label>
+
+                        <label for="tq2_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <input type="text" id="tq2_detail" name="tq2_detail " value="<?php echo $tq2_detail; ?>" class="underline-input" readonly>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">生活設施：</span>
+                        </label>
+
+                        <input type="radio" id="makesense3" name="tq3" value="佳" <?php if($tq3 == "佳") echo "checked"; ?> disabled>
+                        <label for="makesense3" style="margin-right: 10px; <?php if($tq3 == "佳") echo "color: blue"; ?>">佳</label>
+
+                        <input type="radio" id="soso3" name="tq3" value="適中" <?php if($tq3 == "適中") echo "checked"; ?> disabled>
+                        <label for="soso3" style="margin-right: 10px; <?php if($tq3 == "適中") echo "color: blue"; ?>">適中</label>
+
+                        <input type="radio" id="nonsense3" name="tq3" value="欠佳" <?php if($tq3 == "欠佳") echo "checked"; ?> disabled>
+                        <label for="nonsense3" style="margin-right: 10px; <?php if($tq3 == "欠佳") echo "color: blue"; ?>">欠佳</label>
+
+                        <label for="tq3_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <input type="text" id="tq3_detail" name="tq3_detail" value="<?php echo $tq3_detail; ?>" class="underline-input" readonly>
+                    </div>
+                    
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">訪視現況：</span>
+                        </label>
+
+                        <input type="radio" id="makesense4" name="tq4" value="生活規律" <?php if($tq4 == "生活規律") echo "checked"; ?> disabled>
+                        <label for="makesense4" style="margin-right: 10px; <?php if($tq4 == "生活規律") echo "color: blue"; ?>">生活規律</label>
+
+                        <input type="radio" id="soso4" name="tq4" value="適中" <?php if($tq4 == "適中") echo "checked"; ?> disabled>
+                        <label for="soso4" style="margin-right: 10px; <?php if($tq4 == "適中") echo "color: blue"; ?>">適中</label>
+
+                        <input type="radio" id="nonsense4" name="tq4" value="待加強" <?php if($tq4 == "待加強") echo "checked"; ?> disabled>
+                        <label for="nonsense4" style="margin-right: 10px; <?php if($tq4 == "待加強") echo "color: blue"; ?>">待加強</label>
+
+                        <label for="tq4_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <input type="text" id="tq4_detail" name="tq4_detail" value="<?php echo $tq4_detail; ?>" class="underline-input" readonly>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+                        <label for="housing_type" style="margin-right: 10px;">
+                            <span style="color: black; font-weight: bold;">主客相處：</span>
+                        </label>
+
+                        <input type="radio" id="makesense5" name="tq5" value="和睦" <?php if($tq5 == "和睦") echo "checked"; ?> disabled>
+                        <label for="makesense5" style="margin-right: 10px; <?php if($tq5 == "和睦") echo "color: blue"; ?>">和睦</label>
+
+                        <input type="radio" id="nonsense5" name="tq5" value="欠佳" <?php if($tq5 == "欠佳") echo "checked"; ?> disabled>
+                        <label for="nonsense5" style="margin-right: 10px; <?php if($tq5 == "欠佳") echo "color: blue"; ?>">欠佳</label>
+                    </div>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">訪視結果(導師填寫)：</span></label><br>
+                    <p></p>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+
+                        <input type="radio" id="makesense6" name="tq6" value="整體賃居狀況良好" <?php if($tq6 == "整體賃居狀況良好") echo "checked"; ?> disabled>
+                        <label for="makesense6" style="margin-right: 10px; <?php if($tq6 == "整體賃居狀況良好") echo "color: blue"; ?>">整體賃居狀況良好</label>
+
+                        <input type="radio" id="soso6" name="tq6" value="聯繫家長關注" <?php if($tq6 == "聯繫家長關注") echo "checked"; ?> disabled>
+                        <label for="soso6" style="margin-right: 10px; <?php if($tq6 == "聯繫家長關注") echo "color: blue"; ?>">聯繫家長關注</label>
+
+                        <input type="radio" id="nonsense6" name="tq6" value="安全堪慮請協助" <?php if($tq6 == "安全堪慮請協助") echo "checked"; ?> disabled>
+                        <label for="nonsense6" style="margin-right: 10px; <?php if($tq6 == "安全堪慮請協助") echo "color: blue"; ?>">安全堪慮請協助</label>
+
+                        <input type="radio" id="else6" name="tq6" value="其他" <?php if($tq6 == "其他") echo "checked"; ?> disabled>
+                        <label for="else6" style="margin-right: 10px; <?php if($tq6 == "其他") echo "color: blue"; ?>">其他</label>
+
+                        <label for="tq6_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <input type="text" id="tq6_detail" name="tq6_detail" value="<?php echo $tq6_detail; ?>" class="underline-input" readonly>
+                    </div>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+
+                        <label for="tq7"><span style="color: black; font-weight: bold;">其他記載或建議事項：</span></label>
+                        <input type="text" id="tq7" name="tq7" value="<?php echo $tq7; ?>" class="underline-input" readonly>
+
+                    </div>
+
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">關懷宣導項目(懇請導師賃居訪視時多與關懷叮嚀)：</span></label><br>
+                    <p></p>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+
+                        <input type="radio" id="traffic" name="tq8_1" value="交通安全" <?php if($tq8_1 == "交通安全") echo "checked"; ?> disabled>
+                        <label for="traffic" style="margin-right: 10px; <?php if($tq8_1 == "交通安全") echo "color: blue"; ?>">交通安全</label>
+
+                        <input type="radio" id="nosmoke" name="tq8_2" value="拒絕菸害" <?php if($tq8_2 == "拒絕菸害") echo "checked"; ?> disabled>
+                        <label for="nosmoke" style="margin-right: 10px; <?php if($tq8_2 == "拒絕菸害") echo "color: blue"; ?>">拒絕菸害</label>
+
+                        <input type="radio" id="nodrug" name="tq8_3" value="拒絕毒品" <?php if($tq8_3 == "拒絕毒品") echo "checked"; ?> disabled>
+                        <label for="nodrug" style="margin-right: 10px; <?php if($tq8_3 == "拒絕毒品") echo "color: blue"; ?>">拒絕毒品</label>
+
+                        <input type="radio" id="nomosquito" name="tq8_4" value="登革熱防治" <?php if($tq8_4 == "登革熱防治") echo "checked"; ?> disabled>
+                        <label for="nomosquito" style="margin-right: 10px; <?php if($tq8_4 == "登革熱防治") echo "color: blue"; ?>">登革熱防治</label>
+
+                        <input type="radio" id="else8" name="tq8_5" value="其他" <?php if($tq8_5 == "其他") echo "checked"; ?> disabled>
+                        <label for="else8" style="margin-right: 10px; <?php if($tq8_5 == "其他") echo "color: blue"; ?>">其他</label>
+
+                        <label for="tq8_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <input type="text" id="tq8_detail" name="tq8_detail" value="<?php echo $tq8_detail; ?>" class="underline-input" readonly>
+                    </div>
                 </form>
             </div>
             <?php }?>
