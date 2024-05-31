@@ -120,7 +120,7 @@
 
 
         // Fetch all student s_uids for the dropdown
-        $sql_students = "SELECT s_uid, school_year, semester FROM interview_record where t_uid='$uid' AND tq6 IS not NULL";
+        $sql_students = "SELECT s_uid, school_year, semester FROM interview_record where t_uid='$uid' AND tq6 = ''";
         // echo($sql_students);
         $result_students = $conn->query($sql_students);
         $students = $result_students->fetchAll(PDO::FETCH_ASSOC);
@@ -194,13 +194,15 @@
             }
         }
         // Check if the teacher has already filled out the form
-        $sql_check = "SELECT COUNT(*) AS count FROM `interview_record` WHERE t_uid = '$uid' AND s_uid ='$s_uid' AND tq6 IS NULL";
+        $sql_check = "SELECT COUNT(*) AS count FROM `interview_record` WHERE t_uid = '$uid' AND s_uid ='$s_uid' AND tq6 = ''";
+        // echo($sql_check);
 
         $stmt = $conn->prepare($sql_check);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $has_filled_form = $row['count'] > 0;
+        $hasnot_filled_form = $row['count'];
+        // echo($has_filled_form);
         // $has_filled_form = FALSE;
 
         
@@ -239,7 +241,7 @@
                 <button type="submit" class="send-button">送出</button>
             </form>
 
-        <?php if (!$has_filled_form) {?>
+        <?php if ($hasnot_filled_form) {?>
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
@@ -625,7 +627,7 @@
 
         <?php
         } else {
-            echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
+            if ($records)echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
         }
         ?>
         
