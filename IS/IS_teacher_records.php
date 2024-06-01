@@ -125,7 +125,15 @@
 
         // Fetch all student s_uids for the dropdown
         // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
-        $sql_students = "SELECT basicinfo.sid FROM interview_record join basicinfo where basicinfo.uid=interview_record.s_uid AND t_uid='$uid' AND tq6 = ''";
+        $sql_students = "SELECT basicinfo.sid 
+                FROM interview_record 
+                INNER JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
+                INNER JOIN record_settings ON interview_record.school_year = record_settings.school_year 
+                                            AND interview_record.semester = record_settings.semester 
+                WHERE t_uid = '$uid' 
+                    AND tq6 = '' 
+                    AND record_settings.is_open = 1";
+
         // echo($sql_students);
         $result_students = $conn->query($sql_students);
         $students = $result_students->fetchAll(PDO::FETCH_ASSOC);
@@ -137,7 +145,13 @@
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
                 $selected_student = $_POST['s_uid'];
-                $sql_records = "SELECT interview_record.* FROM interview_record join basicinfo WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :sid";
+                $sql_records = "SELECT interview_record.* 
+                FROM interview_record 
+                INNER JOIN basicinfo ON interview_record.s_uid = basicinfo.uid 
+                INNER JOIN record_settings ON interview_record.school_year = record_settings.school_year 
+                                            AND interview_record.semester = record_settings.semester 
+                WHERE basicinfo.sid = :sid 
+                    AND record_settings.is_open = 1";
                 
                 $stmt_records = $conn->prepare($sql_records);
                 $stmt_records->bindParam(':sid', $selected_student);
@@ -199,17 +213,30 @@
             }
         }
         // Check if the teacher has already filled out the form
-        $sql_check = "SELECT COUNT(*) AS count FROM `interview_record` WHERE t_uid = '$uid' AND s_uid ='$s_uid' AND tq6 = ''";
+        $sql_check = "SELECT 
+                (SELECT COUNT(*) FROM interview_record WHERE s_uid = '$uid' AND school_year = rs.school_year AND semester = rs.semester) AS filled_count,
+                (SELECT COUNT(*) FROM interview_record 
+                    WHERE (school_year, semester) IN (
+                        SELECT school_year, semester FROM record_settings WHERE is_open = 1
+                    )) AS open_count,
+                (SELECT COUNT(*) FROM `interview_record` WHERE t_uid = '$uid' AND s_uid ='$s_uid' AND tq6 = '') AS empty_tq6_count
+            FROM
+                record_settings rs
+            WHERE
+                rs.is_open = 1;";
+
         // echo($sql_check);
 
         $stmt = $conn->prepare($sql_check);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $hasnot_filled_form = $row['count'];
-        // echo($has_filled_form);
-        // $has_filled_form = FALSE;
+        $hasnot_filled_form = $row['filled_count'];
 
+        $has_open = $row['open_count'];
+
+        // echo($hasnot_filled_form);
+        // echo($has_open);
         
         ?>
         
@@ -229,8 +256,9 @@
 
                 <button type="submit" class="send-button">送出</button>
             </form>
+                 
 
-        <?php if ($hasnot_filled_form) {?>
+        <?php if (!$hasnot_filled_form && $has_open) {?>
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
