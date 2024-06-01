@@ -179,7 +179,7 @@
                 $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
                 $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
 
-                $sql_records = "SELECT interview_record.* FROM interview_record JOIN basicinfo 
+                $sql_records = "SELECT interview_record.* , basicinfo.sid FROM interview_record JOIN basicinfo 
                                 ON interview_record.s_uid = basicinfo.uid WHERE 1=1";
 
                 if ($selected_sid) {
@@ -264,7 +264,8 @@
                     <p></p>
                     <p></p>
                     <?php foreach ($records as $record) {
-                        $s_uid = $record['s_uid'];                        
+                        $s_uid = $record['s_uid']; 
+                        $sids = $record['sid'];                       
 
                         $sql_check = "SELECT COUNT(*) as count
                             FROM interview_record
@@ -291,8 +292,9 @@
                         $has_filled_form = $forms['count'];
                         
                         ?>
-                        <a href="IS_sys_search_record.php?s_uid=<?php echo $s_uid; ?>">
-                            <label for="s_uid"><span style=" font-weight: bold; font-size: 20px;">學生：<?php echo $s_uid; ?></span></label>
+                        
+                        <a href="IS_sys_search_record.php?r_place=<?php echo $sids; ?>">
+                            <label for="s_uid"><span style=" font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
                             <?php if ($has_filled_form > 0) {
                                 echo '<label for="has_filled_form"><span style="color: black; font-weight: bold; font-size: 20px;">已填寫<?php echo $s_uid; ?></span></label>';
                             } else {
