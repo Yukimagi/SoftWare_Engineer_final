@@ -152,20 +152,37 @@
         // Initialize variables for selected values
         $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
         $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
-        
+
+        // 選擇系名
+        $majors = [];
+        if ($selected_school_year && $selected_semester) {
+            $sql_major = "SELECT DISTINCT basicinfo.major FROM interview_record 
+                        JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
+                        WHERE interview_record.school_year = :school_year 
+                        AND interview_record.semester = :semester";
+            $stmt_major = $conn->prepare($sql_major);
+            $stmt_major->bindParam(':school_year', $selected_school_year);
+            $stmt_major->bindParam(':semester', $selected_semester);
+            $stmt_major->execute();
+            $majors = $stmt_major->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $selected_major = isset($_POST['major']) ? $_POST['major'] : '';
+        // echo($_POST['major']);
 
         // Initialize an empty array for students
         $sids = [];
 
         // If both school year and semester are selected, fetch students
-        if ($selected_school_year && $selected_semester) {
+        if ($selected_school_year && $selected_semester && $selected_major) {
             $sql_sid = "SELECT DISTINCT basicinfo.sid FROM interview_record 
                         JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
                         WHERE interview_record.school_year = :school_year 
-                        AND interview_record.semester = :semester";
+                        AND interview_record.semester = :semester 
+                        AND basicinfo.major = :major";
             $stmt_sid = $conn->prepare($sql_sid);
             $stmt_sid->bindParam(':school_year', $selected_school_year);
             $stmt_sid->bindParam(':semester', $selected_semester);
+            $stmt_sid->bindParam(':major', $selected_major);
             $stmt_sid->execute();
             $sids = $stmt_sid->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -178,7 +195,7 @@
                 $selected_sid = isset($_POST['s_uid']) ? $_POST['s_uid'] : '';
                 if ($selected_sid) {
                     
-                    $sql_records = "SELECT interview_record.* 
+                    $sql_records = "SELECT interview_record.* , basicinfo.major
                         FROM interview_record join basicinfo 
                         WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :s_uid
                         and interview_record.school_year = :school_year and interview_record.semester = :semester";
@@ -189,6 +206,8 @@
                     $stmt_records->bindParam(':semester', $selected_semester);
                     $stmt_records->execute();
                     $records = $stmt_records->fetch(PDO::FETCH_ASSOC);
+
+                    $major = $records['major'];
                     
                     $s_uid = $records['s_uid'];
                     $school_year = $records['school_year'];
@@ -267,6 +286,14 @@
                     ?>
                 </select>
 
+                <label for="major"><span style="color: black; font-weight: bold; font-size: 20px;">選擇系名：</span></label>
+                <select id="major" name="major" required onchange="this.form.submit()">
+                    <option value="" disabled <?php echo empty($selected_major) ? 'selected' : ''; ?>>選擇學期</option>
+                    <?php foreach ($majors as $major) { ?>
+                        <option value="<?php echo $major['major']; ?>"><?php echo $major['major']; ?></option>
+                    <?php } ?>
+                </select>
+
                 <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學生：</span></label>
                 <select id="s_uid" name="s_uid" required>
                     <option value="" disabled selected>選擇學生</option>
@@ -285,6 +312,7 @@
                     <p></p>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($selected_school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($selected_semester);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">系名：<?php echo($major);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_sid);?></span></label>
                     <p></p>
                     <p></p>

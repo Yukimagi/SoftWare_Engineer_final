@@ -175,7 +175,7 @@
                 $selected_sid = isset($_POST['s_uid']) ? $_POST['s_uid'] : '';
                 if ($selected_sid) {
                     
-                    $sql_records = "SELECT interview_record.* 
+                    $sql_records = "SELECT interview_record.* , basicinfo.major
                         FROM interview_record join basicinfo 
                         WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :s_uid
                         and interview_record.school_year = :school_year and interview_record.semester = :semester";
@@ -186,6 +186,8 @@
                     $stmt_records->bindParam(':semester', $selected_semester);
                     $stmt_records->execute();
                     $records = $stmt_records->fetch(PDO::FETCH_ASSOC);
+
+                    $major = $records['major'];
                     
                     $s_uid = $records['s_uid'];
                     $school_year = $records['school_year'];
@@ -282,6 +284,7 @@
                     <p></p>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($selected_school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($selected_semester);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">系名：<?php echo($major);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_sid);?></span></label>
                     <p></p>
                     <p></p>

@@ -167,7 +167,7 @@
             '','$landlord_name', '$landlord_phone', '$address', '$housing_type', '$room_type', '$money', '$deposit', '$q0', '$q1', '$q2', 
             '$q3', '$q4', '$q5', '$q6', '$q7', '$q8', '$q9', '$q10', '$q11', '$q12', '$q13', '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '', '')";
-            echo($sql_insert);
+            // echo($sql_insert);
             $result = $conn->query($sql_insert);
             echo "<script>alert('訪談填寫完成！'); window.location.href='IS_Home.php';</script>";
 
@@ -178,7 +178,7 @@
         // Check if the student has already filled out the form
         $sql_check = "SELECT 
             (SELECT COUNT(*) FROM interview_record WHERE s_uid = '$uid' AND school_year = rs.school_year AND semester = rs.semester) AS filled_count,
-            (SELECT COUNT(*) FROM interview_record 
+            (SELECT COUNT(*) FROM record_settings 
             WHERE (school_year, semester) IN (
                 SELECT school_year, semester FROM record_settings WHERE is_open = 1
             )) AS open_count
