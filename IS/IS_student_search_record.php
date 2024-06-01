@@ -125,10 +125,29 @@
 
         // Fetch all student s_uids for the dropdown
         // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
-        $sql_students = "SELECT basicinfo.sid, school_year, semester FROM interview_record join basicinfo where basicinfo.uid=interview_record.s_uid AND s_uid='$uid' ";
-        // echo($sql_students);
-        $result_students = $conn->query($sql_students);
-        $students = $result_students->fetchAll(PDO::FETCH_ASSOC);
+        // 獲取學年
+        $sql_school_year = "SELECT DISTINCT school_year FROM interview_record where s_uid='$uid'";
+        $stmt_school_year = $conn->query($sql_school_year);
+        $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);
+
+        // 準備獲取學期的 SQL 查詢
+        $sql_semester = "SELECT DISTINCT semester FROM interview_record WHERE interview_record.school_year = :school_year and s_uid='$uid'";
+        $stmt_semester = $conn->prepare($sql_semester);
+
+        // 初始化用來保存學期的數組
+        $all_semesters = [];
+
+        foreach ($school_years as $year) {
+            // 綁定學年參數並執行查詢
+            $stmt_semester->bindParam(':school_year', $year['school_year']);
+            $stmt_semester->execute();
+            
+            // 獲取當前學年的學期
+            $semesters = $stmt_semester->fetchAll(PDO::FETCH_ASSOC);
+            
+            // 添加結果到 all_semesters 數組
+            $all_semesters[$year['school_year']] = $semesters;
+        }
 
         ?>
         <?php       
@@ -181,27 +200,47 @@
         <div class="container">
             <div class="center">
                 
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <input type="hidden" name="form_identifier" value="form1">
+                <form id="open_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <input type="hidden" name="form_identifier" value="form1">
 
-                <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
-                <select id="school_year" name="school_year" required>
-                    <option value="" disabled selected>選擇學年</option>
-                    <?php foreach ($students as $row) { ?>
-                        <option value="<?php echo $row['school_year']; ?>"><?php echo $row['school_year']; ?></option>
-                    <?php } ?>
-                </select>
+                        <label for="select_school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
+                        <select id="select_school_year" name="school_year" required>
+                            <option value="" disabled selected>選擇學年</option>
+                            <?php foreach ($school_years as $row1) { ?>
+                                <option value="<?php echo $row1['school_year']; ?>"><?php echo $row1['school_year']; ?></option>
+                            <?php } ?>
+                        </select>
 
-                <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
-                <select id="semester" name="semester" required>
-                    <option value="" disabled selected>選擇學期</option>
-                    <?php foreach ($students as $row) { ?>
-                        <option value="<?php echo $row['semester']; ?>"><?php echo $row['semester']; ?></option>
-                    <?php } ?>
-                </select>
+                        <label for="select_semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
+                        <select id="select_semester" name="semester" required>
+                            <option value="" disabled selected>選擇學期</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
 
-                <button type="submit" class="send-button">送出</button>
-            </form>
+                        <button type="submit" class="send-button">送出</button>
+                </form>
+                <script>
+                    // JavaScript to dynamically update the semester dropdown
+                    const allSemesters = <?php echo json_encode($all_semesters); ?>;
+
+                    document.getElementById('select_school_year').addEventListener('change', function() {
+                        const schoolYear = this.value;
+                        const semesterDropdown = document.getElementById('select_semester');
+
+                        // Clear the current options
+                        semesterDropdown.innerHTML = '<option value="" disabled selected>選擇學期</option>';
+
+                        // Add new options based on the selected school year
+                        if (allSemesters[schoolYear]) {
+                            allSemesters[schoolYear].forEach(function(semester) {
+                                const option = document.createElement('option');
+                                option.value = semester.semester;
+                                option.textContent = semester.semester;
+                                semesterDropdown.appendChild(option);
+                            });
+                        }
+                    });
+                </script>
 
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
