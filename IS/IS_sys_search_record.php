@@ -125,98 +125,114 @@
         <?php
         // Assuming $conn is your database connection
 
-
-        // Fetch all student s_uids for the dropdown
-        // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
-
+        // Fetch all school years for the dropdown
         $sql_school_year = "SELECT DISTINCT school_year FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid";
         $stmt_school_year = $conn->query($sql_school_year);
         $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);
 
-        // Step 2: Prepare the SQL query for fetching distinct semesters
+        // Prepare the SQL query for fetching distinct semesters
         $sql_semester = "SELECT DISTINCT semester FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid WHERE interview_record.school_year = :school_year";
         $stmt_semester = $conn->prepare($sql_semester);
 
-        // Step 3: Initialize an array to hold semesters for each school year
+        // Initialize an array to hold semesters for each school year
         $all_semesters = [];
 
         foreach ($school_years as $year) {
-            // Step 4: Bind the school year parameter and execute the query
+            // Bind the school year parameter and execute the query
             $stmt_semester->bindParam(':school_year', $year['school_year']);
             $stmt_semester->execute();
-            
-            // Step 5: Fetch semesters for the current school year
+
+            // Fetch semesters for the current school year
             $semesters = $stmt_semester->fetchAll(PDO::FETCH_ASSOC);
-            
-            // Step 6: Add the result to the all_semesters array
+
+            // Add the result to the all_semesters array
             $all_semesters[$year['school_year']] = $semesters;
         }
 
-        $sql_sid = "SELECT distinct basicinfo.sid FROM interview_record join basicinfo where basicinfo.uid=interview_record.s_uid AND interview_record.school_year = :school_year AND interview_record.semester = :semester";
-        $stmt_semester = $conn->prepare($sql_sid);
-        $stmt_semester->bindParam(':school_year', $year['school_year']);
+        // Initialize variables for selected values
+        $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
+        $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
+        
 
+        // Initialize an empty array for students
+        $sids = [];
+
+        // If both school year and semester are selected, fetch students
+        if ($selected_school_year && $selected_semester) {
+            $sql_sid = "SELECT DISTINCT basicinfo.sid FROM interview_record 
+                        JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
+                        WHERE interview_record.school_year = :school_year 
+                        AND interview_record.semester = :semester";
+            $stmt_sid = $conn->prepare($sql_sid);
+            $stmt_sid->bindParam(':school_year', $selected_school_year);
+            $stmt_sid->bindParam(':semester', $selected_semester);
+            $stmt_sid->execute();
+            $sids = $stmt_sid->fetchAll(PDO::FETCH_ASSOC);
+        }
         ?>
         <?php       
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
-                $selected_student = $_POST['s_uid'];
-                $selected_school_year = $_POST['school_year'];
-                $selected_semester = $_POST['semester'];
-                $sql_records = "SELECT interview_record.* FROM interview_record join basicinfo WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :sid
-                    and interview_record.school_year = :school_year and interview_record.semester = :semester";
-                
-                $stmt_records = $conn->prepare($sql_records);
-                $stmt_records->bindParam(':sid', $selected_student);
-                $stmt_records->bindParam(':school_year', $selected_school_year);
-                $stmt_records->bindParam(':semester', $selected_semester);
-                $stmt_records->execute();
-                $records = $stmt_records->fetch(PDO::FETCH_ASSOC);
-                
-                $s_uid = $records['s_uid'];
-                $school_year = $records['school_year'];
-                $semester = $records['semester'];
-                $landlord_name = $records['landlord_name'];
-                $landlord_phone = $records['landlord_phone'];
-                $address = $records['address'];
-                $housing_type = $records['housing_type'];
-                $room_type = $records['room_type'];
-                $money = $records['money'];
-                $deposit = $records['deposit'];
-                $q0 = $records['q0'];
-                $q1 = $records['q1'];
-                $q2 = $records['q2'];
-                $q3 = $records['q3'];
-                $q4 = $records['q4'];
-                $q5 = $records['q5'];
-                $q6 = $records['q6'];
-                $q7 = $records['q7'];
-                $q8 = $records['q8'];
-                $q9 = $records['q9'];
-                $q10 = $records['q10'];
-                $q11 = $records['q11'];
-                $q12 = $records['q12'];
-                $q13 = $records['q13'];
+                $selected_sid = isset($_POST['s_uid']) ? $_POST['s_uid'] : '';
+                if ($selected_sid) {
+                    
+                    $sql_records = "SELECT interview_record.* 
+                        FROM interview_record join basicinfo 
+                        WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :s_uid
+                        and interview_record.school_year = :school_year and interview_record.semester = :semester";
+                    
+                    $stmt_records = $conn->prepare($sql_records);
+                    $stmt_records->bindParam(':s_uid', $selected_sid);
+                    $stmt_records->bindParam(':school_year', $selected_school_year);
+                    $stmt_records->bindParam(':semester', $selected_semester);
+                    $stmt_records->execute();
+                    $records = $stmt_records->fetch(PDO::FETCH_ASSOC);
+                    
+                    $s_uid = $records['s_uid'];
+                    $school_year = $records['school_year'];
+                    $semester = $records['semester'];
+                    $landlord_name = $records['landlord_name'];
+                    $landlord_phone = $records['landlord_phone'];
+                    $address = $records['address'];
+                    $housing_type = $records['housing_type'];
+                    $room_type = $records['room_type'];
+                    $money = $records['money'];
+                    $deposit = $records['deposit'];
+                    $q0 = $records['q0'];
+                    $q1 = $records['q1'];
+                    $q2 = $records['q2'];
+                    $q3 = $records['q3'];
+                    $q4 = $records['q4'];
+                    $q5 = $records['q5'];
+                    $q6 = $records['q6'];
+                    $q7 = $records['q7'];
+                    $q8 = $records['q8'];
+                    $q9 = $records['q9'];
+                    $q10 = $records['q10'];
+                    $q11 = $records['q11'];
+                    $q12 = $records['q12'];
+                    $q13 = $records['q13'];
 
-                $tq0 = $records["tq0"];
-                $tq1 = $records["tq1"];
-                $tq2 = $records["tq2"];
-                $tq2_detail = $records["tq2_detail"];
-                $tq3 = $records["tq3"];
-                $tq3_detail = $records["tq3_detail"];
-                $tq4 = $records["tq4"];
-                $tq4_detail = $records["tq4_detail"];
-                $tq5 = $records["tq5"];
-                $tq6 = $records["tq6"];
-                $tq6_detail = $records["tq6_detail"];
-                $tq7 = $records["tq7"];
-                $tq8_1 = $records["tq8_1"];
-                $tq8_2 = $records["tq8_2"];
-                $tq8_3 = $records["tq8_3"];
-                $tq8_4 = $records["tq8_4"];
-                $tq8_detail = $records["tq8_detail"];
+                    $tq0 = $records["tq0"];
+                    $tq1 = $records["tq1"];
+                    $tq2 = $records["tq2"];
+                    $tq2_detail = $records["tq2_detail"];
+                    $tq3 = $records["tq3"];
+                    $tq3_detail = $records["tq3_detail"];
+                    $tq4 = $records["tq4"];
+                    $tq4_detail = $records["tq4_detail"];
+                    $tq5 = $records["tq5"];
+                    $tq6 = $records["tq6"];
+                    $tq6_detail = $records["tq6_detail"];
+                    $tq7 = $records["tq7"];
+                    $tq8_1 = $records["tq8_1"];
+                    $tq8_2 = $records["tq8_2"];
+                    $tq8_3 = $records["tq8_3"];
+                    $tq8_4 = $records["tq8_4"];
+                    $tq8_detail = $records["tq8_detail"];
+                }
             }
         }        
         ?>
@@ -224,21 +240,31 @@
         <div class="container">
             <div class="center">
                 
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="myForm">
                 <input type="hidden" name="form_identifier" value="form1">
 
                 <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
-                <select id="school_year" name="school_year" required>
-                    <option value="" disabled selected>選擇學年</option>
+                <select id="school_year" name="school_year" required onchange="this.form.submit()">
+                    <option value="" disabled <?php echo empty($selected_school_year) ? 'selected' : ''; ?>>選擇學年</option>
                     <?php foreach ($school_years as $row1) { ?>
-                        <option value="<?php echo $row1['school_year']; ?>"><?php echo $row1['school_year']; ?></option>
+                        <option value="<?php echo $row1['school_year']; ?>" <?php echo ($row1['school_year'] == $selected_school_year) ? 'selected' : ''; ?>>
+                            <?php echo $row1['school_year']; ?>
+                        </option>
                     <?php } ?>
                 </select>
 
                 <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
-                <select id="semester" name="semester" required>
-                    <option value="" disabled selected>選擇學期</option>
-                    <!-- Options will be populated by JavaScript -->
+                <select id="semester" name="semester" required onchange="this.form.submit()">
+                    <option value="" disabled <?php echo empty($selected_semester) ? 'selected' : ''; ?>>選擇學期</option>
+                    <?php
+                    if (!empty($selected_school_year)) {
+                        foreach ($all_semesters[$selected_school_year] as $semester) { ?>
+                            <option value="<?php echo $semester['semester']; ?>" <?php echo ($semester['semester'] == $selected_semester) ? 'selected' : ''; ?>>
+                                <?php echo $semester['semester']; ?>
+                            </option>
+                        <?php }
+                    }
+                    ?>
                 </select>
 
                 <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學生：</span></label>
@@ -251,36 +277,15 @@
 
                 <button type="submit" class="send-button">送出</button>
             </form>
-            <script>
-                // JavaScript to dynamically update the semester dropdown
-                const allSemesters = <?php echo json_encode($all_semesters); ?>;
-
-                document.getElementById('school_year').addEventListener('change', function() {
-                    const schoolYear = this.value;
-                    const semesterDropdown = document.getElementById('semester');
-
-                    // Clear the current options
-                    semesterDropdown.innerHTML = '<option value="" disabled selected>選擇學期</option>';
-
-                    // Add new options based on the selected school year
-                    if (allSemesters[schoolYear]) {
-                        allSemesters[schoolYear].forEach(function(semester) {
-                            const option = document.createElement('option');
-                            option.value = semester.semester;
-                            option.textContent = semester.semester;
-                            semesterDropdown.appendChild(option);
-                        });
-                    }
-                });
-            </script>
+            
 
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
                     <p></p>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_student);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($selected_school_year);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($selected_semester);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_sid);?></span></label>
                     <p></p>
                     <p></p>
 

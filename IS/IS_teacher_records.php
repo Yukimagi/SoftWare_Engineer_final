@@ -237,7 +237,7 @@
 
         // echo($hasnot_filled_form);
         // echo($has_open);
-        
+    if ($has_open) {
         ?>
         
         <div class="container">
@@ -258,7 +258,7 @@
             </form>
                  
 
-        <?php if (!$hasnot_filled_form && $has_open) {?>
+        <?php if (!$hasnot_filled_form) {?>
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
@@ -649,6 +649,9 @@
         } else {
             if ($records)echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
         }
+    } else {
+        echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";
+    }
         ?>
         
         <!-- Footer-->
