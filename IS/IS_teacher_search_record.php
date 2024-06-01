@@ -190,6 +190,7 @@
                     $s_uid = $records['s_uid'];
                     $school_year = $records['school_year'];
                     $semester = $records['semester'];
+                    $date_time = $records['date_time'];
                     $landlord_name = $records['landlord_name'];
                     $landlord_phone = $records['landlord_phone'];
                     $address = $records['address'];
@@ -284,6 +285,13 @@
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_sid);?></span></label>
                     <p></p>
                     <p></p>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+
+                        <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
+                        <input type="text" id="date_time" name="date_time" value="<?php echo $date_time; ?>" class="underline-input">
+
+                    </div>
 
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
                     <p></p>

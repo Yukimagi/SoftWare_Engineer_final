@@ -138,6 +138,20 @@
         $result_students = $conn->query($sql_students);
         $students = $result_students->fetchAll(PDO::FETCH_ASSOC);
 
+        $sql_record_uid = "SELECT interview_record.record_uid 
+                FROM interview_record 
+                INNER JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
+                INNER JOIN record_settings ON interview_record.school_year = record_settings.school_year 
+                                            AND interview_record.semester = record_settings.semester 
+                WHERE t_uid = '$uid' 
+                    AND tq6 = '' 
+                    AND record_settings.is_open = 1";
+
+        $result_record_uid = $conn->query($sql_record_uid);
+        $record_uid = $result_record_uid->fetch(PDO::FETCH_ASSOC);
+
+
+
         ?>
         <?php       
 
@@ -203,11 +217,14 @@
                 $tq8_4 = $_POST["tq8_4"];
                 $tq8_detail = $_POST["tq8_detail"];
 
-                $sql_insert = "UPDATE interview_record SET tq0 = '$tq0', tq1 = '$tq1', tq2 = '$tq2', tq2_detail = '$tq2_detail', tq3 = '$tq3', tq3_detail = '$tq3_detail',
-                tq4 = '$tq4', tq4_detail = '$tq4_detail', tq5 = '$tq5', tq6 = '$tq6', tq6_detail = '$tq6_detail', tq7 = '$tq7', tq8_1 = '$tq8_1', tq8_2 = '$tq8_2',
-                tq8_3 = '$tq8_3', tq8_4 = '$tq8_4', tq8_detail = '$tq8_detail' where t_uid = '$uid'";
+                $date_time = $_POST["date_time"];
 
-                echo($sql_insert);
+                $sql_insert = "UPDATE interview_record SET date_time = '$date_time', tq0 = '$tq0', tq1 = '$tq1', tq2 = '$tq2', tq2_detail = '$tq2_detail', tq3 = '$tq3', tq3_detail = '$tq3_detail',
+                tq4 = '$tq4', tq4_detail = '$tq4_detail', tq5 = '$tq5', tq6 = '$tq6', tq6_detail = '$tq6_detail', tq7 = '$tq7', tq8_1 = '$tq8_1', tq8_2 = '$tq8_2',
+                tq8_3 = '$tq8_3', tq8_4 = '$tq8_4', tq8_detail = '$tq8_detail' WHERE t_uid = '$uid' AND record_uid = '{$record_uid['record_uid']}'";
+
+
+                // echo($sql_insert);
                 $result = $conn->query($sql_insert);
                 echo "<script>alert('訪談填寫完成！'); window.location.href='IS_teacher_records.php';</script>";
             }
@@ -267,6 +284,14 @@
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_student);?></span></label>
                     <p></p>
+                    <p></p>
+
+                    <div class="form-row" style="display: flex; align-items: center;">
+
+                        <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
+                        <input type="text" id="date_time" name="date_time" value="" class="underline-input">
+
+                    </div>
                     <p></p>
 
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
