@@ -198,7 +198,7 @@
 
         // 根据条件显示信息
 
-        if (!$has_open) {
+        if ($has_open) {
             if(!$has_filled_form) {
         ?>
 
