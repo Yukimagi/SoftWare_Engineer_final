@@ -168,6 +168,9 @@
                                     case 'minScore':
                                         $sql_query .= "avg_score ASC";
                                         break;
+                                    case 'newObj':
+                                        $sql_query .= "contact_object.objID DESC";
+                                        break;
                                     default:
                                         $sql_query .= "contact_object.objID ASC";
                                         break;
@@ -233,6 +236,7 @@
                             <form id="sort-form" method="get" action="CPS_OBJ.php">
                                 <select class="form-select" id="sort-by" name="sortOption">
                                     <option value="objID">按物件代號</option>
+                                    <option value="newObj">最新物件</option>
                                     <option value="maxScore">最高分</option>
                                     <option value="minScore">最低分</option>
                                 </select>
