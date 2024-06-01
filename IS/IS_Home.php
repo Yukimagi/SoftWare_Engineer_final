@@ -163,7 +163,7 @@
             }
             
 
-            $sql_insert = "INSERT INTO interview_record values ('$new_id', '$uid', '2024', '2', (SELECT tuid FROM basicinfo WHERE uid = '$uid'), 
+            $sql_insert = "INSERT INTO interview_record values ('$new_id', '$uid', (SELECT school_year FROM record_settings WHERE is_open = 1), (SELECT semester FROM record_settings WHERE is_open = 1), (SELECT tuid FROM basicinfo WHERE uid = '$uid'), 
             '$landlord_name', '$landlord_phone', '$address', '$housing_type', '$room_type', '$money', '$deposit', '$q0', '$q1', '$q2', 
             '$q3', '$q4', '$q5', '$q6', '$q7', '$q8', '$q9', '$q10', '$q11', '$q12', '$q13', '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '', '')";
@@ -176,14 +176,29 @@
         // $uid = 'current_student_id'; // This should be set to the actual current student's UID
 
         // Check if the student has already filled out the form
-        $sql_check = "SELECT COUNT(*) AS count FROM `interview_record` WHERE s_uid = '$uid'";
+        $sql_check = "SELECT 
+            (SELECT COUNT(*) FROM interview_record WHERE s_uid = '$uid' AND school_year = rs.school_year AND semester = rs.semester) AS filled_count,
+            (SELECT COUNT(*) FROM interview_record 
+            WHERE (school_year, semester) IN (
+                SELECT school_year, semester FROM record_settings WHERE is_open = 1
+            )) AS open_count
+        FROM
+            record_settings rs
+        WHERE
+            rs.is_open = 1;
+        ";
+
+
         $stmt = $conn->prepare($sql_check);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $has_filled_form = $row['count'] > 0;
+        $has_filled_form = $row['filled_count'] > 0;
+        $has_open = $row['open_count'] > 0;
 
-        if (!$has_filled_form) {
+        // 根据条件显示信息
+
+        if (!$has_filled_form && !$has_open) {
         ?>
 
         
