@@ -123,7 +123,6 @@
         </header>
         <!-- Page content-->
         <?php
-        // Assuming $conn is your database connection
 
         // Fetch all school years for the dropdown
         $sql_school_year = "SELECT DISTINCT school_year FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid";
@@ -152,7 +151,7 @@
         // Initialize variables for selected values
         $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
         $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
-        
+
         // Initialize an empty array for students
         $sids = [];
 
@@ -168,10 +167,9 @@
             $stmt_sid->execute();
             $sids = $stmt_sid->fetchAll(PDO::FETCH_ASSOC);
         }
-        
         ?>
-        <?php       
 
+        <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
@@ -179,140 +177,99 @@
                 $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
                 $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
 
-                $sql_records = "SELECT interview_record.* , basicinfo.sid FROM interview_record JOIN basicinfo 
-                                ON interview_record.s_uid = basicinfo.uid WHERE 1=1";
+                // Fetch students who have not filled the form
+                $sql_records_unwrite = "SELECT basicinfo.sid
+                                        FROM basicinfo
+                                        LEFT JOIN interview_record 
+                                        ON basicinfo.uid = interview_record.s_uid 
+                                        AND interview_record.school_year = :school_year 
+                                        AND interview_record.semester = :semester
+                                        WHERE interview_record.s_uid IS NULL";
+                $stmt_records_unwrite = $conn->prepare($sql_records_unwrite);
+                $stmt_records_unwrite->bindParam(':school_year', $selected_school_year);
+                $stmt_records_unwrite->bindParam(':semester', $selected_semester);
+                $stmt_records_unwrite->execute();
+                $records_unwrite = $stmt_records_unwrite->fetchAll(PDO::FETCH_ASSOC);
 
-                if ($selected_sid) {
-                    $sql_records .= " AND basicinfo.sid = :s_uid";
-                }
-                if ($selected_school_year) {
-                    $sql_records .= " AND interview_record.school_year = :school_year";
-                }
-                if ($selected_semester) {
-                    $sql_records .= " AND interview_record.semester = :semester";
-                }
-
-                $stmt_records = $conn->prepare($sql_records);
-
-                if ($selected_sid) {
-                    $stmt_records->bindParam(':s_uid', $selected_sid);
-                }
-                if ($selected_school_year) {
-                    $stmt_records->bindParam(':school_year', $selected_school_year);
-                }
-                if ($selected_semester) {
-                    $stmt_records->bindParam(':semester', $selected_semester);
-                }
-                // echo($sql_records);
-                $stmt_records->execute();
-                $records = $stmt_records->fetchAll(PDO::FETCH_ASSOC);
-
-                // Process $records as needed
-                
+                // Fetch students who have filled the form
+                $sql_records_write = "SELECT basicinfo.sid, interview_record.*
+                                    FROM basicinfo
+                                    JOIN interview_record 
+                                    ON basicinfo.uid = interview_record.s_uid 
+                                    WHERE interview_record.school_year = :school_year 
+                                    AND interview_record.semester = :semester";
+                $stmt_records_write = $conn->prepare($sql_records_write);
+                $stmt_records_write->bindParam(':school_year', $selected_school_year);
+                $stmt_records_write->bindParam(':semester', $selected_semester);
+                $stmt_records_write->execute();
+                $records_write = $stmt_records_write->fetchAll(PDO::FETCH_ASSOC);
             }
-        }        
+        }
         ?>
-        
+
         <div class="container">
             <div class="center">
-                
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="form1">
-                <input type="hidden" name="form_identifier" value="form1">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="form1">
+                    <input type="hidden" name="form_identifier" value="form1">
 
-                <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
-                <select id="school_year" name="school_year" onchange="this.form.submit()">
-                    <option value="" <?php echo empty($selected_school_year) ? 'selected' : ''; ?>>選擇學年</option>
-                    <?php foreach ($school_years as $row1) { ?>
-                        <option value="<?php echo $row1['school_year']; ?>" <?php echo ($row1['school_year'] == $selected_school_year) ? 'selected' : ''; ?>>
-                            <?php echo $row1['school_year']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-
-                <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
-                <select id="semester" name="semester" onchange="this.form.submit()">
-                    <option value="">選擇學期</option>
-                    
-                    <?php
-                    if (!empty($selected_school_year)) {
-                        foreach ($all_semesters[$selected_school_year] as $semester) { ?>
-                            <option value="<?php echo $semester['semester']; ?>" <?php echo ($semester['semester'] == $selected_semester) ? 'selected' : ''; ?>>
-                                <?php echo $semester['semester']; ?>
+                    <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
+                    <select id="school_year" name="school_year" onchange="this.form.submit()">
+                        <option value="" <?php echo empty($selected_school_year) ? 'selected' : ''; ?>>選擇學年</option>
+                        <?php foreach ($school_years as $row1) { ?>
+                            <option value="<?php echo $row1['school_year']; ?>" <?php echo ($row1['school_year'] == $selected_school_year) ? 'selected' : ''; ?>>
+                                <?php echo $row1['school_year']; ?>
                             </option>
-                        <?php }
-                    }
-                    ?>
-                </select>
+                        <?php } ?>
+                    </select>
 
-                <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學生：</span></label>
-                <select id="s_uid" name="s_uid">
-                    <option value="" <?php echo ($selected_sid == '') ? 'selected' : ''; ?>>選擇學生</option>
-                    <?php foreach ($sids as $row3) { ?>
-                        <option value="<?php echo $row3['sid']; ?>"><?php echo $row3['sid']; ?></option>
-                    <?php } ?>
-                </select>
-                
-            </form>
-            
-
-            <?php if ($records) { ?>
-                <form id="form2" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <input type="hidden" name="form_identifier" value="form2">
-                    <p></p>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($selected_school_year);?></span></label>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($selected_semester);?></span></label>
-                    <p></p>
-                    <p></p>
-                    <?php foreach ($records as $record) {
-                        $s_uid = $record['s_uid']; 
-                        $sids = $record['sid'];                       
-
-                        $sql_check = "SELECT COUNT(*) as count
-                            FROM interview_record
-                            WHERE s_uid = '$s_uid' AND tq6 != '' ";
-
-                        if ($selected_school_year) {
-                            $sql_records .= " AND interview_record.school_year = :school_year";
+                    <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
+                    <select id="semester" name="semester" onchange="this.form.submit()">
+                        <option value="">選擇學期</option>
+                        <?php
+                        if (!empty($selected_school_year)) {
+                            foreach ($all_semesters[$selected_school_year] as $semester) { ?>
+                                <option value="<?php echo $semester['semester']; ?>" <?php echo ($semester['semester'] == $selected_semester) ? 'selected' : ''; ?>>
+                                    <?php echo $semester['semester']; ?>
+                                </option>
+                            <?php }
                         }
-                        if ($selected_semester) {
-                            $sql_records .= " AND interview_record.semester = :semester";
-                        }
-                        
-                        $stmt_form = $conn->prepare($sql_check);
-                        if ($selected_school_year) {
-                            $stmt_records->bindParam(':school_year', $selected_school_year);
-                        }
-                        if ($selected_semester) {
-                            $stmt_records->bindParam(':semester', $selected_semester);
-                        }
-
-                        $stmt_form->execute();
-                        $forms = $stmt_form->fetch(PDO::FETCH_ASSOC);
-
-                        $has_filled_form = $forms['count'];
-                        
                         ?>
-                        
-                        <a href="IS_sys_search_record.php?r_place=<?php echo $sids; ?>">
-                            <label for="s_uid"><span style=" font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
-                            <?php if ($has_filled_form > 0) {
-                                echo '<label for="has_filled_form"><span style="color: black; font-weight: bold; font-size: 20px;">已填寫<?php echo $s_uid; ?></span></label>';
-                            } else {
-                                echo '<label for="has_filled_form"><span style="color: red; font-weight: bold; font-size: 20px;">未填寫<?php echo $s_uid; ?></span></label>';
-
-                            } 
-                            ?>
-                        </a>
-                        <p></p>
-                    <?php } ?>
-
-                    <p></p>
-                    <p></p>
-                    
+                    </select>
                 </form>
+
+                <?php if (isset($records_unwrite) && $records_unwrite) { ?>
+                    <div>
+                        <?php foreach ($records_unwrite as $record) {
+                            $s_uid = $record['uid'];
+                            $sids = $record['sid'];
+                            ?>
+                            <a href="IS_sys_search_record.php?s_uid=<?php echo $sids; ?>">
+                                <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
+                                <label for="has_filled_form"><span style="color: red; font-weight: bold; font-size: 20px;">未填寫</span></label>
+                            </a>
+                            <p></p>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($records_write) && $records_write) { ?>
+                    <div>
+                        <?php foreach ($records_write as $record) {
+                            $s_uid = $record['s_uid'];
+                            $sids = $record['sid'];
+                            ?>
+                            <a href="IS_sys_search_record.php?s_uid=<?php echo $sids; ?>">
+                                <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
+                                <label for="has_filled_form"><span style="color: green; font-weight: bold; font-size: 20px;">已填寫</span></label>
+                            </a>
+                            <p></p>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
             </div>
-            <?php }?>
         </div>
+
+
         
         <!-- Footer-->
         <footer class="py-5 bg-dark">
