@@ -285,6 +285,8 @@
                                                 }
                                             } else if ($key === "rid"){
                                                 echo "<input type='hidden' name='$key' value='$value'>";
+                                            }else if($key === "r_up"){
+                                                echo "<input type='hidden' name='$key' value='$value'>";
                                             }
                                             else {
                                                 // 輸出表單欄位，讓使用者修改資料
