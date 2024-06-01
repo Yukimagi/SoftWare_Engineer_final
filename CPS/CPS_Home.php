@@ -163,7 +163,7 @@
                             </div>
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <div class="small text-muted">個人評價物件</div>
+                                    <div class="small text-muted">個人評價紀錄</div>
                                     <a class="btn btn-primary btn-sm custom-btn" href="CPS_personal_review.php">Read more →</a>
                                 </div>
                             </div>

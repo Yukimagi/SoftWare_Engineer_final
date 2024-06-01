@@ -4,7 +4,7 @@
 
 #### CPS_Home.php -> 個人頁面(主頁)
 ##### CPS_personal_review.php -> 個人評價物件
-##### CPS_OBJ.php -> 租屋物件瀏覽
+##### CPS_OBJ.php -> 物件評價
 ##### CPS_addobj.php -> 新增物件
 ##### CPS_Object_Review.php -> 物件評價
 ##### CPS_OBJ_search.php -> 搜尋租屋物件標題(地址)
