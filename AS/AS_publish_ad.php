@@ -216,17 +216,17 @@
         <div class="container">
             <div class="center"> 
                 <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">廣告地點：</span></label><br>
-                    <input type="text" id="title" name="title" value="<?php echo $r_place; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <label for="title"><span style="color: red; font-weight: bold; font-size: 24px;">廣告地點：</span></label><br>
+                    <input type="text" id="title" name="title" value="<?php echo $r_place; ?>"style="width: 800px; height: 40px;" required><br><br>
                     
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">規格：(如:套房、雅房...)</span></label><br>
-                    <input type="text" id="format" name="format" value="<?php echo $r_format; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <label for="title"><span style="color: red; font-weight: bold; font-size: 24px;">規格：(如:套房、雅房...)</span></label><br>
+                    <input type="text" id="format" name="format" value="<?php echo $r_format; ?>"style="width: 800px; height: 40px;" required><br><br>
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">租金：</span></label><br>
-                    <input type="text" id="money" name="money" value="<?php echo $r_money; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <label for="title"><span style="color: red; font-weight: bold; font-size: 24px;">租金：</span></label><br>
+                    <input type="text" id="money" name="money" value="<?php echo $r_money; ?>"style="width: 800px; height: 40px;" required><br><br>
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">押金：</span></label><br>
-                    <input type="text" id="deposit" name="deposit" value="<?php echo $r_deposit; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <label for="title"><span style="color: red; font-weight: bold; font-size: 24px;">押金：</span></label><br>
+                    <input type="text" id="deposit" name="deposit" value="<?php echo $r_deposit; ?>"style="width: 800px; height: 40px; required"><br><br>
 
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">水電費：(如:台水台電)</span></label><br>
                     <input type="text" id="utilitybill" name="utilitybill" value="<?php echo $r_utilitybill; ?>"style="width: 800px; height: 40px;"><br><br>
