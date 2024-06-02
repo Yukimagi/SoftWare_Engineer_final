@@ -124,12 +124,13 @@
                             if (isset($_POST['search-term'])) {
                                 $searchTerm = $_POST['search-term'];
                                 $sql = "SELECT * FROM ad
-                                        WHERE r_place LIKE :searchTerm
+                                        WHERE r_up=1 and
+                                        (r_place LIKE :searchTerm
                                         OR r_format LIKE :searchTerm
                                         OR r_money LIKE :searchTerm
                                         OR r_deposit LIKE :searchTerm
                                         OR r_utilitybill LIKE :searchTerm
-                                        OR r_else LIKE :searchTerm";
+                                        OR r_else LIKE :searchTerm)";
                                 // $result = $conn->query($sql);
                                 $result = $conn->prepare($sql);
                                 $result->execute(['searchTerm' => '%' . $searchTerm . '%']);

@@ -154,7 +154,8 @@
                                         WHERE r_format LIKE '%$housing_type%'
                                         AND r_money <= $rent
                                         AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
-                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')";
+                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')
+                                        and r_up=1";
                                 }
                                 else {
                                     $rent = 5000;
@@ -162,7 +163,8 @@
                                         WHERE r_format LIKE '%$housing_type%'
                                         AND r_money >= $rent
                                         AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
-                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')";
+                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%
+                                        and r_up=1')";
                                 }
                                 $result = $conn->query($sql);
                                 if ($result->rowCount() > 0) {
