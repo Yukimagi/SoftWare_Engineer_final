@@ -162,10 +162,12 @@
             echo "No r_place specified.";
         }
         echo '<button onclick="goBack()">返回</button>';
-        
+
         echo '<form method="post">';
-            echo "<input type='hidden' name='location' value='$r_place'>";
-            if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") echo '<input type="submit" name="collection" value="收藏">';
+        echo "<input type='hidden' name='location' value='$r_place'>";
+        if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") {
+            echo '<input type="submit" name="collection" value="收藏">';
+        }
         echo '</form>';
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -173,28 +175,45 @@
                 // 檢查是否存在地點信息
                 if (isset($_POST['location'])) {
                     $location = $_POST['location'];
-                    // 在這裡執行刪除操作，例如：
-                    // 執行插入相關的程式碼
-                    $sql_query = "INSERT into favorite (uid, rid) select '$uid', rid FROM ad where r_place = '$location';";
-                    
-                    $result = $conn->query($sql_query);
-                    // $row = $result->fetch(PDO::FETCH_ASSOC);
-                    echo "<script>alert('已成功收藏最愛：$location');</script>";
-                    // 重定向回原來的頁面
-                    echo '<a href="AS_Home_ad_information.php?r_place=' . ($location) . '">';
-                    exit();
+
+                    // 檢查該地點是否已經被收藏
+                    $check_query = "SELECT * FROM favorite WHERE uid = :uid AND rid = (SELECT rid FROM ad WHERE r_place = :location)";
+                    $stmt = $conn->prepare($check_query);
+                    $stmt->bindParam(':uid', $uid);
+                    $stmt->bindParam(':location', $location);
+                    $stmt->execute();
+
+                    if ($stmt->rowCount() > 0) {
+                        // 如果已經存在，顯示已收藏的消息
+                        echo "<script>alert('該地點已收藏：$location');</script>";
+                    } else {
+                        // 如果不存在，插入新的收藏記錄
+                        $insert_query = "INSERT INTO favorite (uid, rid) SELECT :uid, rid FROM ad WHERE r_place = :location";
+                        $stmt = $conn->prepare($insert_query);
+                        $stmt->bindParam(':uid', $uid);
+                        $stmt->bindParam(':location', $location);
+                        if ($stmt->execute()) {
+                            echo "<script>alert('已成功收藏最愛：$location');</script>";
+                        } else {
+                            echo "收藏失敗: " . $stmt->errorInfo()[2];
+                        }
+                    }
+
+                    // 使用 JavaScript 进行重定向
+                    echo "<script>window.location.href='AS_Home_ad_information.php?r_place=" . htmlspecialchars($location) . "';</script>";
                 } else {
-                    echo "無法找到要刪除的地點信息";
+                    echo "無法找到要收藏的地點信息";
                 }
             }
         }
+
         $conn = null;
         ?>
         <script>
-            function goBack() {
-                var previousPage = "<?php echo $previous_page; ?>";
-                window.location.href = previousPage;
-            }
+        function goBack() {
+            var previousPage = "<?php echo $previous_page; ?>";
+            window.location.href = previousPage;
+        }
         </script>
         
     </div>
