@@ -116,7 +116,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">租屋物件瀏覽</h1>
+                    <h1 class="fw-bolder">物件評價</h1>
                     
                 </div>
             </div>

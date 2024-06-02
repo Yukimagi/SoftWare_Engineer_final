@@ -231,7 +231,7 @@
 
                     <!-- Sorting widget-->
                     <div class="card mb-4">
-                        <div class="card-header">評價排序</div>
+                        <div class="card-header">物件排序</div>
                         <div class="card-body">
                             <form id="sort-form" method="get" action="CPS_OBJ.php">
                                 <select class="form-select" id="sort-by" name="sortOption">

@@ -122,7 +122,6 @@
             <div class="row">
                 <!-- Blog entries-->
 
-
                     <?php
                         //$title = $content = "";
                         // 檢查是否前一個頁面獲得objID

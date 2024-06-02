@@ -118,7 +118,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">個人評論紀錄</h1>
+                    <h1 class="fw-bolder">個人評價紀錄</h1>
                     
                 </div>
             </div>
