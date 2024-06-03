@@ -36,6 +36,7 @@ if (isset($_POST['uid'])) {
         case 'S':
             $name = $_POST['student_name'];
             $id = $_POST['student_id'];
+            $major = $_POST['student_major'];
             $Tname = $_POST['student_Tname'];
             $grade = $_POST['student_grade'];
             $gender = $_POST['student_gender'];
@@ -49,6 +50,7 @@ if (isset($_POST['uid'])) {
             $sql_query = "UPDATE basicinfo SET 
                 basicinfo.SID = :SID,
                 basicinfo.name = :name,
+                basicinfo.major = :major,
                 basicinfo.grade = :grade,
                 basicinfo.gender = :gender,
                 basicinfo.phone = :phone,
@@ -61,6 +63,7 @@ if (isset($_POST['uid'])) {
             $result = $conn->prepare($sql_query);
             $result->bindParam(":SID", $id);
             $result->bindParam(":name", $name);
+            $result->bindParam(":major", $major);
             $result->bindParam(":grade", $grade);
             $result->bindParam(":gender", $gender);
             $result->bindParam(":phone", $phone);

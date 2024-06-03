@@ -40,6 +40,7 @@ if (isset($_POST['uid'])) {
             case 'S':
                 $name = $_POST['student_name'];
                 $id = $_POST['student_id'];
+                $major = $_POST['student_major'];
                 $Tname = $_POST['student_Tname'];
                 $grade = $_POST['student_grade'];
                 $gender = $_POST['student_gender'];
@@ -57,13 +58,14 @@ if (isset($_POST['uid'])) {
                     $Tid = $teacher_profile['t_uid'];
                 }
     
-                $sql_query = "INSERT INTO basicinfo(`uid`, `tuid`, `SID`, `name`, `grade`, `gender`, `phone`, `email`, `HomeAddr`, `Hphone`, `Contactor`, `Cphone`) VALUES ";
-                $sql_query .= "(:uid, :tuid, :SID, :name, :grade, :gender, :phone, :email, :HomeAddr, :Hphone, :Contactor, :Cphone)";
+                $sql_query = "INSERT INTO basicinfo(`uid`, `tuid`, `SID`, `name`, `major`, `grade`, `gender`, `phone`, `email`, `HomeAddr`, `Hphone`, `Contactor`, `Cphone`) VALUES ";
+                $sql_query .= "(:uid, :tuid, :SID, :name, :major, :grade, :gender, :phone, :email, :HomeAddr, :Hphone, :Contactor, :Cphone)";
                 $result = $conn->prepare($sql_query);
                 $result->bindParam(":uid", $user_id);
                 $result->bindParam(":tuid", $Tid);
                 $result->bindParam(":SID", $id);
                 $result->bindParam(":name", $name);
+                $result->bindParam(":major", $major);
                 $result->bindParam(":grade", $grade);
                 $result->bindParam(":gender", $gender);
                 $result->bindParam(":phone", $phone);
