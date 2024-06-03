@@ -123,9 +123,7 @@
         </header>
         <!-- Page content-->
         <?php
-        // Assuming $conn is your database connection
-
-        // Fetch all school years for the dropdown
+        
         $sql_school_year = "SELECT DISTINCT school_year FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid";
         $stmt_school_year = $conn->query($sql_school_year);
         $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);

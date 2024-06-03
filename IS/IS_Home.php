@@ -196,7 +196,7 @@
         $has_filled_form = $row['filled_count'] > 0;
         $has_open = $row['open_count'] > 0;
 
-        // 根据条件显示信息
+        // 根據條件顯示信息
 
         if ($has_open) {
             if(!$has_filled_form) {

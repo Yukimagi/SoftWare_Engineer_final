@@ -120,10 +120,7 @@
         </header>
         <!-- Page content-->
         <?php
-        // Assuming $conn is your database connection
-
-
-        // Fetch all student s_uids for the dropdown
+        
         // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
         $sql_students = "SELECT basicinfo.sid 
                 FROM interview_record 

@@ -120,11 +120,8 @@
         </header>
         <!-- Page content-->
         <?php
-        // Assuming $conn is your database connection
 
-
-        // Fetch all student s_uids for the dropdown
-        // SELECT SID FROM basicinfo JOIN interview_record where basicinfo.uid='U00003' and interview_record.t_uid='U00001'
+        
         // 獲取學年
         $sql_school_year = "SELECT DISTINCT school_year FROM interview_record where s_uid='$uid'";
         $stmt_school_year = $conn->query($sql_school_year);
