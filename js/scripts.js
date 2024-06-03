@@ -46,6 +46,7 @@ function updatemsgForSAS(){
 function updatemsg(){
     var message = '已更新資料';
     alert(message);
+
     window.top.location.href="../lobby.php";
 }
 function updatemsg_relog(){
@@ -62,6 +63,7 @@ function applicationsdenied(){
     var message = '已否決該申請';
     alert(message);
     window.location.href='SAS_ApplicationCensor.php';
+
 }
 function createmsg(){
     var message = '已新增資料';
@@ -74,6 +76,7 @@ function signmissing(){
     window.location.href="lobby.php";
 }
 ////////////////////////////////////////
+
 function iframemanipulate(currentIframeIndex){
     const  iframes = document.querySelectorAll('iframe')
     iframes.forEach((iframe, index) =>{
@@ -111,12 +114,14 @@ function showiframe6(){
 function showiframe7(){
     var currentIframeIndex = 6;
     iframemanipulate(currentIframeIndex);
+
 }
 ////////////////////////////////////////
 function backtoSAS(){
     window.location.href='SAS.php';
 }
 function backtolobby(){
+
     window.top.location.href="../lobby.php";
 }
 function backtoindex(){
@@ -124,6 +129,7 @@ function backtoindex(){
 }
 function backtocensor(){
     window.location.href='SAS_ApplicationCensor.php';
+
 }
 ////////////////////////////////////////
 function deleteconfirm(){
@@ -145,6 +151,8 @@ function deletemsg(){
 function updateconfirm(){
     var confirmation = confirm('是否更改該使用者帳號資訊?');
     if(confirmation){
+
+
         return true;
     }else{
         alert('已取消操作');
@@ -162,6 +170,7 @@ function createconfirm(){
         return false;
     }
 }
+
 ////////////////////////////////////////
 function PermissionEditConfirm(){
     var confirmation = confirm('是否更改該使用者帳號權限?');
@@ -212,3 +221,4 @@ function result_rejected(){
     alert(message);
     window.location.href="../registerindex.php";
 }
+
