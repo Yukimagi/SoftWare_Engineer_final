@@ -47,6 +47,7 @@ function updatemsg(){
     var message = '已更新資料';
     alert(message);
 
+
     window.top.location.href="../lobby.php";
 }
 function updatemsg_relog(){
@@ -64,6 +65,7 @@ function applicationsdenied(){
     alert(message);
     window.location.href='SAS_ApplicationCensor.php';
 
+
 }
 function createmsg(){
     var message = '已新增資料';
@@ -76,6 +78,7 @@ function signmissing(){
     window.location.href="lobby.php";
 }
 ////////////////////////////////////////
+
 
 function iframemanipulate(currentIframeIndex){
     const  iframes = document.querySelectorAll('iframe')
@@ -115,12 +118,14 @@ function showiframe7(){
     var currentIframeIndex = 6;
     iframemanipulate(currentIframeIndex);
 
+
 }
 ////////////////////////////////////////
 function backtoSAS(){
     window.location.href='SAS.php';
 }
 function backtolobby(){
+
 
     window.top.location.href="../lobby.php";
 }
@@ -129,6 +134,7 @@ function backtoindex(){
 }
 function backtocensor(){
     window.location.href='SAS_ApplicationCensor.php';
+
 
 }
 ////////////////////////////////////////
@@ -153,6 +159,8 @@ function updateconfirm(){
     if(confirmation){
 
 
+
+
         return true;
     }else{
         alert('已取消操作');
@@ -170,6 +178,7 @@ function createconfirm(){
         return false;
     }
 }
+
 
 ////////////////////////////////////////
 function PermissionEditConfirm(){
