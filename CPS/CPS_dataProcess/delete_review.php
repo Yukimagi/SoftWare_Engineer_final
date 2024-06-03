@@ -6,7 +6,8 @@ $select_db = @mysql_select_db("rentsystem");
 if(!$select_db) {
     echo '<br>找不到数据库!<br>';
 } else {
-    //獲取前端船的變數
+
+    //獲取前端傳的變數
     if (isset($_POST['uid']) && isset($_POST['objID'])) {
         $uid = $_POST['uid'];
         $objID = $_POST['objID'];
@@ -17,7 +18,8 @@ if(!$select_db) {
         
     } else {
         
-        echo "未收到用戶ID或文章ID";
+
+        echo "未收到用戶ID或物件ID";
     }
 }
 ?>

@@ -116,7 +116,8 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">租屋物件瀏覽</h1>
+
+                    <h1 class="fw-bolder">物件評價</h1>
                     
                 </div>
             </div>
@@ -200,33 +201,7 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
-                    function loveArticle(articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_love.php', 
-                            type: 'POST',
-                            data: { articleID: articleID }, 
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();
-                            }
-                        });
-                    }
-
-                    
-                    function keepArticle(uid, articleID) {
-                        
-                        $.ajax({
-                            url: 'CPS_dataProcess/update_keep.php', 
-                            type: 'POST',
-                            data: { uid: uid, articleID: articleID },
-                            success: function(response) {
-                                // 重新加載頁面
-                                location.reload();      
-                            }
-                        });
-                    }
-
+                      
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     $(document).ready(function() {

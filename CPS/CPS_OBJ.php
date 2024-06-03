@@ -114,7 +114,9 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">租屋物件瀏覽</h1>
+
+                    <h1 class="fw-bolder">物件評價</h1>
+
                     
                 </div>
             </div>
@@ -168,6 +170,11 @@
                                     case 'minScore':
                                         $sql_query .= "avg_score ASC";
                                         break;
+
+                                    case 'newObj':
+                                        $sql_query .= "contact_object.objID DESC";
+                                        break;
+
                                     default:
                                         $sql_query .= "contact_object.objID ASC";
                                         break;
@@ -190,11 +197,6 @@
                                     echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
                                     echo '</div>';
                                     echo '</div>';
-                                        
-                                    /*if (($identity === "SYS")) {
-                                        echo '<li><span>是否不符規範:</span>';
-                                        echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
-                                    }*/
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
                                     echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
@@ -232,11 +234,14 @@
 
                     <!-- Sorting widget-->
                     <div class="card mb-4">
-                        <div class="card-header">評價排序</div>
+
+                        <div class="card-header">物件排序</div>
+
                         <div class="card-body">
                             <form id="sort-form" method="get" action="CPS_OBJ.php">
                                 <select class="form-select" id="sort-by" name="sortOption">
                                     <option value="objID">按物件代號</option>
+                                    <option value="newObj">最新物件</option>
                                     <option value="maxScore">最高分</option>
                                     <option value="minScore">最低分</option>
                                 </select>

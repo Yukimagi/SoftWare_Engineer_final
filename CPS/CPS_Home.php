@@ -163,7 +163,9 @@
                             </div>
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <div class="small text-muted">個人評價物件</div>
+
+                                    <div class="small text-muted">個人評價紀錄</div>
+                                  
                                     <a class="btn btn-primary btn-sm custom-btn" href="CPS_personal_review.php">Read more →</a>
                                 </div>
                             </div>
@@ -201,7 +203,9 @@
                                 if ($result) {
                                     // 輸出查詢結果
                                     while ($row = mysql_fetch_assoc($result)) {
+
                                         // 輸出指定的列
+
                                         echo '<div class="card-body">';
                                         foreach ($row as $key => $value) {
                                             if ($key === "t_uid" || $key === "uid") {
