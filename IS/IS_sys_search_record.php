@@ -310,7 +310,7 @@
                     <p></p>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($selected_school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($selected_semester);?></span></label>
-                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">系名：<?php echo($major);?></span></label>
+                    <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">系名：<?php echo($selected_major);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_sid);?></span></label>
                     <p></p>
                     <p></p>
