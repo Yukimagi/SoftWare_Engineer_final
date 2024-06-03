@@ -23,7 +23,7 @@ if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1){
             <li><a href="index.php">首頁</a></li>
 
 
-            <li><a href="AS/AS_Home/php">廣告平台</a></li>
+            <li><a href="AS/AS_Home.php">廣告平台</a></li>
             <li><a href="CPS/CPS_Home.php">交流平台</a></li>
 
 
