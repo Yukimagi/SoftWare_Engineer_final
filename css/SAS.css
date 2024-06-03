@@ -1,0 +1,142 @@
+ul{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    flex-direction: row;
+}
+li{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    transition-duration: 0.2s;
+    color: #C850C0;
+}
+#title{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    margin: 0;
+    text-align: center;
+}
+hr{
+    border: 0;
+    padding: 2px;
+    background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);
+}
+body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -10;
+}
+#content{
+    margin: 0;
+    padding: 0;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#tablebox{
+    width: 30%;
+}
+#info_table{
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    width: 100%;
+}
+th{
+    width: 30%;
+    text-align: center;
+    vertical-align: center;
+    background-color: #2c3e50;
+    color: white;
+}
+td{
+    background-color: #FFCC70;
+    text-align: center;
+}
+form{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#profilelink{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    color: blue;
+    display: flex;
+    align-items: center;
+}
+#profilelink:hover{
+    cursor: pointer;
+    transition-duration: 0.3s;
+    color: #C850C0;
+}
+#pagination{
+    margin: 0;
+    padding-top: 2%;
+    width: 100%;
+    height: 200px;
+}
+h4{
+    margin: 0;
+    text-align: center;
+}
+.searchForm{
+    display:flex; 
+    align-items:center;
+}
+.searchid{
+    margin-right: 10px;
+}
+.searchname{
+    margin-right: 10px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+.pagination li {
+    margin: 0 5px;
+}
+.pagination li a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #000;
+}
+.pagination li a:hover{
+    color: darkviolet;
+}
+.pagination li a.disabled {
+    color: #999;
+    pointer-events: none;
+    cursor: default;
+}
+.search{
+    width: 60px;
+    height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+}

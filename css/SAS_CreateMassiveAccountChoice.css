@@ -1,0 +1,60 @@
+h1{
+    margin: 0;
+    text-align: center;
+}
+hr{
+    border: 0;
+    padding: 2px;
+    background: repeating-linear-gradient(135deg, #a2a9b6 0px, #a2a9b6 1px, transparent 1px, transparent 6px);
+}
+body{
+    margin: 0;
+}
+#choice_container{
+    padding-top: 50px;
+    text-align: center;
+}
+#choice_container .button{
+    text-decoration: none;
+    width:300px;
+    height: 300px;
+}
+#rightbutton{
+    margin-left: 50px;
+    padding: 0;
+}
+.button{
+    font-size: 40px;
+    display: inline-block;
+    border-radius: 30px;
+    background-color: #8da0a6;
+    border: 5px solid #8da0a6;
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.button span{
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+.button:hover{
+    background-color: transparent;
+}
+.button span::after{
+    content: ">>";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+.button:hover span{
+    padding-right: 70px;
+}
+.button:hover span::after{
+    opacity: 1;
+    right: 0;
+}

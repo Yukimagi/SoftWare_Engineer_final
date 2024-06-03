@@ -1,0 +1,222 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+/* 頁眉樣式 */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+/* 導航欄樣式 */
+nav {
+    float: left;
+    width: 200px;
+    background: #2c3e50;
+    color: #fff;
+    box-sizing: border-box;
+    height: 100vh;
+    overflow-y: auto;
+    transition: width 0.5s;
+    position: relative;
+}
+
+nav hr {
+    position: absolute;
+    bottom: 23vh;
+    width: 100%;
+}
+
+.LoginLink {
+    position: absolute;
+    bottom: 12vh;
+    padding-left: 40px;
+}
+
+/*
+nav:hover {
+    width: 250px;
+}
+*/
+
+nav h2 {
+    margin-top: 0;
+    padding-left: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+nav ul p {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    padding-left: 20px;
+    position: absolute;
+    bottom: 15vh;
+}
+
+nav ul li {
+    padding-left: 20px;
+}
+
+nav ul li a {
+    color: lightskyblue;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    padding: 10px 0;
+}
+
+nav ul li a:hover {
+    color: #3498db;
+}
+#statuspage{
+    padding-left: 10%;
+}
+
+/* 內容區域樣式 */
+.content {
+    float: left;
+    width: calc(100% - 200px);
+    transition: width 0.5s;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -10;
+}
+.option{
+    padding-left: 10%;
+}
+#management_function{
+    position: relative;
+    overflow: hidden;
+}
+#management_function:hover #sys_function{
+    display: block;
+    overflow: visible;
+    z-index: 2;
+    cursor: pointer;
+}
+#manage_button{
+    padding-left: 10%;
+    border: none;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0);
+    font-family: 微軟正黑體;
+    font-size: 16px;
+    color: lightskyblue;
+}
+#manage_button:hover{
+    transition-duration: 0.3s;
+    cursor: pointer;
+    color: #3498db;
+}
+#sys_function{
+    color: springgreen;
+    display: none;
+    overflow: hidden;
+}
+#sys_function:hover{
+    transition-duration: 0.3s;
+    background-color: #3E5873;
+    cursor: pointer;
+}
+/*i-----iframe-----*/
+#user_profile{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#user_delete{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#personaluserdetail{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#createaccountchoice{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#createmassiveaccountchoice{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#permissionedit{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+#applicationcensor{
+    margin: 0;
+    padding: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media only screen and (max-width: 768px) {
+    nav, .content {
+        width: 100%;
+    }
+
+    nav {
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    nav:hover {
+        width: 100%;
+    }
+
+    .content {
+        width: 100%;
+    }
+}
