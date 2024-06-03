@@ -138,7 +138,31 @@
                         {//查table
                             $sql_query = "SELECT * FROM `contact article`";
                             $result = mysql_query($sql_query);
+                            // Check if query execution is successful
+                            if (!$result) {
+                                echo '<br>查詢失敗!<br>';
+                                echo "<script>alert('查詢失敗!');</script>";
+                            } else {
+                                // Fetch the names and average scores for each object
+                                $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'articleID';
 
+                                $sql_query = "SELECT * FROM `contact article`
+                                            ORDER BY ";
+
+                                // 根據排序選項選擇 SQL 排序方式
+                                switch ($sortOption) {
+                                    case 'maxLove':
+                                        $sql_query .= "lovenum DESC";
+                                        break;
+                                    case 'maxKeep':
+                                        $sql_query .= "keepnum DESC";
+                                        break;
+                                    default:
+                                        $sql_query .= "articleID ASC";
+                                        break;
+                                }
+
+                                $result = mysql_query($sql_query);
                             // 查所有文章
                             while ($row = mysql_fetch_assoc($result)) {
                                 $articleID = $row['articleID'];
@@ -176,6 +200,7 @@
                                 echo '</div>';
                                 echo '</div>';
                             }
+                        }
                         }
                     ?>
                     <!-- 記得引入函數-->
@@ -237,7 +262,21 @@
                             </form>
                         </div>
                     </div>
+                        <!-- Sorting widget-->
+                        <div class="card mb-4">
 
+                        <div class="card-header">文章排序</div>
+
+                        <div class="card-body">
+                            <form id="sort-form" method="get" action="CPS_Communicate.php">
+                                <select class="form-select" id="sort-by" name="sortOption">
+                                    <option value="maxLove">最高按讚數</option>
+                                    <option value="maxKeep">最高收藏數</option>
+                                </select>
+                                <button class="btn btn-primary mt-2" type="submit">排序</button>
+                            </form>
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>
