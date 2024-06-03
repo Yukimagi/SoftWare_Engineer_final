@@ -46,7 +46,24 @@ function updatemsgForSAS(){
 function updatemsg(){
     var message = '已更新資料';
     alert(message);
-    window.location.href="lobby.php";
+
+    window.top.location.href="../lobby.php";
+}
+function updatemsg_relog(){
+    var message = '已更新資料，請重新登入';
+    alert(message);
+    window.top.location.href="../logoutprocess.php";
+}
+function applicationsgranted(){
+    var message = '已核准該申請';
+    alert(message);
+    window.location.href='SAS_ApplicationCensor.php';
+}
+function applicationsdenied(){
+    var message = '已否決該申請';
+    alert(message);
+    window.location.href='SAS_ApplicationCensor.php';
+
 }
 function createmsg(){
     var message = '已新增資料';
@@ -59,36 +76,60 @@ function signmissing(){
     window.location.href="lobby.php";
 }
 ////////////////////////////////////////
+
+function iframemanipulate(currentIframeIndex){
+    const  iframes = document.querySelectorAll('iframe')
+    iframes.forEach((iframe, index) =>{
+        if (index === currentIframeIndex){
+            iframe.style.display = 'block';
+        }else{
+            iframe.style.display = 'none';
+        }
+    })
+}
 function showiframe1(){
-    var iframe = document.getElementById('user_profile');
-    var disableiframe1 = document.getElementById('user_delete');
-    iframe.style.display = 'block';
-    disableiframe1.style.display = 'none';
+    var currentIframeIndex = 0;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe2(){
-    var iframe = document.getElementById('user_delete');
-    var disableiframe1 = document.getElementById('user_profile');
-    iframe.style.display = 'block';
-    disableiframe1.style.display = 'none';
+    var currentIframeIndex = 1;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe3(){
-    var iframe = document.getElementById('personaluserdetail');
-    iframe.style.display='block';
+    var currentIframeIndex = 2;
+    iframemanipulate(currentIframeIndex);
 }
 function showiframe4(){
-    var iframe = document.getElementById('createaccountchoice');
-    var disableiframe1 = document.getElementById('user_profile');
-    var disableiframe2 = document.getElementById('user_delete');
-    iframe.style.display='block';
-    disableiframe1.style.display='none';
-    disableiframe2.style.display='none';
+    var currentIframeIndex = 3;
+    iframemanipulate(currentIframeIndex);
+}
+function showiframe5(){
+    var currentIframeIndex = 4;
+    iframemanipulate(currentIframeIndex);
+}
+function showiframe6(){
+    var currentIframeIndex = 5;
+    iframemanipulate(currentIframeIndex);
+}
+function showiframe7(){
+    var currentIframeIndex = 6;
+    iframemanipulate(currentIframeIndex);
+
 }
 ////////////////////////////////////////
 function backtoSAS(){
     window.location.href='SAS.php';
 }
 function backtolobby(){
-    window.top.location.href="lobby.php";
+
+    window.top.location.href="../lobby.php";
+}
+function backtoindex(){
+    window.location.href="index.php";
+}
+function backtocensor(){
+    window.location.href='SAS_ApplicationCensor.php';
+
 }
 ////////////////////////////////////////
 function deleteconfirm(){
@@ -110,8 +151,8 @@ function deletemsg(){
 function updateconfirm(){
     var confirmation = confirm('是否更改該使用者帳號資訊?');
     if(confirmation){
-        window.top.location.href="lobby.php";
-        alert('已更新個人資料');
+
+
         return true;
     }else{
         alert('已取消操作');
@@ -128,5 +169,56 @@ function createconfirm(){
         alert('已取消操作');
         return false;
     }
+}
+
+////////////////////////////////////////
+function PermissionEditConfirm(){
+    var confirmation = confirm('是否更改該使用者帳號權限?');
+    if(confirmation){
+        return true;
+    }else{
+        alert('已取消操作');
+        return false;
+    }
+}
+function updatemsg_permission(){
+    var message = '已更新權限';
+    alert(message);
+    window.location.href="SAS_UserPermissionEdit.php";
+}
+////////////////////////////////////////
+function login_invalid(){
+    var message = '此帳號已被凍結，請與網站管理員聯繫。\n連絡電話：0800-000-000。';
+    alert(message);
+    window.location.href="index.php";
+}
+////////////////////////////////////////
+function registermsg(id){
+    var message = '申請訊息已送出，請靜待管理員回復。\n審核過程可能需要1~3個工作天\n';
+    message += '您的案件編號為：' + id;
+    message += '，請記住以上案件編號以便後續進度查詢';
+    alert(message);
+    window.location.href="index.php";
+}
+function id_check(){
+    var id = prompt("請輸入案件編號 (e.g. ap00001)：");
+    if (id != null) {
+        window.location.href="SAS/SAS_SQLApplicationStatusCheck.php?ap=" + id;
+    }
+}
+function result_pending(){
+    var message = '您的申請案件目前正在審理中。\n注意：審核過程可能需要1~3個工作天';
+    alert(message);
+    window.location.href="../registerindex.php";
+}
+function result_approved(){
+    var message = '恭喜！\n您的申請案件已通過審核';
+    alert(message);
+    window.location.href="../registerindex.php";
+}
+function result_rejected(){
+    var message = '很遺憾，您的申請案件已遭到駁回。\n請重新審視自己的個人簡介，並再度提出申請';
+    alert(message);
+    window.location.href="../registerindex.php";
 }
 

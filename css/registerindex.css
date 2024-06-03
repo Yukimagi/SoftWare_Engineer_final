@@ -1,0 +1,219 @@
+body{
+    margin:0;
+    padding: 0;
+    position: relative;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+#backround{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background-image: url("../assets/backround.jpg");
+    background-size: cover;
+    background-position: center;
+}
+#info_container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6%;
+    width: 60%;
+    height: 60%;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+}
+#icon_container{
+    margin: 0;
+    padding: 0;
+    width: 40%;
+    height: 100%;
+}
+#info_input{
+    margin: 0;
+    padding: 0;
+    width: 60%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+#icon_container {
+    --borderWidth: 6px;
+    background: #2c3e50;
+    position: relative;
+    border-radius: var(--borderWidth);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#icon_container:after {
+    content: '';
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    border-radius: calc(2 * var(--borderWidth));
+    z-index: -1;
+    animation: animatedgradient 3s ease alternate infinite;
+    background-size: 300% 300%;
+}
+@keyframes animatedgradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+#icon{
+    margin-top: 10%;
+    padding: 0;
+    height: 40%;
+    border-bottom: 3px solid white;
+}
+#college_mark{
+    margin-top: 15%;
+    padding: 0;
+}
+#info_input{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#title{
+    margin: 0;
+    padding: 0;
+    width: 70%;
+    height: 20%;
+    text-align: center;
+    font-size: 20px;
+    color: white;
+    border-bottom: 3px solid white;
+}
+.profile_input{
+    margin-top: 15px;
+    position: relative;
+    width: 250px;
+}
+.profile_input input
+{
+    width: 100%;
+    padding: 10px 0 5px;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    color: #fff;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    transition: 0.5s;
+}
+.profile_input span {
+    position: absolute;
+    left: 0;
+    padding: 10px 0 5px;
+    pointer-events: none;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: 0.5s;
+}
+.profile_input input:valid ~ span,
+.profile_input input:focus ~ span {
+    color: #b0a4e3;
+    transform: translateY(-16px);
+    font-size: 0.65em;
+}
+
+.profile_input i
+{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    overflow: hidden;
+}
+.profile_input i::before
+{
+    content: '';
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,#EEBD89,#D13ABD,#C973FF,#6CC6CB,#9FA5D5,#EAD6EE);
+    animation: runing 1s linear infinite;
+    transition: 0.5s;
+}
+.profile_input input:valid ~ i::before,
+.profile_input input:focus ~ i::before
+{
+    left: 0;
+}
+@keyframes runing {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 250px;
+    }
+}
+#submit_button{
+    margin-top: 30px;
+    padding: 0;
+}
+#backtoindex{
+    margin-top: 20px;
+    padding: 0;
+}
+.register_button{
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+}
+#top_button{
+    background-color: springgreen;
+    color: black;
+}
+#top_button:hover{
+    background-color: #20c997;
+    color: white;
+    transition-duration: 0.3s;
+}
+#bottom_button{
+    background: white;
+    color: black;
+}
+#bottom_button:hover{
+    background-color: #b02a37;
+    color: white;
+    transition-duration: 0.3s;
+}
+#check_button:hover{
+    background-color: #06a5df;
+    color: white;
+    transition-duration: 0.3s;
+}
