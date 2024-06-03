@@ -214,7 +214,7 @@
                                         echo "<script>window.location.href = 'AS_AD_all_landlords_ad.php';</script>";
                                         exit();
                                     } catch (Exception $e) {
-                                        // 回滾事務
+                                        
                                         $conn->rollBack();
                                         echo "刪除失敗：" . $e->getMessage();
                                     }

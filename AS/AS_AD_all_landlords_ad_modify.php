@@ -126,7 +126,7 @@
             $r_utilitybill = $_POST["r_utilitybill"];
             $rid = $_POST["rid"];
 
-            // 处理文件上传
+            // 處理照片上傳
             $r_post = !empty($_FILES["r_post"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_post"]["tmp_name"])) : null;
             $r_photo1 = !empty($_FILES["r_photo1"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo1"]["tmp_name"])) : null;
             $r_photo2 = !empty($_FILES["r_photo2"]["tmp_name"]) ? base64_encode(file_get_contents($_FILES["r_photo2"]["tmp_name"])) : null;
@@ -135,7 +135,7 @@
 
             $content = $_POST["r_else"];
 
-            // 检查地點是否已存在於資料庫中，但排除當前正在更新的記錄
+            // 檢查地點是否已存在於資料庫中，但排除當前正在更新的記錄
             $sql_check = "SELECT COUNT(*) AS count FROM `ad` WHERE r_place = :r_place AND rid != :rid";
             $stmt_check = $conn->prepare($sql_check);
             $stmt_check->bindParam(":r_place", $r_place);
@@ -150,14 +150,14 @@
                 echo "<script>alert('此地點已存在！'); window.location.href='AS_AD_all_landlords_ad.php';</script>";
                 $stmt_check->close();
             } else {
-                // 先从数据库中获取当前记录的现有值
+                // 先從資料庫中獲取當前紀錄的現有值
                 $sql_select = "SELECT r_post, r_photo1, r_photo2, r_photo3, r_photo4 FROM `ad` WHERE rid = :rid";
                 $stmt_select = $conn->prepare($sql_select);
                 $stmt_select->bindParam(":rid", $rid);
                 $stmt_select->execute();
                 $current_row = $stmt_select->fetch(PDO::FETCH_ASSOC);
 
-                // 如果没有新的文件上传，则保留现有的值
+                // 如果没有新的文件上傳，則保留現有的值
                 if (is_null($r_post)) {
                     $r_post = $current_row['r_post'];
                 }

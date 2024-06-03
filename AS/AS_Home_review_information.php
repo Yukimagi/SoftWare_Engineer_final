@@ -155,7 +155,7 @@
                 // 檢查是否存在地點信息
                 if (isset($_POST['location'])) {
                     $location = $_POST['location'];
-                    // 在這裡執行刪除操作，例如：
+                  
                     // 執行插入相關的程式碼
                     $sql_update = "UPDATE ad SET r_up = 1 where r_place = '$location';";
                     

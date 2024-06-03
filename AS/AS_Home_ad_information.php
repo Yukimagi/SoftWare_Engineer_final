@@ -199,7 +199,7 @@
                         }
                     }
 
-                    // 使用 JavaScript 进行重定向
+                    // 使用 JavaScript 進行重新定向
                     echo "<script>window.location.href='AS_Home_ad_information.php?r_place=" . htmlspecialchars($location) . "';</script>";
                 } else {
                     echo "無法找到要收藏的地點信息";

@@ -130,26 +130,26 @@
             $r_deposit = $_POST["deposit"];
             $r_utilitybill = $_POST["utilitybill"];
 
-            // 处理文件上传
-            $r_photo_tmp_name = $_FILES["post"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_post = file_get_contents($r_photo_tmp_name); // 读取上传文件的内容
-            $r_post = base64_encode($r_post); // 对文件内容进行编码
+            // 處理文件上傳
+            $r_photo_tmp_name = $_FILES["post"]["tmp_name"]; // 獲取上傳文件的臨時文件名
+            $r_post = file_get_contents($r_photo_tmp_name); // 讀取上傳文件的内容
+            $r_post = base64_encode($r_post); // 對文件内容進行編碼
 
-            $r_photo_tmp_name1 = $_FILES["photo1"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo1 = file_get_contents($r_photo_tmp_name1); // 读取上传文件的内容
-            $r_photo1 = base64_encode($r_photo1); // 对文件内容进行编码
+            $r_photo_tmp_name1 = $_FILES["photo1"]["tmp_name"]; 
+            $r_photo1 = file_get_contents($r_photo_tmp_name1); 
+            $r_photo1 = base64_encode($r_photo1); 
 
-            $r_photo_tmp_name2 = $_FILES["photo2"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo2 = file_get_contents($r_photo_tmp_name2); // 读取上传文件的内容
-            $r_photo2 = base64_encode($r_photo2); // 对文件内容进行编码
+            $r_photo_tmp_name2 = $_FILES["photo2"]["tmp_name"]; 
+            $r_photo2 = file_get_contents($r_photo_tmp_name2); 
+            $r_photo2 = base64_encode($r_photo2); 
 
-            $r_photo_tmp_name3 = $_FILES["photo3"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo3 = file_get_contents($r_photo_tmp_name3); // 读取上传文件的内容
-            $r_photo3 = base64_encode($r_photo3); // 对文件内容进行编码
+            $r_photo_tmp_name3 = $_FILES["photo3"]["tmp_name"]; 
+            $r_photo3 = file_get_contents($r_photo_tmp_name3); 
+            $r_photo3 = base64_encode($r_photo3); 
 
-            $r_photo_tmp_name4 = $_FILES["photo4"]["tmp_name"]; // 获取上传文件的临时文件名
-            $r_photo4 = file_get_contents($r_photo_tmp_name4); // 读取上传文件的内容
-            $r_photo4 = base64_encode($r_photo4); // 对文件内容进行编码
+            $r_photo_tmp_name4 = $_FILES["photo4"]["tmp_name"]; 
+            $r_photo4 = file_get_contents($r_photo_tmp_name4); 
+            $r_photo4 = base64_encode($r_photo4); 
 
 
             $content = $_POST["content"];

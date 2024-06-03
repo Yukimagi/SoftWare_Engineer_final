@@ -172,11 +172,11 @@
                                     echo "<tbody>";
                                     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         $default_image = 'assets/house.jpg';
-                                        // 创建链接并将 r_place 作为 URL 参数传递
+                                        // 將 r_place 作為 URL 參數傳遞
                                         echo '<tr><td>';
                                         echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
 
-                                        // 判断是否存在 r_post 数据，如果不存在则使用默认图片
+                                        // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
                                         // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
                                         if(!empty($row["r_post"])){
                                         echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
@@ -218,13 +218,7 @@
                             </div>
                         </form>
 
-                        <!-- <script>
-                            document.getElementById('button-search').addEventListener('click', function() {
-                                var searchTerm = document.getElementById('search-input').value;
-                                console.log('Search term:', searchTerm);
-                                // 这里你可以添加其他逻辑来处理搜索关键字，比如发起搜索请求等。
-                            });
-                        </script> -->
+                        
                         </div>
                     </div>
                     
