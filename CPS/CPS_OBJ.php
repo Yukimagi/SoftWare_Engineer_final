@@ -114,7 +114,9 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
+
                     <h1 class="fw-bolder">物件評價</h1>
+
                     
                 </div>
             </div>
@@ -168,9 +170,11 @@
                                     case 'minScore':
                                         $sql_query .= "avg_score ASC";
                                         break;
+
                                     case 'newObj':
                                         $sql_query .= "contact_object.objID DESC";
                                         break;
+
                                     default:
                                         $sql_query .= "contact_object.objID ASC";
                                         break;
@@ -193,7 +197,6 @@
                                     echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
                                     echo '</div>';
                                     echo '</div>';
-                                    
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
                                     echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more review →</a></li>';
@@ -231,7 +234,9 @@
 
                     <!-- Sorting widget-->
                     <div class="card mb-4">
+
                         <div class="card-header">物件排序</div>
+
                         <div class="card-body">
                             <form id="sort-form" method="get" action="CPS_OBJ.php">
                                 <select class="form-select" id="sort-by" name="sortOption">

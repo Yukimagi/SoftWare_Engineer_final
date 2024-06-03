@@ -67,12 +67,7 @@
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         <?php
                         if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Home.php">個人</a></li>';
-                        }
-                        ?>
-                        <?php
-                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_addobj.php">新增物件</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Publish_Artical.php">刊登文章</a></li>';
                         }
                         ?>
                         <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
@@ -116,8 +111,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-
-                    <h1 class="fw-bolder">物件評價</h1>
+                    <h1 class="fw-bolder">文章交流</h1>
                     
                 </div>
             </div>
@@ -129,7 +123,7 @@
                 <div class="col-lg-8">
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="assets/review_warn.png" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="assets/article_warn.png" alt="..." /></a>
                         <div class="card-body">
 
                         </div>
@@ -143,57 +137,50 @@
                         else
                         {//查table
                             // 檢查是否收到關鍵字
-                            if (!isset($_POST['searchTerm'])) {
-                                header("Location: CPS_OBJ.php");
-                                exit();
-                            }
-                            // 檢查是否收到關鍵字
-                            else if(isset($_POST['searchTerm'])) {
+                            if(isset($_POST['searchTerm'])) {
                                 // 獲取傳過來的關鍵字
                                 $searchTerm = $_POST['searchTerm'];
 
                                 // 查關鍵字用%%
-                                $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
-                                            FROM contact_object 
-                                            LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
-                                            WHERE contact_object.name LIKE '%$searchTerm%' 
-                                            GROUP BY contact_object.objID, contact_object.name";
-
+                                $sql_query = "SELECT * FROM `contact article` WHERE `articleIname` LIKE '%$searchTerm%'";
                                 $result = mysql_query($sql_query);
 
                                 // 输出匹配的文章
                                 while ($row = mysql_fetch_assoc($result)) {
-                                    $objID = $row['objID'];
-                                    $name = $row['name'];
-                                    $avg_score = $row['avg_score'];
+                                    $articleID = $row['articleID'];
+                                    $articleIname = $row['articleIname'];
+                                    $articleIcontent = $row['articleIcontent'];
+                                    $lovenum = $row['lovenum'];
+                                    $keepnum = $row['keepnum'];
 
-                                    // 输出資料
+                                    // 輸出文章
                                     echo '<div class="card mb-4">';
                                     echo '<div class="card-body">';
-                                    echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
-                                    echo '<p class="card-text">物件 ID: ' . $objID . '</p>';
-                                    echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                 
+                                    echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
+                                    echo '<p class="card-text">' . $articleIcontent . '</p>';
+                                    echo'<ul class="list-unstyled mb-0">';
+                                    echo '<li><span>Likes: ' . $lovenum . '</span>';
+                                    //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
+                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
+                                    }
+                                    //echo '<span>Likes: ' . $lovenum . '</span>';
+                                    //echo '';
+                                    echo '<li><span>Keeps: ' . $keepnum . '</span>';
+                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
+                                    }
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
-                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more →</a></li>';
+                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Response.php?articleID=' . $articleID . '">Read more →</a></li>';
                                     echo'</ul>';
-                                    echo '</br>';
-                                    //echo '</div>';
-                                    //echo '</div>';
+                                    echo '</div>';
+                                    echo '</div>';
                                 }
-
-                            } 
-                            else {
-                                //echo "未收到關鍵字";
-                                //echo '<a href="CPS_OBJ.php">點擊返回</a>';
-                                //return;
-                                header("Location: CPS_OBJ.php");
-                                exit();
+                            } else {
+                                
+                                echo "未收到關鍵字";
                             }
-                            //echo '<a href="CPS_OBJ.php">查無此筆資物件，點擊返回</a>';
 
                         }
                     ?>
@@ -201,36 +188,56 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
-                      
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                    $(document).ready(function() {
-                        $('#search-form').submit(function(event) {
-                            event.preventDefault(); 
-                            var searchTerm = $('#search-term').val().trim();
-
-                            if (searchTerm === '') {
-                                // 若 searchTerm 為空，直接跳轉到 CPS_OBJ.php
-                                window.location.href = 'CPS_OBJ.php';
-                            } else {
-                                // POST
-                                $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
-                                    // 處理返回的回應
-                                    console.log(response);
-                                });
+                    function loveArticle(articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_love.php', 
+                            type: 'POST',
+                            data: { articleID: articleID }, 
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();
                             }
                         });
-                    });
-                    </script>
+                    }
 
+                    
+                    function keepArticle(uid, articleID) {
+                        
+                        $.ajax({
+                            url: 'CPS_dataProcess/update_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
+                            }
+                        });
+                    }
+
+                    </script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script>
+                        $(document).ready(function() {
+                            $('#search-form').submit(function(event) {
+                                event.preventDefault(); /
+                                var searchTerm = $('#search-term').val();
+                                // POST
+                                $.post('CPS_Communicate_search.php', { searchTerm: searchTerm }, function(response) {
+                                    
+                                    console.log(response);
+                                });
+                            });
+                        });
+                    </script>
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
                     <!-- Search widget-->
                     <div class="card mb-4">
-                        <div class="card-header">找物件</div>
+                    <div class="card-header">找文章</div>
                         <div class="card-body">
-                            <form id="search-form" method="post" action="CPS_OBJ_search.php">
+                            <form id="search-form" method="post" action="CPS_Communicate_search.php">
                                 <div class="input-group">
                                     <input class="form-control" id="search-term" name="searchTerm" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
                                     <button class="btn btn-primary" type="submit">Go!</button>
@@ -239,22 +246,6 @@
                         </div>
                     </div>
 
-                    <!-- Sorting widget-->
-                    <!--
-                    <div class="card mb-4">
-                        <div class="card-header">評價排序</div>
-                        <div class="card-body">
-                            <form id="sort-form" method="get" action="CPS_OBJ.php">
-                                <select class="form-select" id="sort-by" name="sortOption">
-                                    <option value="objID">按物件代號</option>
-                                    <option value="maxScore">最高分</option>
-                                    <option value="minScore">最低分</option>
-                                </select>
-                                <button class="btn btn-primary mt-2" type="submit">排序</button>
-                            </form>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>

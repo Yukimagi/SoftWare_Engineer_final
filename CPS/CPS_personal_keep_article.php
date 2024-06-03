@@ -67,12 +67,7 @@
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         <?php
                         if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Home.php">個人</a></li>';
-                        }
-                        ?>
-                        <?php
-                        if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_addobj.php">新增物件</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_Publish_Artical.php">刊登文章</a></li>';
                         }
                         ?>
                         <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
@@ -116,8 +111,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-
-                    <h1 class="fw-bolder">物件評價</h1>
+                    <h1 class="fw-bolder">個人收藏文章</h1>
                     
                 </div>
             </div>
@@ -129,7 +123,7 @@
                 <div class="col-lg-8">
                     <!-- Featured blog post-->
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="assets/review_warn.png" alt="..." /></a>
+                        <a href="#!"><img class="card-img-top" src="assets/article_warn.png" alt="..." /></a>
                         <div class="card-body">
 
                         </div>
@@ -142,119 +136,132 @@
                         }
                         else
                         {//查table
-                            // 檢查是否收到關鍵字
-                            if (!isset($_POST['searchTerm'])) {
-                                header("Location: CPS_OBJ.php");
-                                exit();
-                            }
-                            // 檢查是否收到關鍵字
-                            else if(isset($_POST['searchTerm'])) {
-                                // 獲取傳過來的關鍵字
-                                $searchTerm = $_POST['searchTerm'];
+                            $sql_query = "SELECT * FROM `user_keep_article` WHERE uid = '$uid'";
+                            $result = mysql_query($sql_query);
 
-                                // 查關鍵字用%%
-                                $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
-                                            FROM contact_object 
-                                            LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
-                                            WHERE contact_object.name LIKE '%$searchTerm%' 
-                                            GROUP BY contact_object.objID, contact_object.name";
+                            // 查所有文章
+                            while ($row = mysql_fetch_assoc($result)) {
+                                $articleID = $row['articleID'];
 
-                                $result = mysql_query($sql_query);
+                                $sql_query2 = "SELECT * FROM `contact article` WHERE articleID = '$articleID'";
+                                $result2 = mysql_query($sql_query2);
+                                while ($row2 = mysql_fetch_assoc($result2)) {
+                                    $articleIname = $row2['articleIname'];
+                                    $articleIcontent = $row2['articleIcontent'];
+                                    $lovenum = $row2['lovenum'];
+                                    $keepnum = $row2['keepnum'];
 
-                                // 输出匹配的文章
-                                while ($row = mysql_fetch_assoc($result)) {
-                                    $objID = $row['objID'];
-                                    $name = $row['name'];
-                                    $avg_score = $row['avg_score'];
-
-                                    // 输出資料
+                                    // 輸出文章
                                     echo '<div class="card mb-4">';
                                     echo '<div class="card-body">';
-                                    echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
-                                    echo '<p class="card-text">物件 ID: ' . $objID . '</p>';
-                                    echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                 
+                                    echo '<h2 class="card-title h4">' . $articleIname . '</h2>';
+                                    echo '<p class="card-text">' . $articleIcontent . '</p>';
+                                    echo'<ul class="list-unstyled mb-0">';
+                                    echo '<li><span>Likes: ' . $lovenum . '</span>';
+                                    //echo '<a class="btn btn-primary btn-sm custom-btn" style="margin-left: 19px;" href="CPS_dataProcess/update_love.php?articleID=' . $articleID . '">按讚</a></li>';
+                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    //echo '<button class="btn btn-primary btn-sm custom-btn"style="margin-left: 19px;" onclick="loveArticle(\'' . $articleID . '\')">按讚</button></li>';
+                                    }
+                                    //echo '<span>Likes: ' . $lovenum . '</span>';
+                                    //echo '';
+                                    echo '<li><span>Keeps: ' . $keepnum . '</span>';
+                                    if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
+                                    //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
+                                    }
                                     echo'</ul>';
                                     echo'<ul class="list-unstyled mb-0">';
-                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more →</a></li>';
+                                    //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
+                                    echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteKeep(\'' . $uid . '\', \'' . $articleID . '\')">取消收藏</button></li>';
                                     echo'</ul>';
-                                    echo '</br>';
-                                    //echo '</div>';
-                                    //echo '</div>';
+                                    echo '</div>';
+                                    echo '</div>';
                                 }
-
-                            } 
-                            else {
-                                //echo "未收到關鍵字";
-                                //echo '<a href="CPS_OBJ.php">點擊返回</a>';
-                                //return;
-                                header("Location: CPS_OBJ.php");
-                                exit();
                             }
-                            //echo '<a href="CPS_OBJ.php">查無此筆資物件，點擊返回</a>';
-
                         }
                     ?>
                     <!-- 記得引入函數-->
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     // JavaScript 
-                      
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                    $(document).ready(function() {
-                        $('#search-form').submit(function(event) {
-                            event.preventDefault(); 
-                            var searchTerm = $('#search-term').val().trim();
-
-                            if (searchTerm === '') {
-                                // 若 searchTerm 為空，直接跳轉到 CPS_OBJ.php
-                                window.location.href = 'CPS_OBJ.php';
-                            } else {
-                                // POST
-                                $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
-                                    // 處理返回的回應
-                                    console.log(response);
-                                });
+                    function DeleteKeep(uid,articleID) {
+                        $.ajax({
+                            url: 'CPS_dataProcess/delete_keep.php', 
+                            type: 'POST',
+                            data: { uid: uid, articleID: articleID },
+                            success: function(response) {
+                                // 重新加載頁面
+                                location.reload();      
                             }
                         });
-                    });
+                    }
                     </script>
-
+                    
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">
-                    <!-- Search widget-->
+                    
+                    <!-- Side widget-->
                     <div class="card mb-4">
-                        <div class="card-header">找物件</div>
-                        <div class="card-body">
-                            <form id="search-form" method="post" action="CPS_OBJ_search.php">
-                                <div class="input-group">
-                                    <input class="form-control" id="search-term" name="searchTerm" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                                    <button class="btn btn-primary" type="submit">Go!</button>
-                                </div>
-                            </form>
-                        </div>
+                        <div class="card-header">personal profile</div>
+                        <?php
+                            if (!empty($identity) && !empty($uid)) {
+                                if ($identity === "T") {
+                                    // 查教師的資料
+                                    $table = "teacher_profile";
+                                    $columns = "t_uid, t_name, t_rank, t_tel, t_mail, t_officetel";
+                                } elseif ($identity === "S") {
+                                    // 查學生的資料
+                                    $table = "basicinfo";
+                                    $columns = "uid, SID, name, grade, gender, phone, email";
+                                }
+                            
+                                // SQL 查
+                                $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
+                                if ($identity === "S") {
+                                    $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
+                                }
+                            
+                                $result = mysql_query($sql_query);
+                            
+                                if ($result) {
+                                    // 輸出結果
+                                    while ($row = mysql_fetch_assoc($result)) {
+                                        // 输出指定的列
+                                        echo '<div class="card-body">';
+                                        foreach ($row as $key => $value) {
+                                            if ($key === "t_uid" || $key === "uid") {
+                                                $key_text = "UID";
+                                            } else if ($key === "t_name" || $key === "name") {
+                                                $key_text = "姓名";
+                                            } else if ($key === "t_rank") {
+                                                $key_text = "職等";
+                                            } else if ($key === "t_tel" || $key === "phone") {
+                                                $key_text = "電話";
+                                            } else if ($key === "t_mail" || $key === "email") {
+                                                $key_text = "信箱";
+                                            } else if ($key === "t_officetel") {
+                                                $key_text = "辦公室電話";
+                                            } else if ($key === "SID") {
+                                                $key_text = "學號";
+                                            } else if ($key === "grade") {
+                                                $key_text = "年級";
+                                            } else if ($key === "gender") {
+                                                $key_text = "性別";
+                                            }
+                                            echo "$key_text: $value <br>";
+                                        }
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查失敗：" . mysql_error();
+                                }
+                            } else {
+                                echo "為提供殂購的訊息進行查詢";
+                            }
+                            
+                        ?>
+                        
                     </div>
-
-                    <!-- Sorting widget-->
-                    <!--
-                    <div class="card mb-4">
-                        <div class="card-header">評價排序</div>
-                        <div class="card-body">
-                            <form id="sort-form" method="get" action="CPS_OBJ.php">
-                                <select class="form-select" id="sort-by" name="sortOption">
-                                    <option value="objID">按物件代號</option>
-                                    <option value="maxScore">最高分</option>
-                                    <option value="minScore">最低分</option>
-                                </select>
-                                <button class="btn btn-primary mt-2" type="submit">排序</button>
-                            </form>
-                        </div>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
