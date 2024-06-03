@@ -5,14 +5,14 @@
 ----------------------------------
 #### CPS_Home.php -> 個人頁面(主頁)
 
-###### CPS_personal_publish.php -> 個人發布的文章
+- CPS_personal_publish.php -> 個人發布的文章
 - CPS_Artical_Modify.php -> 個人文章修改(表單)
 - CPS_Artical_Modify 2.php -> 個人文章修改(實際修改表單)
 - CPS_dataProcess/delete_article.php -> 個人文章刪除
 
-###### CPS_personal_keep.php -> 個人收藏的文章
+- CPS_personal_keep.php -> 個人收藏的文章
 - CPS_dataProcess/delete_keep.php -> 個人收藏刪除
-###### CPS_personal_review.php -> 個人評價物件
+- CPS_personal_review.php -> 個人評價物件
 ----------------------------------
 
 ### 網頁PHP說明 - 交流平台相關PHP
