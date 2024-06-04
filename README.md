@@ -22,14 +22,16 @@
     $password="";//密碼
     if(isset($location)&&isset($account)&&isset($password))
     {
-    $link=mysql_pconnect($location,$account,$password);//mysql_pconnect連結狀況給link
-    if(!$link)
-    {
-    echo'無法連結資料庫';
-    exit();
-    }
-    else
-    echo '';
+        $link=mysql_pconnect($location,$account,$password);//mysql_pconnect連結狀況給link
+        if(!$link)
+        {
+            echo'無法連結資料庫';
+            exit();
+        }
+        else{
+            mysql_select_db("rentsystem");
+            echo '';
+        }
     }
     ?>
 ```
