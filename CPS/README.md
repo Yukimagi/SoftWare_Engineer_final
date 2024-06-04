@@ -44,21 +44,23 @@
     $password="";//密碼
     if(isset($location)&&isset($account)&&isset($password))
     {
-    $link=mysql_pconnect($location,$account,$password);//mysql_pconnect連結狀況給link
-    if(!$link)
-    {
-    echo'無法連結資料庫';
-    exit();
-    }
-    else
-    echo '';
+        $link=mysql_pconnect($location,$account,$password);//mysql_pconnect連結狀況給link
+        if(!$link)
+        {
+            echo'無法連結資料庫';
+            exit();
+        }
+        else{
+            mysql_select_db("rentsystem");
+            echo '';
+        }
     }
     ?>
 ```
 ----------------------------------
   
 ## 本系統更新會依照完整的merge一個階段後才更新進度  
-----------------------------------
+
 ----------------------------------
   
 ### 更新紀錄 - 24/05/07  
@@ -81,7 +83,7 @@ Fix:
   
 Docs:  
 - 更新README.md
-
+----------------------------------
 ### 更新紀錄 - 24/05/30
 ----------------------------------
 Feat:
@@ -103,7 +105,7 @@ Style:
 
 Docs:
 - 更新README.md
-
+----------------------------------
 更新紀錄 - 24/06/03
 ----------------------------------
 Feat:
@@ -118,6 +120,20 @@ Modify:
 
 Fix:
 - 無
+
+Docs:
+- 更新README.md
+----------------------------------
+更新紀錄 - 24/06/05
+----------------------------------
+Feat:
+- 無
+
+Modify:
+- 更改connection.php
+
+Fix:
+- 解決登入後有時候抓不到資料庫的問題
 
 Docs:
 - 更新README.md
