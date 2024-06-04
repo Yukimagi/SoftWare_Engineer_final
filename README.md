@@ -64,7 +64,6 @@ try{
 ##### 伺服器字元集: UTF-8 Unicode (utf8)
 #### ●網頁伺服器:
 ##### Apache/2.4.25 (Win32) OpenSSL/1.0.2j PHP/5.6.30
-##### 資料庫用戶端版本: libmysql - mysqlnd 5.0.11-dev - 20120503 - $Id: 76b08b24596e12d4553bd41fc93cccd5bac2fe7a $
 ##### PHP 版本： 5.6.30
 #### ●phpMyAdmin:
 ##### 版本資訊: 4.6.6
