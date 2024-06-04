@@ -131,6 +131,7 @@ Feat:
 
 Modify:
 - 更改connection.php
+- 新增通知使用者不符規範功能
 
 Fix:
 - 解決登入後有時候抓不到資料庫的問題
