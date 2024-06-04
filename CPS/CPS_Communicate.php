@@ -188,10 +188,47 @@
                                 if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
                                 echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
                                 }
-                                
+                                $test2="SELECT `uid` FROM `user_article`where articleID = '$articleID'";
+                                $result4 = mysql_query($test2);
+                                $row4 = mysql_fetch_array($result4);
+                                $uid2 = $row4['uid'];
+                                $test="SELECT `identity` FROM `user_profile`where uid = '$uid2'";
+                                $result3 = mysql_query($test);
+                                $row3 = mysql_fetch_array($result3);
+                                $identity2 = $row3['email'];
                                 if (($identity === "SYS")) {
                                 echo '<li><span>是否不符規範:</span>';
-                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
+                                $email="";
+                                $table="";
+                                $columns="";
+                                if (!empty($identity2) && !empty($uid2)) {
+                                    if ($identity2 === "T") {
+                                        // 查教師訊息
+                                        $table = "teacher_profile";
+                                        $columns = "t_mail";
+                                    } elseif ($identity2 === "S") {
+                                        // 查學生訊息
+                                        $table = "basicinfo";
+                                        $columns = "email";
+                                    }
+                                
+                                    // SQL 查詢
+                                    
+                                    if ($identity2 === "S") {
+                                        $sql_query2 = "SELECT $columns FROM `$table` WHERE uid = '$uid2'";
+                                        $result2 = mysql_query($sql_query2);
+                                        $row2 = mysql_fetch_array($result2);
+                                        $email = $row2['email'];
+                                    }
+                                    else{
+                                        $sql_query2 = "SELECT $columns FROM `$table` WHERE t_uid = '$uid2'";
+                                        $result2 = mysql_query($sql_query2);
+                                        $row2 = mysql_fetch_array($result2);
+                                        $email = $row2['t_mail'];
+                                    }
+
+                                }
+                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle2(\'' . $uid2 . '\', \'' . $articleID . '\', \'' . $email . '\')">刪除並通知</button></li>';
                                 }
                                 echo'</ul>';
                                 echo'<ul class="list-unstyled mb-0">';
@@ -234,11 +271,11 @@
                         });
                     }
 
-                    function DeleteArticle(uid,articleID) {
+                    function DeleteArticle2(uid,articleID,email) {
                         $.ajax({
-                            url: 'CPS_dataProcess/delete_article.php', 
+                            url: 'CPS_dataProcess/delete_notify_article.php', 
                             type: 'POST',
-                            data: { uid: uid, articleID: articleID },
+                            data: { uid: uid, articleID: articleID, email: email },
                             success: function(response) {
                                 // 重新加載頁面
                                 location.reload();      

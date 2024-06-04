@@ -234,6 +234,30 @@
                                 } else {
                                     echo "查失敗：" . mysql_error();
                                 }
+                                echo '<div class="card mb-4">';
+
+                                echo '<div class="card-header">個人訊息</div>';
+                                $sql_query2 = "SELECT error FROM `user_article_error` WHERE uid = '$uid'";
+                                $result2 = mysql_query($sql_query2);
+                                if ($result2) {
+                                    // 輸出查詢結果
+                                    while ($row2 = mysql_fetch_assoc($result2)) {
+
+                                        // 輸出指定的列
+
+                                        echo '<div class="card-body">';
+                                        $i=0;
+                                        foreach ($row2 as $key => $value) {
+                                            $i++;
+                                            $key_text = "訊息$i";
+                                            echo "$key_text: $value <br>";
+                                        }
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查失敗：" . mysql_error();
+                                }
+                                echo "</div>";
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }
