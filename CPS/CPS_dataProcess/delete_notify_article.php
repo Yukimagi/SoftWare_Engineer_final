@@ -25,7 +25,7 @@ if(!$select_db) {
         //寄信
         $subject = "您的文章: ".$articleIname." 不符合規範";
         $message = "您的文章: ".$articleIname." 已被刪除，原因為不符合規範。";
-        $headers = "From: a1105505@mail.nuk.edu.tw";
+        $headers = "From: ";
         $sql_query_insert = "INSERT INTO user_article_error (uid, error) VALUES ('$uid', '$message')";
         $result2 = mysql_query($sql_query_insert);
 
