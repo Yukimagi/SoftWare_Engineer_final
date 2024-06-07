@@ -21,7 +21,7 @@
     <body>
         <?php
         //連結資料庫
-        include("../connection.php");
+        include("../SAS/connection.php");
         ?>
         <?php
             session_start(); // 啟動 session
@@ -116,7 +116,7 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">訪談紀錄表</h1>
+                    <h1 class="fw-bolder">管理訪談紀錄表</h1>
                     <!-- <p class="lead mb-0">歡迎使用!</p> -->
                 </div>
             </div>

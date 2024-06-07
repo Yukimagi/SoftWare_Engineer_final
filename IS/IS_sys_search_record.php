@@ -21,7 +21,7 @@
     <body>
         <?php
         //連結資料庫
-        include("../connection.php");
+        include("../SAS/connection.php");
         ?>
         <?php
             session_start(); // 啟動 session
@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
 
                         <?php
                         if(($identity === "S")){
@@ -286,9 +286,12 @@
 
                 <label for="major"><span style="color: black; font-weight: bold; font-size: 20px;">選擇系名：</span></label>
                 <select id="major" name="major" required onchange="this.form.submit()">
-                    <option value="" disabled <?php echo empty($selected_major) ? 'selected' : ''; ?>>選擇學期</option>
+                    <option value="" disabled <?php echo empty($selected_major) ? 'selected' : ''; ?>>選擇系名</option>
                     <?php foreach ($majors as $major) { ?>
-                        <option value="<?php echo $major['major']; ?>"><?php echo $major['major']; ?></option>
+                        <option value="<?php echo $major['major']; ?>" <?php echo ($major['major'] == $selected_major) ? 'selected' : ''; ?>>
+                                <?php echo $major['major']; ?>
+                        </option>
+                        
                     <?php } ?>
                 </select>
 

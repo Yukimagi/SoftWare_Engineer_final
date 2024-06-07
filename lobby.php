@@ -45,8 +45,8 @@ $name = $_SESSION['name'];
         ?>
         <div>
 
-
-            <li><a href="IS/IS_Home.php">訪談紀錄</a></li>
+        
+            <li><a href="IS/IS_sys_records.php">訪談紀錄</a></li>
 
         </div>
         <div>
