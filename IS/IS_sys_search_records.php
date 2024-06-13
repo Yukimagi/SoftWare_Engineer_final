@@ -173,11 +173,11 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
-                $selected_sid = isset($_POST['s_uid']) ? $_POST['s_uid'] : '';
                 $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
                 $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
+                $submit_source = isset($_POST['submit_source']) ? $_POST['submit_source'] : '';
 
-                // Fetch students who have not filled the form
+                if ($submit_source === 'button') {
                 $sql_records_unwrite = "SELECT basicinfo.sid
                                         FROM basicinfo
                                         LEFT JOIN interview_record 
@@ -203,50 +203,60 @@
                 $stmt_records_write->bindParam(':semester', $selected_semester);
                 $stmt_records_write->execute();
                 $records_write = $stmt_records_write->fetchAll(PDO::FETCH_ASSOC);
+                }
             }
         }
         ?>
 
         <div class="container">
-            <div class="center">
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="form1">
-                    <input type="hidden" name="form_identifier" value="form1">
+            <div class="row">
+                <div class="text-center my-5">
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="form1">
+                        <input type="hidden" name="form_identifier" value="form1">
 
-                    <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
-                    <select id="school_year" name="school_year" onchange="this.form.submit()">
-                        <option value="" <?php echo empty($selected_school_year) ? 'selected' : ''; ?>>選擇學年</option>
-                        <?php foreach ($school_years as $row1) { ?>
-                            <option value="<?php echo $row1['school_year']; ?>" <?php echo ($row1['school_year'] == $selected_school_year) ? 'selected' : ''; ?>>
-                                <?php echo $row1['school_year']; ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-
-                    <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
-                    <select id="semester" name="semester" onchange="this.form.submit()">
-                        <option value="">選擇學期</option>
-                        <?php
-                        if (!empty($selected_school_year)) {
-                            foreach ($all_semesters[$selected_school_year] as $semester) { ?>
-                                <option value="<?php echo $semester['semester']; ?>" <?php echo ($semester['semester'] == $selected_semester) ? 'selected' : ''; ?>>
-                                    <?php echo $semester['semester']; ?>
+                        <label for="school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
+                        <select id="school_year" name="school_year" required onchange="this.form.submit()">
+                            <option value="" <?php echo empty($selected_school_year) ? 'selected' : ''; ?>>選擇學年</option>
+                            <?php foreach ($school_years as $row1) { ?>
+                                <option value="<?php echo $row1['school_year']; ?>" <?php echo ($row1['school_year'] == $selected_school_year) ? 'selected' : ''; ?>>
+                                    <?php echo $row1['school_year']; ?>
                                 </option>
-                            <?php }
-                        }
-                        ?>
-                    </select>
-                </form>
+                            <?php } ?>
+                        </select>
 
+                        <label for="semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
+                        <select id="semester" name="semester" required>
+                            <option value="">選擇學期</option>
+                            <?php
+                            if (!empty($selected_school_year)) {
+                                foreach ($all_semesters[$selected_school_year] as $semester) { ?>
+                                    <option value="<?php echo $semester['semester']; ?>" <?php echo ($semester['semester'] == $selected_semester) ? 'selected' : ''; ?>>
+                                        <?php echo $semester['semester']; ?>
+                                    </option>
+                                <?php }
+                            }
+                            ?>
+                        </select>
+                        <input type="hidden" id="submit_source" name="submit_source" value="">
+                        <button class="btn btn-primary" id="button-search" type="submit" onclick="setSubmitSource('button')">送出</button>
+                    </form>
+                    <script>
+                        function setSubmitSource(source) {
+                            document.getElementById('submit_source').value = source;
+                        }
+                    </script>
+                </div>
+                <div class="text-center my-5">
                 <?php if (isset($records_unwrite) && $records_unwrite) { ?>
                     <div>
                         <?php foreach ($records_unwrite as $record) {
                             $s_uid = $record['uid'];
                             $sids = $record['sid'];
                             ?>
-                            <a href="IS_sys_search_record.php?s_uid=<?php echo $sids; ?>">
-                                <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
+                            
+                                <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids?></span></label>
                                 <label for="has_filled_form"><span style="color: red; font-weight: bold; font-size: 20px;">未填寫</span></label>
-                            </a>
+                            
                             <p></p>
                         <?php } ?>
                     </div>
@@ -257,8 +267,9 @@
                         <?php foreach ($records_write as $record) {
                             $s_uid = $record['s_uid'];
                             $sids = $record['sid'];
+                            $record_uid = $record['record_uid'];
                             ?>
-                            <a href="IS_sys_search_record.php?s_uid=<?php echo $sids; ?>">
+                            <a href="search_one_record.php?record_uid=<?php echo $record_uid; ?>">
                                 <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids; ?></span></label>
                                 <label for="has_filled_form"><span style="color: green; font-weight: bold; font-size: 20px;">已填寫</span></label>
                             </a>
@@ -266,7 +277,9 @@
                         <?php } ?>
                     </div>
                 <?php } ?>
+                </div>
             </div>
+            
         </div>
 
 

@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
 
                         <?php
                         if(($identity === "S")){
@@ -83,31 +83,29 @@
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
                         <p><span style="color:#b0c4de; display: inline;">現在身分為：</span>
-                    <?php
-                    if (isset($identity) && $identity === "SYS") {
-                        echo '<span style="color:#b0c4de; display: inline;">系統管理員</span>';
-                    }
-                    elseif (isset($identity) && $identity === "T") {
-                        echo '<span style="color:#b0c4de; display: inline;">教師</span>';
-                    }
-                    elseif (isset($identity) && $identity === "S") {
-                        echo '<span style="color:#b0c4de; display: inline;">學生</span>';
-                    }
-                    elseif (isset($identity) && $identity === "L") {
-                        echo '<span style="color:#b0c4de; display: inline;">房東</span>';
-                    }
-                    elseif(isset($identity) && $identity === "訪客") {
-                        echo '<span style="color:#b0c4de; display: inline;">訪客</span>';
-                    }
+                            <?php
+                                if (isset($identity) && $identity === "SYS") {
+                                    echo '<span style="color:#b0c4de; display: inline;">系統管理員</span>';
+                                }
+                                elseif (isset($identity) && $identity === "T") {
+                                    echo '<span style="color:#b0c4de; display: inline;">教師</span>';
+                                }
+                                elseif (isset($identity) && $identity === "S") {
+                                    echo '<span style="color:#b0c4de; display: inline;">學生</span>';
+                                }
+                                elseif (isset($identity) && $identity === "L") {
+                                    echo '<span style="color:#b0c4de; display: inline;">房東</span>';
+                                }
+                                elseif(isset($identity) && $identity === "訪客") {
+                                    echo '<span style="color:#b0c4de; display: inline;">訪客</span>';
+                                }
 
-                    if (isset($identity) && $identity !== "SYS"&& $identity !== "訪客") {
-                        echo '<br>';
-                        echo '<span style="color:#b0c4de; display: inline;">使用者姓名：</span><span style="color:#b0c4de; display: inline;">' . $name . '</span>';
-                    }
-                ?>
-            </p>
-            
-            
+                                if (isset($identity) && $identity !== "SYS"&& $identity !== "訪客") {
+                                    echo '<br>';
+                                    echo '<span style="color:#b0c4de; display: inline;">使用者姓名：</span><span style="color:#b0c4de; display: inline;">' . $name . '</span>';
+                                }
+                            ?>
+                        </p>
                     </ul>
                 </div>
             </div>
@@ -116,8 +114,8 @@
         <header class="py-5 bg-light border-bottom mb-4">
             <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">管理訪談紀錄表</h1>
-                    <!-- <p class="lead mb-0">歡迎使用!</p> -->
+                    <h1 class="fw-bolder">訪談紀錄表</h1>
+                    <p class="lead mb-0">歡迎使用!</p>
                 </div>
             </div>
         </header>
@@ -214,47 +212,62 @@
         ?>
 
         <div class="container">
-            <div class="center">
-                <form id="add_new_record" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <input type="hidden" name="form_identifier" value="add_new_record">
+            <div class="row">
+                <div class="text-center my-5">
+                    <form id="add_new_record" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <input type="hidden" name="form_identifier" value="add_new_record">
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">新增新的訪談紀錄表</span></label><br>
-                    <p></p>
+                        <label class="card-title" for="title"><span style="color: black; font-weight: bold; font-size: 30px;">新增新的訪談紀錄表</span></label><br>
+                        <p></p>
 
-                    <div class="form-row">
-                        <label for="school_year"><span style="color: black; font-weight: bold;">學年：</span></label>
-                        <input type="text" id="school_year" name="school_year" value="" class="underline-input" required>
-                            
-                        <label for="semester"><span style="color: black; font-weight: bold;">學期：</span></label>
-                        <input type="text" id="semester" name="semester" value="" class="underline-input" required>
-                        <button type="submit" class="send-button">送出</button>
-                    </div>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                </form>
+                        <div class="form-row">
+                            <label for="school_year"><span style="color: black; font-weight: bold;">學年：</span></label>
+                            <input type="number" id="school_year" name="school_year" value="2024" class="underline-input" required>
+                                
+                            <label for="semester"><span style="color: black; font-weight: bold;">學期：</span></label>
+                            <input type="number" id="semester" name="semester" value="1" class="underline-input" required>
+                            <button class="btn btn-primary" id="button-search" type="submit">新增</button>
+                        </div>
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                    </form>
+                </div>
+                <div class="text-center my-5">
+                    <form id="open_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <input type="hidden" name="form_identifier" value="open_record">
+
+                        <label for="title" class="card-title"><span style="color: black; font-weight: bold; font-size: 30px;">開放訪談紀錄表(一次只能開放一個)</span></label><br>
+
+                        <label for="select_school_year"><span style="color: black; font-weight: bold;">選擇學年：</span></label>
+                        <select id="select_school_year" name="school_year" required>
+                            <option value="" disabled selected>選擇學年</option>
+                            <?php foreach ($school_years as $row1) { ?>
+                                <option value="<?php echo $row1['school_year']; ?>"><?php echo $row1['school_year']; ?></option>
+                            <?php } ?>
+                        </select>
+
+                        <label for="select_semester"><span style="color: black; font-weight: bold;">選擇學期：</span></label>
+                        <select id="select_semester" name="semester" required>
+                            <option value="" disabled selected>選擇學期</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+
+                        <button class="btn btn-primary" id="button-search" type="submit">開放</button>
+                    </form>
+                </div>
+                <div class="text-center my-5">
+                    <form id="close_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <input type="hidden" name="form_identifier" value="close_record">
+
+                        <label for="title" class="card-title"><span style="color: black; font-weight: bold; font-size: 30px;">關閉訪談紀錄表(全部)</span></label><br>
+
+                        
+                        <button class="btn btn-primary" id="button-search" type="submit">關閉</button>
+                        <!-- <button type="submit" class="submit-button">送出</button> -->
                     
-                <form id="open_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <input type="hidden" name="form_identifier" value="open_record">
-
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">開放訪談紀錄表(一次只能開放一個)</span></label><br>
-
-                    <label for="select_school_year"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學年：</span></label>
-                    <select id="select_school_year" name="school_year" required>
-                        <option value="" disabled selected>選擇學年</option>
-                        <?php foreach ($school_years as $row1) { ?>
-                            <option value="<?php echo $row1['school_year']; ?>"><?php echo $row1['school_year']; ?></option>
-                        <?php } ?>
-                    </select>
-
-                    <label for="select_semester"><span style="color: black; font-weight: bold; font-size: 20px;">選擇學期：</span></label>
-                    <select id="select_semester" name="semester" required>
-                        <option value="" disabled selected>選擇學期</option>
-                        <!-- Options will be populated by JavaScript -->
-                    </select>
-
-                    <button type="submit" class="send-button">送出</button>
-                </form>
+                    </form>
+                </div>
                 <script>
                     // JavaScript to dynamically update the semester dropdown
                     const allSemesters = <?php echo json_encode($all_semesters); ?>;
@@ -283,15 +296,7 @@
                             event.preventDefault();
                         }
                     });
-                </script>
-                <form id="close_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <input type="hidden" name="form_identifier" value="close_record">
-
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">關閉訪談紀錄表(全部)</span></label><br>
-
-                    <button type="submit" class="send-button">送出</button>
-                </form>
-                <script>
+                
                     document.getElementById('close_record').addEventListener('submit', function(event) {
                         const confirmSubmission = confirm('注意！全部的訪談紀錄表將關閉，您確定要關閉嗎?');
                         if (!confirmSubmission) {
@@ -299,6 +304,7 @@
                         }
                     });
                 </script>
+            </div>
         </div>
         
         <!-- Footer-->

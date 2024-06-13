@@ -276,12 +276,11 @@
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
-                    <p></p>
+                    <div class="text-center my-5">
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_student);?></span></label>
-                    <p></p>
-                    <p></p>
+                    </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
 
@@ -290,7 +289,11 @@
 
                     </div>
                     <p></p>
-
+                    <div class="card mb-4">
+                        <div class="text-center my-5">
+                            <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生填寫</span></label>
+                        </div>
+                    </div>
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
                     <p></p>
 
@@ -512,8 +515,12 @@
                         <input type="radio" id="no13" name="Q13" value="否" <?php if($q13 == "否") echo "checked"; ?> disabled>
                         <label for="no13" style="margin-right: 10px; <?php if($q13 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
-                    
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估(導師填寫)</span></label><br>
+                    <div class="card mb-4">
+                        <div class="text-center my-5">
+                            <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">導師填寫</span></label>
+                        </div>
+                    </div>
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估</span></label><br>
                     <p></p>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -606,7 +613,7 @@
                         <label for="nonsense5" style="margin-right: 10px;">欠佳</label>
                     </div>
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">訪視結果(導師填寫)：</span></label><br>
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">訪視結果</span></label><br>
                     <p></p>
 
                     <div class="form-row" style="display: flex; align-items: center;">
