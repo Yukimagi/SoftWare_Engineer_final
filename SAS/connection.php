@@ -1,8 +1,8 @@
 <?php
 $DB_severname = 'localhost';
 $DB_username = 'root';
-$DB_password = '';
-$DB_database = 'rentsystem_dev';
+$DB_password = 'pp200392';
+$DB_database = 'rentsystem';
 try{
     $conn = new PDO("mysql:host=$DB_severname;dbname=$DB_database", $DB_username, $DB_password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
