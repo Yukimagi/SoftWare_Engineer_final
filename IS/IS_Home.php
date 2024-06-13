@@ -204,9 +204,11 @@
 
         
         <div class="container">
-            <div class="center">
+            <div class="row">
+                
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    
+                
+                <div class="card mb-4">
                 <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
                     <p></p>
 
@@ -269,7 +271,8 @@
                         <label for="no0" style="margin-right: 10px;">否</label><br><br>
                     </div>
 
-                    <p></p>
+                    </div>
+                    <div class="card mb-4">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">賃居安全自主管理檢視資料</span></label><br>
                     <p></p>
 
@@ -428,18 +431,20 @@
                         <input type="radio" id="no13" name="Q13" value="否" required>
                         <label for="no13" style="margin-right: 10px;">否</label><br><br>
                     </div>
-
-                    <p></p>
-                    <div class="center">
-                        <button type="submit" class="submit-button">提交</button>
                     </div>
+                    <p></p>
+                    <div class="row">
+                        <button class="btn btn-primary" id="button-search" type="submit">提交</button>
+                    </div>
+                    <p></p>
                 </form>
+                
             </div>
         </div>
 
         <?php
             } else {
-                echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
+                echo "<div class='text-center my-5'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
             }
         } else {
             echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";

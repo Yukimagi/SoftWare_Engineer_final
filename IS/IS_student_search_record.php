@@ -58,7 +58,7 @@
         <!-- 上面的標籤-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="IS_teacher_records.php">IS</a>
+                <a class="navbar-brand" href="IS_student_records.php">IS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -195,8 +195,8 @@
         ?>
         
         <div class="container">
-            <div class="center">
-                
+            <div class="row">
+                <div class="text-center my-5">
                 <form id="open_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <input type="hidden" name="form_identifier" value="form1">
 
@@ -216,6 +216,7 @@
 
                         <button type="submit" class="send-button">送出</button>
                 </form>
+                </div>
                 <script>
                     // JavaScript to dynamically update the semester dropdown
                     const allSemesters = <?php echo json_encode($all_semesters); ?>;
@@ -242,13 +243,12 @@
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
-                    <p></p>
+                    <div class="text-center my-5">
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($name);?></span></label>
-                    <p></p>
-                    <p></p>
-
+                    </div>
+                    <div class="card mb-4">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
                     <p></p>
 
@@ -310,8 +310,8 @@
                         <input type="radio" id="no0" name="Q0" value="否" <?php if($q1 == "否") echo "checked"; ?> disabled>
                         <label for="no0" style="margin-right: 10px; <?php if($q0 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
-
-                    <p></p>
+                    </div>
+                    <div class="card mb-4">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">賃居安全自主管理檢視資料</span></label><br>
                     <p></p>
 
@@ -470,12 +470,12 @@
                         <input type="radio" id="no13" name="Q13" value="否" <?php if($q13 == "否") echo "checked"; ?> disabled>
                         <label for="no13" style="margin-right: 10px; <?php if($q13 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
-
+                    </div>
                 </form>
             </div>
             <?php }?>
         </div>
-        
+        </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Rent Management System 2024</p></div>

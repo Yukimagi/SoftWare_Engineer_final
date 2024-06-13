@@ -124,13 +124,12 @@
         <!-- Page content-->
         <?php
 
-        // Fetch all school years for the dropdown
-        $sql_school_year = "SELECT DISTINCT school_year FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid";
+
+        $sql_school_year = "SELECT DISTINCT school_year FROM record_settings";
         $stmt_school_year = $conn->query($sql_school_year);
         $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);
 
-        // Prepare the SQL query for fetching distinct semesters
-        $sql_semester = "SELECT DISTINCT semester FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid WHERE interview_record.school_year = :school_year";
+        $sql_semester = "SELECT DISTINCT semester FROM record_settings WHERE record_settings.school_year = :school_year";
         $stmt_semester = $conn->prepare($sql_semester);
 
         // Initialize an array to hold semesters for each school year
