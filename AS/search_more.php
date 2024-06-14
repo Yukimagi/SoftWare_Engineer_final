@@ -181,14 +181,14 @@
                                         echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
 
                                         // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
-                                        // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
+                                        // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:850px; max-height:350px;"' : 'src="' . $default_image . '" style="max-width:850px; max-height:350px;"';
                                         if(!empty($row["r_post"])){
-                                        echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                         }
                                         else{
-                                        echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
+                                        echo '<img src="' . $default_image . '" style="max-width:850px; max-height:350px;"/>';
                                         }
-                                        // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                        // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                         
                                         echo '</a>';
                                         echo '<p>';
