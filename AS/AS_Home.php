@@ -21,7 +21,7 @@
     <body>
         <?php
         //連結資料庫
-        include("../connection.php");
+        include("../SAS/connection.php");
         ?>
         <?php
             session_start(); // 啟動 session
@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
 
                         <?php
                         if(($identity === "L")){
@@ -123,45 +123,47 @@
         <!-- Page content-->
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-8">
+                    
                     <form>
                         <?php
-                            
                             $sql = "SELECT r_place, r_post FROM `ad` where r_up = 1";
                             $result = $conn->query($sql);
-
+                            $count = 0;
                             if ($result->rowCount() > 0) {
-                                echo "<table class='table table-striped'>";
-                                echo "<tbody>";
+                                
+                                
+                                
                                 while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    echo '<div class="card mb-4">';
                                     $default_image = 'assets/house.jpg';
                                     // 將 r_place 作為 URL 參數傳遞
-                                    echo '<tr><td>';
                                     echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
-
                                     // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
                                     // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
                                     if(!empty($row["r_post"])){
-                                       echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
+                                       echo '<img class="card-img-top" src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
                                     }
                                     else{
-                                       echo '<img src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
+                                       echo '<img class="card-img-top" src="' . $default_image . '" style="max-width:200px; max-height:200px;"/>';
                                     }
                                     // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:200px; max-height:200px;"/>';
                                     
                                     echo '</a>';
-                                    echo '<p>';
+                                    echo '<div class="card-body">';
                                     echo($row["r_place"]);
-                                    echo '</p>';
-                                    echo '</td></tr>';
-                                    
+                                    echo '</div>';
+                                    echo "</div>";
                                 }
-                                echo "</tbody></table>";
+                                
+                                
                             } else {
                                 echo "0 results";
                             }
                         ?>
                     </form>
+                    
+                    
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">

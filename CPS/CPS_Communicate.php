@@ -27,7 +27,7 @@
             session_start(); // 啟動 session
 
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== 1) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -62,7 +62,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         <?php
@@ -73,7 +73,7 @@
                         <!--<li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>-->
                         <?php
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../logoutprocess.php">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
@@ -138,7 +138,31 @@
                         {//查table
                             $sql_query = "SELECT * FROM `contact article`";
                             $result = mysql_query($sql_query);
+                            // Check if query execution is successful
+                            if (!$result) {
+                                echo '<br>查詢失敗!<br>';
+                                echo "<script>alert('查詢失敗!');</script>";
+                            } else {
+                                // Fetch the names and average scores for each object
+                                $sortOption = isset($_GET['sortOption']) ? $_GET['sortOption'] : 'articleID';
 
+                                $sql_query = "SELECT * FROM `contact article`
+                                            ORDER BY ";
+
+                                // 根據排序選項選擇 SQL 排序方式
+                                switch ($sortOption) {
+                                    case 'maxLove':
+                                        $sql_query .= "lovenum DESC";
+                                        break;
+                                    case 'maxKeep':
+                                        $sql_query .= "keepnum DESC";
+                                        break;
+                                    default:
+                                        $sql_query .= "articleID ASC";
+                                        break;
+                                }
+
+                                $result = mysql_query($sql_query);
                             // 查所有文章
                             while ($row = mysql_fetch_assoc($result)) {
                                 $articleID = $row['articleID'];
@@ -164,10 +188,47 @@
                                 if (!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
                                 echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="keepArticle(\'' . $uid . '\', \'' . $articleID . '\')">收藏</button></li>';
                                 }
-                                
+                                $test2="SELECT `uid` FROM `user_article`where articleID = '$articleID'";
+                                $result4 = mysql_query($test2);
+                                $row4 = mysql_fetch_array($result4);
+                                $uid2 = $row4['uid'];
+                                $test="SELECT `identity` FROM `user_profile`where uid = '$uid2'";
+                                $result3 = mysql_query($test);
+                                $row3 = mysql_fetch_array($result3);
+                                $identity2 = $row3['email'];
                                 if (($identity === "SYS")) {
                                 echo '<li><span>是否不符規範:</span>';
-                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
+                                $email="";
+                                $table="";
+                                $columns="";
+                                if (!empty($identity2) && !empty($uid2)) {
+                                    if ($identity2 === "T") {
+                                        // 查教師訊息
+                                        $table = "teacher_profile";
+                                        $columns = "t_mail";
+                                    } elseif ($identity2 === "S") {
+                                        // 查學生訊息
+                                        $table = "basicinfo";
+                                        $columns = "email";
+                                    }
+                                
+                                    // SQL 查詢
+                                    
+                                    if ($identity2 === "S") {
+                                        $sql_query2 = "SELECT $columns FROM `$table` WHERE uid = '$uid2'";
+                                        $result2 = mysql_query($sql_query2);
+                                        $row2 = mysql_fetch_array($result2);
+                                        $email = $row2['email'];
+                                    }
+                                    else{
+                                        $sql_query2 = "SELECT $columns FROM `$table` WHERE t_uid = '$uid2'";
+                                        $result2 = mysql_query($sql_query2);
+                                        $row2 = mysql_fetch_array($result2);
+                                        $email = $row2['t_mail'];
+                                    }
+
+                                }
+                                echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle2(\'' . $uid2 . '\', \'' . $articleID . '\', \'' . $email . '\')">刪除並通知</button></li>';
                                 }
                                 echo'</ul>';
                                 echo'<ul class="list-unstyled mb-0">';
@@ -176,6 +237,7 @@
                                 echo '</div>';
                                 echo '</div>';
                             }
+                        }
                         }
                     ?>
                     <!-- 記得引入函數-->
@@ -209,11 +271,11 @@
                         });
                     }
 
-                    function DeleteArticle(uid,articleID) {
+                    function DeleteArticle2(uid,articleID,email) {
                         $.ajax({
-                            url: 'CPS_dataProcess/delete_article.php', 
+                            url: 'CPS_dataProcess/delete_notify_article.php', 
                             type: 'POST',
-                            data: { uid: uid, articleID: articleID },
+                            data: { uid: uid, articleID: articleID, email: email },
                             success: function(response) {
                                 // 重新加載頁面
                                 location.reload();      
@@ -237,7 +299,21 @@
                             </form>
                         </div>
                     </div>
+                        <!-- Sorting widget-->
+                        <div class="card mb-4">
 
+                        <div class="card-header">文章排序</div>
+
+                        <div class="card-body">
+                            <form id="sort-form" method="get" action="CPS_Communicate.php">
+                                <select class="form-select" id="sort-by" name="sortOption">
+                                    <option value="maxLove">最高按讚數</option>
+                                    <option value="maxKeep">最高收藏數</option>
+                                </select>
+                                <button class="btn btn-primary mt-2" type="submit">排序</button>
+                            </form>
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@
     <body>
         <?php
         //連結資料庫
-        include("../connection.php");
+        include("../SAS/connection.php");
         ?>
         <?php
             session_start(); // 啟動 session
@@ -68,7 +68,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         
@@ -251,7 +251,8 @@
                     
 
                     <div style="text-align: right;">
-                        <input type="submit" value="送出">
+                        <input type="submit" value="送出" class="btn btn-primary">
+                        <p></p>
                     </div>
                     <!-- <input class="submitbutton" type="submit" value="送出"> -->
                 </form>

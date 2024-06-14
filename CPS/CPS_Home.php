@@ -27,7 +27,7 @@
             session_start(); // 啟動 session
 
             // 檢查使用者是否已登入，如果未登入則重新導向到其他頁面
-            if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== 1) {
                 $identity = "訪客";
                 $uid = "None";
             }
@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item"><a class="nav-link" href="../index02.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
                         <!--<li class="nav-item"><a class="nav-link" href="#!">About</a></li>-->
                         <!--<li class="nav-item"><a class="nav-link" href="#!">sign in</a></li>-->
                         
@@ -71,7 +71,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="CPS_OBJ.php">物件評價</a></li>
                         <?php
                         if(!($identity === "訪客")){
-                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../index01.php?logged_in=false">使用者登出</a></li>';
+                            echo'<li class="nav-item"><a class="nav-link active" aria-current="page" href="../logoutprocess.php">使用者登出</a></li>';
                         }
                         ?>
                         <div class="vertical-line"></div><!-- 畫垂直線-->
@@ -234,6 +234,30 @@
                                 } else {
                                     echo "查失敗：" . mysql_error();
                                 }
+                                echo '<div class="card mb-4">';
+
+                                echo '<div class="card-header">個人訊息</div>';
+                                $sql_query2 = "SELECT error FROM `user_article_error` WHERE uid = '$uid'";
+                                $result2 = mysql_query($sql_query2);
+                                if ($result2) {
+                                    // 輸出查詢結果
+                                    while ($row2 = mysql_fetch_assoc($result2)) {
+
+                                        // 輸出指定的列
+
+                                        echo '<div class="card-body">';
+                                        $i=0;
+                                        foreach ($row2 as $key => $value) {
+                                            $i++;
+                                            $key_text = "訊息$i";
+                                            echo "$key_text: $value <br>";
+                                        }
+                                        echo "</div>";
+                                    }
+                                } else {
+                                    echo "查失敗：" . mysql_error();
+                                }
+                                echo "</div>";
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }
