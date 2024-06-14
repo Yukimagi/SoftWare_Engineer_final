@@ -1,7 +1,9 @@
 <script src="js/scripts.js"></script>
 <?php
 
+
 include("SAS/connection.php");
+
 
 
 session_start();
@@ -15,6 +17,7 @@ $result->bindParam(":password", $password);
 $result->execute();
 
 if($result->rowCount() == 1){
+
 
     $row = $result->fetch(PDO::FETCH_ASSOC);
     if($row['status'] == "VALID"){
@@ -46,6 +49,7 @@ if($result->rowCount() == 1){
     } else{
         echo '<script>login_invalid()</script>';
     }
+
 
 }else{
     echo '<script type="text/javascript">warning1()</script>';

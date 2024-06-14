@@ -29,10 +29,12 @@ $name = $_SESSION['name'];
                 <div class="option">
                     <li><a href="#" id="sys_function" onclick="showiframe4()">新增使用者帳戶</a></li>
 
+
                     <li><a href="#" id="sys_function" onclick="showiframe5()">新增大量帳戶</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe2()">刪除使用者帳戶</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe6()">變更使用者權限</a></li>
                     <li><a href="#" id="sys_function" onclick="showiframe7()">帳號申請審核</a></li>
+
 
                 </div>
             </div>
@@ -43,7 +45,18 @@ $name = $_SESSION['name'];
         ?>
         <div>
 
-            <li><a href="IS/IS_Home.php">訪談紀錄</a></li>
+
+            <?php 
+            if (($identity === "S")){
+                echo'<li><a href="IS/IS_Home.php">訪談紀錄</a></li>';
+            }
+            else if($identity === "T"){
+                echo'<li><a href="IS/IS_teacher_records.php">訪談紀錄</a></li>';
+            }
+            else if (($identity === "SYS")){
+                echo'<li><a href="IS/IS_sys_records.php">訪談紀錄</a></li>';
+            }
+            ?>
 
         </div>
         <div>
@@ -52,6 +65,7 @@ $name = $_SESSION['name'];
         <div>
 
             <li><a href="AS/AS_Home.php">廣告平台</a></li>
+
 
         </div>
         <?php
@@ -87,7 +101,9 @@ $name = $_SESSION['name'];
     </ul>
 </nav>
 <div class="content">
+
     <div id="iframe_container">
+
 
         <iframe id="user_profile" src="SAS/SAS.php"></iframe>
         <iframe id="user_delete" src="SAS/SAS_UserDelete.php"></iframe>
@@ -96,6 +112,7 @@ $name = $_SESSION['name'];
         <iframe id="createmassiveaccountchoice" src="SAS/SAS_CreateMassiveAccountChoice.php"></iframe>
         <iframe id="permissionedit" src="SAS/SAS_UserPermissionEdit.php"></iframe>
         <iframe id="applicationcensor" src="SAS/SAS_ApplicationCensor.php"></iframe>
+
 
     </div>
 </div>

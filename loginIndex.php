@@ -18,8 +18,10 @@
         </div>
         <div id="logintextbox">
 
+
         系統登入
     </div>
+
 
     </div>
     <div id="login">
@@ -49,7 +51,9 @@
             </div>
         </form>
 
+
                 <div id="buttonbox">
+
 
                 <a href="index.php" id="back">
                     <button id="backtohome">返回</button>
