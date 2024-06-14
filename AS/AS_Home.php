@@ -202,7 +202,7 @@
                                     <input type="radio" id="above5000" name="rent" value=">=5000">
                                     <label for="above5000" style="margin-right: 10px;">5000以上</label>
                                     <input type="radio" id="below5000" name="rent" value="<=5000">
-                                    <label for="below5000" style="margin-right: 10px;">5000以下</label>
+                                    <label for="below5000" style="margin-right: 10px;">5000(含)以下</label>
                                 </div>
                                 <div class="form-row" style="display: flex; align-items: center;">
                                     <label for="deposit" style="margin-right: 10px;">
