@@ -109,11 +109,11 @@
         </nav>
         <!-- Page header with logo and tagline-->
         <header class="py-5 bg-light border-bottom mb-4">
-            <!-- <div class="container">
+            <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">個人資料</h1>
+                    <h1 class="fw-bolder">廣告資訊</h1>
                 </div>
-            </div> -->
+            </div>
         </header>
         <?php
         $title = $content = $format = $money = $deposit = $utilitybill = $photo = "";
@@ -293,15 +293,15 @@
                                                 echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                             }
                                         }
-                                        echo "<input type='submit' value='修改'>";
-                                        
+                                        echo "<input type='submit' value='修改' style='position: absolute; right: 0;'><br>";
+                                        echo "<p></p>";
                                         echo "</form>";
                                         echo "</div>";
                                     }
                                 } else {
                                     echo "查詢失敗：" . mysql_error();
                                 }
-                                echo '<button onclick="goBack()">返回</button>';
+                                echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }
