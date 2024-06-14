@@ -128,26 +128,24 @@
         $stmt_school_year = $conn->query($sql_school_year);
         $school_years = $stmt_school_year->fetchAll(PDO::FETCH_ASSOC);
 
-        // Prepare the SQL query for fetching distinct semesters
+        // 搜尋對應semester
         $sql_semester = "SELECT DISTINCT semester FROM interview_record JOIN basicinfo ON basicinfo.uid = interview_record.s_uid WHERE interview_record.school_year = :school_year";
         $stmt_semester = $conn->prepare($sql_semester);
 
-        // Initialize an array to hold semesters for each school year
+        
         $all_semesters = [];
 
         foreach ($school_years as $year) {
-            // Bind the school year parameter and execute the query
+            // Bind school year
             $stmt_semester->bindParam(':school_year', $year['school_year']);
             $stmt_semester->execute();
 
-            // Fetch semesters for the current school year
+            // 依照對應school year fecth semester
             $semesters = $stmt_semester->fetchAll(PDO::FETCH_ASSOC);
 
-            // Add the result to the all_semesters array
             $all_semesters[$year['school_year']] = $semesters;
         }
 
-        // Initialize variables for selected values
         $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
         $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
 
@@ -163,14 +161,15 @@
             $stmt_major->bindParam(':semester', $selected_semester);
             $stmt_major->execute();
             $majors = $stmt_major->fetchAll(PDO::FETCH_ASSOC);
+            
         }
         $selected_major = isset($_POST['major']) ? $_POST['major'] : '';
-        // echo($_POST['major']);
+        
 
-        // Initialize an empty array for students
+        
         $sids = [];
 
-        // If both school year and semester are selected, fetch students
+        // 依照對應school year、semester、major搜尋對應學生
         if ($selected_school_year && $selected_semester && $selected_major) {
             $sql_sid = "SELECT DISTINCT basicinfo.sid FROM interview_record 
                         JOIN basicinfo ON basicinfo.uid = interview_record.s_uid 
@@ -190,9 +189,9 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
+                $submit_source = isset($_POST['submit_source']) ? $_POST['submit_source'] : '';
                 $selected_sid = isset($_POST['s_uid']) ? $_POST['s_uid'] : '';
-                if ($selected_sid) {
-                    
+                if ($submit_source === 'button') {
                     $sql_records = "SELECT interview_record.* , basicinfo.major
                         FROM interview_record join basicinfo 
                         WHERE interview_record.s_uid=basicinfo.uid and basicinfo.sid = :s_uid
@@ -249,7 +248,9 @@
                     $tq8_3 = $records["tq8_3"];
                     $tq8_4 = $records["tq8_4"];
                     $tq8_detail = $records["tq8_detail"];
+                    $date_time = $records['date_time'];
                 }
+                else {}
             }
         }        
         ?>
@@ -303,8 +304,15 @@
                             <?php } ?>
                         </select>
 
-                        <button class="btn btn-primary" id="button-search" type="submit">送出</button>
+                        <input type="hidden" id="submit_source" name="submit_source" value="">
+
+                        <button class="btn btn-primary" id="button-search" type="submit" onclick="setSubmitSource('button')">送出</button>
                     </form>
+                    <script>
+                        function setSubmitSource(source) {
+                            document.getElementById('submit_source').value = source;
+                        }
+                    </script>
                 </div>
                         <?php if (isset($records)) { ?>
                             <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
@@ -547,6 +555,12 @@
                                 <div class="card mb-4">
                                     <div class="text-center my-5">
                                         <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">導師填寫</span></label>
+                                    </div>
+                                    <div class="text-center my-5">
+
+                                        <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
+                                        <input type="date" id="date_time" name="date_time" value="<?php echo $date_time; ?>" class="underline-input">
+
                                     </div>
                                 </div>
                                 <div class="card mb-4">

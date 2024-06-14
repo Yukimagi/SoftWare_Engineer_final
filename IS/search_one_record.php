@@ -136,8 +136,7 @@
 
             $school_year = $records['school_year'];
             $semester = $records['semester'];
-            $school_year = $records['school_year'];
-            $semester = $records['semester'];
+            $date_time = $records['date_time'];
             $landlord_name = $records['landlord_name'];
             $landlord_phone = $records['landlord_phone'];
             $address = $records['address'];
@@ -197,7 +196,6 @@
                         <?php if (isset($records)) { ?>
                             <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <input type="hidden" name="form_identifier" value="form2">
-                                
                                 <div class="text-center my-5">
                                 <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
                                 <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
@@ -437,6 +435,12 @@
                                     <div class="text-center my-5">
                                         <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">導師填寫</span></label>
                                     </div>
+                                    <div class="text-center my-5">
+
+                                        <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
+                                        <input type="date" id="date_time" name="date_time" value="<?php echo $date_time; ?>" class="underline-input">
+
+                                    </div>
                                 </div>
                                 <div class="card mb-4">
                                 <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估</span></label><br>
@@ -451,7 +455,7 @@
                                     <label for="makesense" style="margin-right: 10px; <?php if($tq0 == "合理") echo "color: blue"; ?>">合理</label>
 
                                     <input type="radio" id="nonsense" name="tq0" value="不合理(兩個月以上租金)" <?php if($tq0 == "不合理(兩個月以上租金)") echo "checked"; ?> disabled>
-                                    <label for="nonsense" style="margin-right: 10px; <?php if($tq0 == "不合理(兩個月以上租金)") echo "color: blue"; ?>">不合理(兩個月以上租金)</label>
+                                    <label for="nonsense" style="margin-right: 10px; <?php if($tq0 == "不合理(兩個月以上租金)") echo "color: blue"; ?>">不合理(兩個月以上租金)</label><br></br>
                                 </div>
 
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -463,7 +467,7 @@
                                     <label for="makesense1" style="margin-right: 10px; <?php if($tq1 == "合理") echo "color: blue"; ?>">合理</label>
 
                                     <input type="radio" id="nonsense1" name="tq1" value="不合理" <?php if($tq1 == "不合理") echo "checked"; ?> disabled>
-                                    <label for="nonsense1" style="margin-right: 10px; <?php if($tq1 == "不合理") echo "color: blue"; ?>">不合理</label>
+                                    <label for="nonsense1" style="margin-right: 10px; <?php if($tq1 == "不合理") echo "color: blue"; ?>">不合理</label><br></br>
                                 </div>
 
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -481,7 +485,7 @@
                                     <label for="nonsense2" style="margin-right: 10px; <?php if($tq2 == "欠佳") echo "color: blue"; ?>">欠佳</label>
 
                                     <label for="tq2_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
-                                    <input type="text" id="tq2_detail" name="tq2_detail " value="<?php if($tq2_detail){echo $tq2_detail;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq2_detail" name="tq2_detail " value="<?php echo $tq2_detail; ?>" class="underline-input" readonly><br></br>
                                 </div>
 
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -499,7 +503,7 @@
                                     <label for="nonsense3" style="margin-right: 10px; <?php if($tq3 == "欠佳") echo "color: blue"; ?>">欠佳</label>
 
                                     <label for="tq3_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
-                                    <input type="text" id="tq3_detail" name="tq3_detail" value="<?php if($tq3_detail){echo $tq3_detail;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq3_detail" name="tq3_detail" value="<?php echo $tq3_detail; ?>" class="underline-input" readonly><br></br>
                                 </div>
                                 
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -517,7 +521,7 @@
                                     <label for="nonsense4" style="margin-right: 10px; <?php if($tq4 == "待加強") echo "color: blue"; ?>">待加強</label>
 
                                     <label for="tq4_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
-                                    <input type="text" id="tq4_detail" name="tq4_detail" value="<?php if($tq4_detail){echo $tq4_detail;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq4_detail" name="tq4_detail" value="<?php echo $tq4_detail; ?>" class="underline-input" readonly><br></br>
                                 </div>
 
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -529,14 +533,15 @@
                                     <label for="makesense5" style="margin-right: 10px; <?php if($tq5 == "和睦") echo "color: blue"; ?>">和睦</label>
 
                                     <input type="radio" id="nonsense5" name="tq5" value="欠佳" <?php if($tq5 == "欠佳") echo "checked"; ?> disabled>
-                                    <label for="nonsense5" style="margin-right: 10px; <?php if($tq5 == "欠佳") echo "color: blue"; ?>">欠佳</label>
+                                    <label for="nonsense5" style="margin-right: 10px; <?php if($tq5 == "欠佳") echo "color: blue"; ?>">欠佳</label><br></br>
                                 </div>
-                                </div>
-                                <div class="card mb-4">
-                                <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">訪視結果</span></label><br>
-                                <p></p>
-
+                                
                                 <div class="form-row" style="display: flex; align-items: center;">
+                                <label for="housing_type" style="margin-right: 10px;">
+                                    <span style="color: black; font-weight: bold;">訪視結果：</span>
+                                </label>
+
+                                
 
                                     <input type="radio" id="makesense6" name="tq6" value="整體賃居狀況良好" <?php if($tq6 == "整體賃居狀況良好") echo "checked"; ?> disabled>
                                     <label for="makesense6" style="margin-right: 10px; <?php if($tq6 == "整體賃居狀況良好") echo "color: blue"; ?>">整體賃居狀況良好</label>
@@ -551,13 +556,13 @@
                                     <label for="else6" style="margin-right: 10px; <?php if($tq6 == "其他") echo "color: blue"; ?>">其他</label>
 
                                     <label for="tq6_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
-                                    <input type="text" id="tq6_detail" name="tq6_detail" value="<?php if($tq6_detail){echo $tq6_detail;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq6_detail" name="tq6_detail" value="<?php echo $tq6_detail; ?>" class="underline-input" readonly><br></br>
                                 </div>
 
                                 <div class="form-row" style="display: flex; align-items: center;">
 
                                     <label for="tq7"><span style="color: black; font-weight: bold;">其他記載或建議事項：</span></label>
-                                    <input type="text" id="tq7" name="tq7" value="<?php if($tq7){echo $tq7;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq7" name="tq7" value="<?php echo $tq7; ?>" class="underline-input" readonly><br></br>
 
                                 </div>
                                 <div class="form-row" style="display: flex; align-items: center;">
@@ -580,7 +585,7 @@
                                     <label for="else8" style="margin-right: 10px; <?php if($tq8_5 == "其他") echo "color: blue"; ?>">其他</label>
 
                                     <label for="tq8_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
-                                    <input type="text" id="tq8_detail" name="tq8_detail" value="<?php if($tq8_detail){echo $tq8_detail;}else{echo('無');} ?>" class="underline-input" readonly>
+                                    <input type="text" id="tq8_detail" name="tq8_detail" value="<?php echo $tq8_detail; ?>" class="underline-input" readonly><br></br>
                                 </div>
                                 </div>
                             </form>
