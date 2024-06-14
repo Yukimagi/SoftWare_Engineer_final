@@ -177,7 +177,7 @@
                 echo '<form method="post">';
                 echo "<input type='hidden' name='location' value='$r_place'>";
                 if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") {
-                    echo '<input type="submit" name="collection" value="收藏" class="btn btn-primary">';
+                    echo '<input type="submit" name="collection" value="收藏" class="btn btn-primary"><p></p>';
                 }
                 echo '</form>';
                 echo'</div>';

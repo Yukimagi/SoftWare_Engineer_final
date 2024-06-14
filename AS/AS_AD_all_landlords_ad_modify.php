@@ -109,11 +109,11 @@
         </nav>
         <!-- Page header with logo and tagline-->
         <header class="py-5 bg-light border-bottom mb-4">
-            <!-- <div class="container">
+            <div class="container">
                 <div class="text-center my-5">
-                    <h1 class="fw-bolder">個人資料</h1>
+                    <h1 class="fw-bolder">廣告資訊</h1>
                 </div>
-            </div> -->
+            </div>
         </header>
         <?php
         $title = $content = $format = $money = $deposit = $utilitybill = $photo = "";
