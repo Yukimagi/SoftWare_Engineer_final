@@ -228,15 +228,14 @@
                             <input type="number" id="semester" name="semester" value="1" class="underline-input" required>
                             <button class="btn btn-primary" id="button-search" type="submit">新增</button>
                         </div>
-                        <p></p>
-                        <p></p>
-                        <p></p>
+                        
+                        
                     </form>
                 </div>
                 <div class="text-center my-5">
                     <form id="open_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <input type="hidden" name="form_identifier" value="open_record">
-
+                        <hr>
                         <label for="title" class="card-title"><span style="color: black; font-weight: bold; font-size: 30px;">開放訪談紀錄表(一次只能開放一個)</span></label><br>
 
                         <label for="select_school_year"><span style="color: black; font-weight: bold;">選擇學年：</span></label>
@@ -255,11 +254,12 @@
 
                         <button class="btn btn-primary" id="button-search" type="submit">開放</button>
                     </form>
+                    
                 </div>
                 <div class="text-center my-5">
                     <form id="close_record" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <input type="hidden" name="form_identifier" value="close_record">
-
+                        <hr>
                         <label for="title" class="card-title"><span style="color: black; font-weight: bold; font-size: 30px;">關閉訪談紀錄表(全部)</span></label><br>
 
                         

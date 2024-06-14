@@ -129,92 +129,102 @@
         <div class="container">
             <div class="row">
                 <!-- Blog entries-->
-                <div>
-                    <!-- Side widgets-->
-                    <div>
-                        <!-- Side widget-->
-                        <div>
-                            <?php
-                                if (!empty($identity) && (!empty($uid))) {
-                                    if ($identity === "S") {
-                                        // 設定查詢的資料表和欄位
-                                        $table = "basicinfo";
-                                        $columns = "Sid, name, grade, phone, email, HomeAddr, Hphone, Contactor, Cphone";
-                                        $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
-                                        $result = $conn->query($sql_query);
-                                    }
-                                    else if($identity === "T"){
-                                        $table = "teacher_profile";
-                                        $columns = "t_name, t_rank, t_tel, t_mail, t_address, t_officetel";
-                                        $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
-                                        $result = $conn->query($sql_query);
-                                    }
+               
+                <!-- Side widgets-->
+                <div >
+                   
+                    <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header text-center">personal profile</div>
+                    <div class="card-body text-center">
+                        <?php
+                            if (!empty($identity) && (!empty($uid))) {
+                                if ($identity === "S") {
+                                    // 設定查詢的資料表和欄位
+                                    $table = "basicinfo";
+                                    $columns = "Sid, name, grade, phone, email, HomeAddr, Hphone, Contactor, Cphone";
+                                    $sql_query = "SELECT $columns FROM `$table` WHERE uid = '$uid'";
+                                    $result = $conn->query($sql_query);
+                                } else if($identity === "T") {
+                                    $table = "teacher_profile";
+                                    $columns = "t_name, t_rank, t_tel, t_mail, t_address, t_officetel";
+                                    $sql_query = "SELECT $columns FROM `$table` WHERE t_uid = '$uid'";
+                                    $result = $conn->query($sql_query);
+                                }
 
-
-
-                                    if ($result) {
-                                        // 輸出查詢結果表單
-                                        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                            echo '<div class="text-center my-5">';
-                                            echo '<form method="post" action="update_information.php">'; // 修改後的資料提交到 update.php
-                                            foreach ($row as $key => $value) {
-                                                if ($key === "Sid") {
-                                                    $key_text = "學號";
-                                                } else if ($key === "name" || $key === "t_name") {
-                                                    $key_text = "姓名";
-                                                } else if ($key === "t_rank") {
-                                                    $key_text = "職級";
-                                                }else if ($key === "grade") {
-                                                    $key_text = "年級";
-                                                } else if ($key === "phone" || $key === "t_tel") {
-                                                    $key_text = "聯絡電話";
-                                                } else if ($key === "email" || $key === "t_mail") {
-                                                    $key_text = "email";
-                                                }else if ($key === "HomeAddr") {
-                                                    $key_text = "家中住址";
-                                                }else if ($key === "t_address") {
-                                                    $key_text = "辦公室位置";
-                                                }else if ($key === "t_officetel") {
-                                                    $key_text = "辦公室電話";
-                                                }else if ($key === "Hphone") {
-                                                    $key_text = "家中電話";
-                                                }else if ($key === "Contactor") {
-                                                    $key_text = "聯絡人";
-                                                }else if ($key === "Cphone") {
-                                                    $key_text = "聯絡人電話";
-                                                }
-                                                // 輸出表單欄位，讓使用者修改資料
-                                                if(!($key==="uid")){
-                                                    if($key === "Sid" || $key === "name" || $key === "t_name" || $key === "t_rank" || $key === "grade"){
-                                                        echo "$key_text : $value<br>";
-                                                    }
-                                                    else{
-                                                        echo "$key_text: <input type='text' name='$key' value='$value'><br>";
-                                                    }
+                                if ($result) {
+                                    // 輸出查詢結果表單
+                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<div class="card-body">';
+                                        echo '<form method="post" action="update_information.php" class="text-left" style="display: inline-block; text-align: left;">'; // 修改後的資料提交到 update.php
+                                        foreach ($row as $key => $value) {
+                                            if ($key === "Sid") {
+                                                $key_text = "學號";
+                                            } else if ($key === "name" || $key === "t_name") {
+                                                $key_text = "姓名";
+                                            } else if ($key === "t_rank") {
+                                                $key_text = "職級";
+                                            } else if ($key === "grade") {
+                                                $key_text = "年級";
+                                            } else if ($key === "phone" || $key === "t_tel") {
+                                                $key_text = "聯絡電話";
+                                            } else if ($key === "email" || $key === "t_mail") {
+                                                $key_text = "email";
+                                            } else if ($key === "HomeAddr") {
+                                                $key_text = "家中住址";
+                                            } else if ($key === "t_address") {
+                                                $key_text = "辦公室位置";
+                                            } else if ($key === "t_officetel") {
+                                                $key_text = "辦公室電話";
+                                            } else if ($key === "Hphone") {
+                                                $key_text = "家中電話";
+                                            } else if ($key === "Contactor") {
+                                                $key_text = "聯絡人";
+                                            } else if ($key === "Cphone") {
+                                                $key_text = "聯絡人電話";
+                                            }
+                                            // 輸出表單欄位，讓使用者修改資料
+                                            if (!($key === "uid")) {
+                                                if ($key === "Sid" || $key === "name" || $key === "t_name" || $key === "t_rank" || $key === "grade") {
+                                                    echo "$key_text : $value<br>";
+                                                } else {
+                                                    echo "$key_text: <input type='text' name='$key' value='$value'><br>";
                                                 }
                                             }
-                                            echo "<input type='hidden' name='identity' value='$identity'>";
-                                            echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
-                                            echo "<input type='submit' value='更新'>";
-                                            echo "</form>";
-                                            echo "</div>";
                                         }
-                                    } else {
-                                        echo "查失敗：" . mysql_error();
+                                        echo "<input type='hidden' name='identity' value='$identity'>";
+                                        echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
+                                        echo "<input type='submit' value='更新'>";
+                                        echo "</form>";
+                                        echo "</div>";
                                     }
                                 } else {
-                                    echo "未提供足夠的訊息進行查詢";
+                                    echo "查詢失敗：" . mysql_error();
                                 }
-                            ?>
-                        
-                        </div>
+                            } else {
+                                echo "未提供足夠的訊息進行查詢";
+                            }
+                        ?>
                     </div>
                 </div>
-                
+
+                <style>
+                    .text-center {
+                        text-align: center;
+                    }
+                    .text-left {
+                        text-align: left;
+                    }
+                    .card-body {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                </style>
             </div>
         </div>
        
-
+        </div>
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">
