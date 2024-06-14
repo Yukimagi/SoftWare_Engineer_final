@@ -268,7 +268,7 @@
                     <?php } ?>
                 </select>
 
-                <button type="submit" class="send-button">送出</button>
+                <button type="submit" class='btn btn-primary'>送出</button>
                 
             </form>
             </div>
