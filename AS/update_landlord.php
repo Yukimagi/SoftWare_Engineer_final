@@ -1,10 +1,7 @@
 <?php
     //連結資料庫
-    include("../connection.php");
+    include("../SAS/connection.php");
 ?>
-
-
-
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

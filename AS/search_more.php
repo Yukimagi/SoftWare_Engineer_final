@@ -21,7 +21,7 @@
     <body>
         <?php
         //連結資料庫
-        include("../connection.php");
+        include("../SAS/connection.php");
         ?>
         <?php
             session_start(); // 啟動 session
@@ -63,7 +63,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-                        <li class="nav-item"><a class="nav-link" href="../lobby.php">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
 
                         <?php
                         if(($identity === "L")){
@@ -120,52 +120,56 @@
                 <div class="col-lg-4">
                     <form>
                         <?php
-                            // if (isset($_POST['housing_type'])) {
-                            //     $searchTerm = $_POST['housing_type'];
-                            //     $sql = "SELECT r_place FROM `ad` WHERE r_place LIKE :searchTerm";
-                            //     $stmt = $conn->prepare($sql);
-                            //     $stmt->execute(['searchTerm' => '%' . $searchTerm . '%']);
-                            
-                            //     if ($stmt->rowCount() > 0) {
-                            //         echo "<ul class='list-group'>";
-                            //         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            //             echo "<li class='list-group-item'>" . htmlspecialchars($row['r_place']) . "</li>";
-                            //         }
-                            //         echo "</ul>";
-                            //     } else {
-                            //         echo "<p>No results found for '" . htmlspecialchars($searchTerm) . "'</p>";
-                            //     }
-                            // } else {
-                            //     echo "<p>No search term provided.</p>";
-                            // }
-                        ?>
-                        <?php
                             if (isset($_POST['housing_type'])||isset($_POST['rent'])||isset($_POST['air_conditioner'])||isset($_POST['refrigerator'])||isset($_POST['washing_machine'])||isset($_POST['internet'])||isset($_POST['heater'])) {
-                                $housing_type = $_POST['housing_type'];
-                                $rent = $_POST['rent'];
-                                $air_conditioner = $_POST['air_conditioner'];
-                                $refrigerator = $_POST['refrigerator'];
-                                $washing_machine = $_POST['washing_machine'];
-                                $internet = $_POST['internet'];
-                                $heater = $_POST['heater'];
-                                if ($rent === '<=5000') {
-                                    $rent = 5000;
-                                    $sql = "SELECT * FROM ad
-                                        WHERE r_format LIKE '%$housing_type%'
-                                        AND r_money <= $rent
-                                        AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
-                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%')
-                                        and r_up=1";
+                                $housing_type = isset($_POST['housing_type']) ? $_POST['housing_type'] : '';
+                                $rent = isset($_POST['rent']) ? $_POST['rent'] : '';
+                                $air_conditioner = isset($_POST['air_conditioner']) ? $_POST['air_conditioner'] : '';
+                                $refrigerator = isset($_POST['refrigerator']) ? $_POST['refrigerator'] : '';
+                                $washing_machine = isset($_POST['washing_machine']) ? $_POST['washing_machine'] : '';
+                                $internet = isset($_POST['internet']) ? $_POST['internet'] : '';
+                                $heater = isset($_POST['heater']) ? $_POST['heater'] : '';
+
+                                $conditions = [];
+
+                                if ($housing_type !== '') {
+                                    $conditions[] = "r_format LIKE '%$housing_type%'";
                                 }
-                                else {
-                                    $rent = 5000;
-                                    $sql = "SELECT * FROM ad
-                                        WHERE r_format LIKE '%$housing_type%'
-                                        AND r_money >= $rent
-                                        AND ( r_else LIKE '%$air_conditioner%' OR r_else LIKE '%$refrigerator%' 
-                                        OR r_else LIKE '%$washing_machine%' OR r_else LIKE '%$internet%' OR r_else LIKE '%$heater%
-                                        and r_up=1')";
+
+                                if ($rent !== '') {
+                                    if ($rent === '<=5000') {
+                                        $conditions[] = "r_money <= 5000";
+                                    } elseif ($rent === '>=5000') {
+                                        $conditions[] = "r_money > 5000";
+                                    }
                                 }
+
+                                if ($air_conditioner !== '') {
+                                    $conditions[] = "r_else LIKE '%$air_conditioner%'";
+                                }
+
+                                if ($refrigerator !== '') {
+                                    $conditions[] = "r_else LIKE '%$refrigerator%'";
+                                }
+
+                                if ($washing_machine !== '') {
+                                    $conditions[] = "r_else LIKE '%$washing_machine%'";
+                                }
+
+                                if ($internet !== '') {
+                                    $conditions[] = "r_else LIKE '%$internet%'";
+                                }
+
+                                if ($heater !== '') {
+                                    $conditions[] = "r_else LIKE '%$heater%'";
+                                }
+
+                                $conditions[] = "r_up=1";
+
+                                $sql = "SELECT * FROM ad WHERE " . implode(' AND ', $conditions);
+
+                                // echo($sql);
+                                
+                                
                                 $result = $conn->query($sql);
                                 if ($result->rowCount() > 0) {
                                     echo "<table class='table table-striped'>";
