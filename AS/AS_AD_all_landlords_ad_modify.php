@@ -293,15 +293,15 @@
                                                 echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
                                             }
                                         }
-                                        echo "<input type='submit' value='修改'>";
-                                        
+                                        echo "<input type='submit' value='修改' style='position: absolute; right: 0;'><br>";
+                                        echo "<p></p>";
                                         echo "</form>";
                                         echo "</div>";
                                     }
                                 } else {
                                     echo "查詢失敗：" . mysql_error();
                                 }
-                                echo '<button onclick="goBack()">返回</button>';
+                                echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }

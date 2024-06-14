@@ -123,22 +123,23 @@
         <!-- Page content-->
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-8">
+                    <div class="row">
+                    
                     <form>
                         <?php
-                            
                             $sql = "SELECT r_place, r_post FROM `ad` where r_up = 1";
                             $result = $conn->query($sql);
-
+                            $count = 0;
                             if ($result->rowCount() > 0) {
-                                echo "<table class='table table-striped'>";
+                                
+                                echo "<table";
                                 echo "<tbody>";
                                 while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                     $default_image = 'assets/house.jpg';
                                     // 將 r_place 作為 URL 參數傳遞
-                                    echo '<tr><td>';
+                                    echo '<td>';
                                     echo '<a href="AS_Home_ad_information.php?r_place=' . ($row["r_place"]) . '">';
-
                                     // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
                                     // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:200px; max-height:200px;"' : 'src="' . $default_image . '" style="max-width:200px; max-height:200px;"';
                                     if(!empty($row["r_post"])){
@@ -153,15 +154,17 @@
                                     echo '<p>';
                                     echo($row["r_place"]);
                                     echo '</p>';
-                                    echo '</td></tr>';
-                                    
+                                    echo '</td>';                                    
                                 }
                                 echo "</tbody></table>";
+                                
                             } else {
                                 echo "0 results";
                             }
                         ?>
                     </form>
+                    
+                    </div>
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-4">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ad Information</title>
+    <title>AD Information</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -94,131 +94,148 @@
                 </div>
             </div>
         </nav>
+        <header class="py-5 bg-light border-bottom mb-4">
+            <div class="container">
+                <div class="text-center my-5">
+                    <h1 class="fw-bolder">物件資料</h1>
+                </div>
+            </div>
+        </header>
     <div class="container">
-        <h1 class="mt-5"></h1>
-        <?php
+        <div class="row">
+            <div class="col-lg-8">
+                <?php
 
-        if (isset($_GET["r_place"])) {
-            $r_place = $_GET["r_place"];
-            $sql = "SELECT * FROM ad WHERE r_place = :r_place";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":r_place", $r_place);
-            $stmt->execute();
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $luid=$row["luid"];
+                if (isset($_GET["r_place"])) {
 
-            if ($row) {
-                echo "<h2>" . htmlspecialchars($r_place) . "</h2>";
-                
-                echo "<p>規格：" . htmlspecialchars($row["r_format"]) . "</p>";
-                echo "<p>租金： " . htmlspecialchars($row["r_money"]) . "</p>";
-                echo "<p>押金： " . htmlspecialchars($row["r_deposit"]) . "</p>";
-                echo "<p>水電費： " . htmlspecialchars($row["r_utilitybill"]) . "</p>";
-                echo "<p>其他說明： " . htmlspecialchars($row["r_else"]) . "</p>";
-                echo "<p>實景照： " . htmlspecialchars($row["r_else"]) . "</p>";
-
-                $imgStyle = 'style="max-width:400px; max-height:400px; margin: 10px;"';
-                
-                if (!empty($row["r_post"])) {
-                    echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_post"]) . '" ' . $imgStyle . ' /><br>';
-                }
-                if (!empty($row["r_photo1"])) {
-                    echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo1"]) . '" ' . $imgStyle . ' /><br>';
-                }
-                if (!empty($row["r_photo2"])) {
-                    echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo2"]) . '" ' . $imgStyle . ' /><br>';
-                }
-                if (!empty($row["r_photo3"])) {
-                    echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo3"]) . '" ' . $imgStyle . ' /><br>';
-                }
-                if (!empty($row["r_photo4"])) {
-                    echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo4"]) . '" ' . $imgStyle . ' /><br>';
-                }
-            } else {
-                echo "No details found for r_place: " . htmlspecialchars($r_place);
-            }
-            echo'<div class="card mb-4">';
-            echo'<div class="card-header">房東資訊</div>
-                <div class="card-body">';
-            $sql1 = "SELECT * FROM ad join landlord WHERE landlord.uid = :luid and r_place = :r_place";
-            $stmt1 = $conn->prepare($sql1);
-            $stmt1->bindParam(":r_place", $r_place);
-            $stmt1->bindParam(":luid", $luid);
-            $stmt1->execute();
-            $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
-            if ($row1) {                
-                echo "<p>" . htmlspecialchars($row1["l_name"]) . "</p>";
-                echo "<p>性別： " . htmlspecialchars($row1["l_gender"]) . "</p>";
-                echo "<p>電話： " . htmlspecialchars($row1["l_phone"]) . "</p>";
-                echo "<p>line： " . htmlspecialchars($row1["l_line"]) . "</p>";
-                
-            } else {
-                echo "No details found for r_place: " . htmlspecialchars($r_place);
-            }
-            echo'</div>';
-            echo'</div>';
-            echo'</div>';
-        } else {
-            echo "No r_place specified.";
-        }
-        echo '<button onclick="goBack()">返回</button>';
-
-        echo '<form method="post">';
-        echo "<input type='hidden' name='location' value='$r_place'>";
-        if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") {
-            echo '<input type="submit" name="collection" value="收藏">';
-        }
-        echo '</form>';
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST['collection'])) {
-                // 檢查是否存在地點信息
-                if (isset($_POST['location'])) {
-                    $location = $_POST['location'];
-
-                    // 檢查該地點是否已經被收藏
-                    $check_query = "SELECT * FROM favorite WHERE uid = :uid AND rid = (SELECT rid FROM ad WHERE r_place = :location)";
-                    $stmt = $conn->prepare($check_query);
-                    $stmt->bindParam(':uid', $uid);
-                    $stmt->bindParam(':location', $location);
+                    $r_place = $_GET["r_place"];
+                    $sql = "SELECT * FROM ad WHERE r_place = :r_place";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bindParam(":r_place", $r_place);
                     $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $luid=$row["luid"];
 
-                    if ($stmt->rowCount() > 0) {
-                        // 如果已經存在，顯示已收藏的消息
-                        echo "<script>alert('該地點已收藏：$location');</script>";
+                    if ($row) {
+                        echo "<h2>" . htmlspecialchars($r_place) . "</h2>";
+                        
+                        echo "<p>規格：" . htmlspecialchars($row["r_format"]) . "</p>";
+                        echo "<p>租金： " . htmlspecialchars($row["r_money"]) . "</p>";
+                        echo "<p>押金： " . htmlspecialchars($row["r_deposit"]) . "</p>";
+                        echo "<p>水電費： " . htmlspecialchars($row["r_utilitybill"]) . "</p>";
+                        echo "<p>其他說明： " . htmlspecialchars($row["r_else"]) . "</p>";
+                        echo "<p>實景照： " . htmlspecialchars($row["r_else"]) . "</p>";
+
+                        $imgStyle = 'style="max-width:400px; max-height:400px; margin: 10px;"';
+                        
+                        if (!empty($row["r_post"])) {
+                            echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_post"]) . '" ' . $imgStyle . ' /><br>';
+                        }
+                        if (!empty($row["r_photo1"])) {
+                            echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo1"]) . '" ' . $imgStyle . ' /><br>';
+                        }
+                        if (!empty($row["r_photo2"])) {
+                            echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo2"]) . '" ' . $imgStyle . ' /><br>';
+                        }
+                        if (!empty($row["r_photo3"])) {
+                            echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo3"]) . '" ' . $imgStyle . ' /><br>';
+                        }
+                        if (!empty($row["r_photo4"])) {
+                            echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo4"]) . '" ' . $imgStyle . ' /><br>';
+                        }
                     } else {
-                        // 如果不存在，插入新的收藏記錄
-                        $insert_query = "INSERT INTO favorite (uid, rid) SELECT :uid, rid FROM ad WHERE r_place = :location";
-                        $stmt = $conn->prepare($insert_query);
-                        $stmt->bindParam(':uid', $uid);
-                        $stmt->bindParam(':location', $location);
-                        if ($stmt->execute()) {
-                            echo "<script>alert('已成功收藏最愛：$location');</script>";
+                        echo "No details found for r_place: " . htmlspecialchars($r_place);
+                    }
+                    echo'</div>';
+                    echo'<div class="col-lg-4">';
+                    echo'<div class="card-header">房東資訊</div>
+                        <div class="card-body">';
+                    $sql1 = "SELECT * FROM ad join landlord WHERE landlord.uid = :luid and r_place = :r_place";
+                    $stmt1 = $conn->prepare($sql1);
+                    $stmt1->bindParam(":r_place", $r_place);
+                    $stmt1->bindParam(":luid", $luid);
+                    $stmt1->execute();
+                    $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+                    if ($row1) {                
+                        echo "<p>" . htmlspecialchars($row1["l_name"]) . "</p>";
+                        echo "<p>性別： " . htmlspecialchars($row1["l_gender"]) . "</p>";
+                        echo "<p>電話： " . htmlspecialchars($row1["l_phone"]) . "</p>";
+                        echo "<p>line： " . htmlspecialchars($row1["l_line"]) . "</p>";
+                        
+                    } else {
+                        echo "No details found for r_place: " . htmlspecialchars($r_place);
+                    }
+                    echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
+                    echo'</div>';
+                    echo'</div>';
+                    
+                } else {
+                    echo "No r_place specified.";
+                }
+                
+
+                echo '<form method="post">';
+                echo "<input type='hidden' name='location' value='$r_place'>";
+                if ($identity === "S" && $previous_page !== "/software/SoftWare_Engineer_final/AS/AS_Home_ad_favorite.php") {
+                    echo '<input type="submit" name="collection" value="收藏" class="btn btn-primary">';
+                }
+                echo '</form>';
+                echo'</div>';
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (isset($_POST['collection'])) {
+                        // 檢查是否存在地點信息
+                        if (isset($_POST['location'])) {
+                            $location = $_POST['location'];
+
+                            // 檢查該地點是否已經被收藏
+                            $check_query = "SELECT * FROM favorite WHERE uid = :uid AND rid = (SELECT rid FROM ad WHERE r_place = :location)";
+                            $stmt = $conn->prepare($check_query);
+                            $stmt->bindParam(':uid', $uid);
+                            $stmt->bindParam(':location', $location);
+                            $stmt->execute();
+
+                            if ($stmt->rowCount() > 0) {
+                                // 如果已經存在，顯示已收藏的消息
+                                echo "<script>alert('該地點已收藏：$location');</script>";
+                            } else {
+                                // 如果不存在，插入新的收藏記錄
+                                $insert_query = "INSERT INTO favorite (uid, rid) SELECT :uid, rid FROM ad WHERE r_place = :location";
+                                $stmt = $conn->prepare($insert_query);
+                                $stmt->bindParam(':uid', $uid);
+                                $stmt->bindParam(':location', $location);
+                                if ($stmt->execute()) {
+                                    echo "<script>alert('已成功收藏最愛：$location');</script>";
+                                } else {
+                                    echo "收藏失敗: " . $stmt->errorInfo()[2];
+                                }
+                            }
+
+                            // 使用 JavaScript 進行重新定向
+                            echo "<script>window.location.href='AS_Home_ad_information.php?r_place=" . htmlspecialchars($location) . "';</script>";
                         } else {
-                            echo "收藏失敗: " . $stmt->errorInfo()[2];
+                            echo "無法找到要收藏的地點信息";
                         }
                     }
-
-                    // 使用 JavaScript 進行重新定向
-                    echo "<script>window.location.href='AS_Home_ad_information.php?r_place=" . htmlspecialchars($location) . "';</script>";
-                } else {
-                    echo "無法找到要收藏的地點信息";
                 }
-            }
-        }
 
-        $conn = null;
-        ?>
-        <script>
-        function goBack() {
-            var previousPage = "<?php echo $previous_page; ?>";
-            window.location.href = previousPage;
-        }
-        </script>
-        
+                $conn = null;
+                ?>
+                <script>
+                function goBack() {
+                    var previousPage = "<?php echo $previous_page; ?>";
+                    window.location.href = previousPage;
+                }
+                </script>
+            </div> 
+        </div>
     </div>
-
-    <!-- Bootstrap JS -->
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 </body>
 </html>

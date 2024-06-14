@@ -251,7 +251,8 @@
                     
 
                     <div style="text-align: right;">
-                        <input type="submit" value="送出">
+                        <input type="submit" value="送出" class="btn btn-primary">
+                        <p></p>
                     </div>
                     <!-- <input class="submitbutton" type="submit" value="送出"> -->
                 </form>
