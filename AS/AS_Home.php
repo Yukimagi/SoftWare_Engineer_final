@@ -127,7 +127,7 @@
                     
                     <form>
                         <?php
-                            $sql = "SELECT r_place, r_post FROM `ad` where r_up = 1";
+                            $sql = "SELECT r_place, r_post, r_money FROM `ad` where r_up = 1";
                             $result = $conn->query($sql);
                             $count = 0;
                             if ($result->rowCount() > 0) {
@@ -142,16 +142,17 @@
                                     // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
                                     // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:850px; max-height:350px;"' : 'src="' . $default_image . '" style="max-width:850px; max-height:350px;"';
                                     if(!empty($row["r_post"])){
-                                       echo '<img class="card-img-top" src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
+                                       echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                     }
                                     else{
-                                       echo '<img class="card-img-top" src="' . $default_image . '" style="max-width:850px; max-height:350px;"/>';
+                                       echo '<img src="' . $default_image . '" style="max-width:850px; max-height:350px;"/>';
                                     }
                                     // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                     
                                     echo '</a>';
                                     echo '<div class="card-body">';
-                                    echo($row["r_place"]);
+                                    echo '<h2 class="card-title h4">'.$row["r_place"].'</h2>';
+                                    echo '<p class="card-text">'.$row["r_money"].'/月'.'</p>';
                                     echo '</div>';
                                     echo "</div>";
                                 }

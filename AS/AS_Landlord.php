@@ -169,11 +169,13 @@
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
                                             if(!($key==="uid")){
-                                                echo "$key_text: <input type='text' name='$key' value='$value'><br>";
+                                                echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label><br>';
+
+                                                echo "<input type='text' style='color: blue;'name='$key' value='$value'><br><br>";
                                             }
                                         }
-                                        echo "<input type='hidden' name='uid' value='$uid'>"; // 保留 uid 的隱藏欄位
-                                        echo "<input type='submit' value='更新'>";
+                                        echo "<input type='hidden' name='uid' value='$uid'><br>"; // 保留 uid 的隱藏欄位
+                                        echo "<input type='submit'class='btn btn-primary' value='更新'>";
                                         echo "</form>";
                                         echo "</div>";
                                     }

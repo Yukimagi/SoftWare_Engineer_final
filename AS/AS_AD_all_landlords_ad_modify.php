@@ -210,7 +210,7 @@
                 <!-- Blog entries-->
             
                 <!-- Side widgets-->
-                <div class="col-lg-4">
+                <div >
                 
                     <!-- Side widget-->
                     <div class="card mb-4">
@@ -264,7 +264,7 @@
                                             } else if ($key === "r_deposit") {
                                                 $key_text = "押金";
                                             } else if ($key === "r_utilitybill") {
-                                                $key_text = "水電費";
+                                                $key_text = "水電";
                                             } else if ($key === "r_else") {
                                                 $key_text = "其他";
                                             } else if ($key === "rid") {
@@ -275,13 +275,15 @@
                                                 if (!empty($value)) {
                                                     // 解碼圖片數據
                                                     $image_data = base64_decode($value);
-                                                    echo "$key_text:<br>";
+                                                    echo '<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label><br>';
 
                                                     // 顯示圖片
                                                     echo '<img src="data:image/jpeg;base64,' . base64_encode($image_data) . '" style="max-width:200px; max-height:200px;"/><br>';
-                                                    echo "<input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                                    echo "<input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br><br>";
                                                 } else {
-                                                    echo "$key_text: <input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                                    echo '<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label><br>';
+
+                                                    echo "<input type='file' name='$key' value='" . htmlspecialchars($value) . "'><br><br>";
                                                 }
                                             } else if ($key === "rid"){
                                                 echo "<input type='hidden' name='$key' value='$value'>";
@@ -290,18 +292,21 @@
                                             }
                                             else {
                                                 // 輸出表單欄位，讓使用者修改資料
-                                                echo "$key_text: <input type='text' name='$key' value='" . htmlspecialchars($value) . "'><br>";
+                                                echo '<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label><br>';
+                                                echo "<input type='text' name='$key' style='color: blue;width: 800px; height: 40px;'value='" . htmlspecialchars($value) . "'><br><br>";
                                             }
                                         }
-                                        echo "<input type='submit' value='修改' style='position: absolute; right: 0;'><br>";
+                                        echo "<p></p>";
+                                        echo "<input class='btn btn-primary' type='submit' value='修改'>";
                                         echo "<p></p>";
                                         echo "</form>";
+                                        echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
                                         echo "</div>";
                                     }
                                 } else {
                                     echo "查詢失敗：" . mysql_error();
                                 }
-                                echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
+                                
                             } else {
                                 echo "未提供足夠的訊息進行查詢";
                             }

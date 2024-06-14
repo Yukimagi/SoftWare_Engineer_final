@@ -117,37 +117,50 @@
                     $luid=$row["luid"];
 
                     if ($row) {
-                        echo "<h2>" . htmlspecialchars($r_place) . "</h2>";
+                        echo '<div class="card mb-4">';
+                        echo '<div class="card-body">';
+                        echo "<h2>" . htmlspecialchars($r_place) . "</h2><br>";
                         
                         echo "<p>規格：" . htmlspecialchars($row["r_format"]) . "</p>";
                         echo "<p>租金： " . htmlspecialchars($row["r_money"]) . "</p>";
                         echo "<p>押金： " . htmlspecialchars($row["r_deposit"]) . "</p>";
                         echo "<p>水電費： " . htmlspecialchars($row["r_utilitybill"]) . "</p>";
                         echo "<p>其他說明： " . htmlspecialchars($row["r_else"]) . "</p>";
-                        echo "<p>實景照： " . htmlspecialchars($row["r_else"]) . "</p>";
-
+                        echo '</div>';
+                        echo '</div>';
                         $imgStyle = 'style="max-width:400px; max-height:400px; margin: 10px;"';
                         
                         if (!empty($row["r_post"])) {
+                            echo '<div class="card mb-4">';
                             echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_post"]) . '" ' . $imgStyle . ' /><br>';
+                            echo '</div>';
                         }
                         if (!empty($row["r_photo1"])) {
+                            echo '<div class="card mb-4">';
                             echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo1"]) . '" ' . $imgStyle . ' /><br>';
+                            echo '</div>';
                         }
                         if (!empty($row["r_photo2"])) {
+                            echo '<div class="card mb-4">';
                             echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo2"]) . '" ' . $imgStyle . ' /><br>';
+                            echo '</div>';
                         }
                         if (!empty($row["r_photo3"])) {
+                            echo '<div class="card mb-4">';
                             echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo3"]) . '" ' . $imgStyle . ' /><br>';
+                            echo '</div>';
                         }
                         if (!empty($row["r_photo4"])) {
+                            echo '<div class="card mb-4">';
                             echo '<img src="data:image/jpeg;base64,' . htmlspecialchars($row["r_photo4"]) . '" ' . $imgStyle . ' /><br>';
+                            echo '</div>';
                         }
                     } else {
                         echo "No details found for r_place: " . htmlspecialchars($r_place);
                     }
                     echo'</div>';
                     echo'<div class="col-lg-4">';
+                    echo'<div class="card mb-4">';
                     echo'<div class="card-header">房東資訊</div>
                         <div class="card-body">';
                     $sql1 = "SELECT * FROM ad join landlord WHERE landlord.uid = :luid and r_place = :r_place";
@@ -165,9 +178,12 @@
                     } else {
                         echo "No details found for r_place: " . htmlspecialchars($r_place);
                     }
+                    
                     echo '<button class="btn btn-primary" onclick="goBack()">返回</button>';
                     echo'</div>';
                     echo'</div>';
+                    echo'</div>';
+                    
                     
                 } else {
                     echo "No r_place specified.";

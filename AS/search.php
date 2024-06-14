@@ -117,7 +117,7 @@
         <!-- Page content-->
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-8">
                     <form>
                         
                         <?php
@@ -135,9 +135,9 @@
                                 $result = $conn->prepare($sql);
                                 $result->execute(['searchTerm' => '%' . $searchTerm . '%']);
                                 if ($result->rowCount() > 0) {
-                                    echo "<table class='table table-striped'>";
-                                    echo "<tbody>";
+                                    
                                     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<div class="card mb-4">';
                                         $default_image = 'assets/house.jpg';
                                         // 將 r_place 作為 URL 參數傳遞
                                         echo '<tr><td>';
@@ -146,21 +146,23 @@
                                         // 判断是否存在 r_post 數據，如果不存在則使用默認圖片
                                         // $image_src = !empty($row["r_post"]) ? 'data:image/jpeg;base64,' . $row["r_post"] . '" style="max-width:850px; max-height:350px;"' : 'src="' . $default_image . '" style="max-width:850px; max-height:350px;"';
                                         if(!empty($row["r_post"])){
-                                        echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
+                                            echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                         }
                                         else{
-                                        echo '<img src="' . $default_image . '" style="max-width:850px; max-height:350px;"/>';
+                                            echo '<img src="' . $default_image . '" style="max-width:850px; max-height:350px;"/>';
                                         }
                                         // echo '<img src="data:image/jpeg;base64,' . ($row["r_post"]) . '" style="max-width:850px; max-height:350px;"/>';
                                         
                                         echo '</a>';
-                                        echo '<p>';
-                                        echo($row["r_place"]);
-                                        echo '</p>';
-                                        echo '</td></tr>';
+                                        echo '<div class="card-body">';
+                                        echo '<h2 class="card-title h4">'.$row["r_place"].'</h2>';
+                                        echo '<p class="card-text">'.$row["r_money"].'/月'.'</p>';
+                                        echo '</div>';
+                                        echo "</div>";
+                                        
                                         
                                     }
-                                    echo "</tbody></table>";
+                                    
                                 } else {
                                     echo "0 results";
                                 }
