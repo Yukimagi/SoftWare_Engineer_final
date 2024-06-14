@@ -259,6 +259,7 @@
         
         <div class="container">
             <div class="row">
+            <div class="col-lg-8">
                 <div class="text-center my-5">
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="myForm">
                         <input type="hidden" name="form_identifier" value="form1">
@@ -716,6 +717,7 @@
                         
                         <?php }?>
             </div>
+        </div>
         </div>
         
         <!-- Footer-->
