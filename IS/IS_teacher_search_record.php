@@ -274,7 +274,9 @@
                     <?php } ?>
                 </select>
 
-                <button type="submit" class="send-button">送出</button>
+                <button class="btn btn-primary" type="submit" class="send-button">送出</button>
+                <a class="btn btn-primary" href="IS_teacher_search_record.php">清除</a>
+
             </form>
             </div>
             <?php if (isset($records)) { ?>

@@ -145,9 +145,11 @@
 
             $all_semesters[$year['school_year']] = $semesters;
         }
-
+        
         $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
         $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
+        // echo($selected_school_year);
+        // echo($selected_semester);
 
         // 選擇系名
         $majors = [];
@@ -307,6 +309,7 @@
                         <input type="hidden" id="submit_source" name="submit_source" value="">
 
                         <button class="btn btn-primary" id="button-search" type="submit" onclick="setSubmitSource('button')">送出</button>
+                        <a class="btn btn-primary" href="IS_sys_search_record.php">清除</a>
                     </form>
                     <script>
                         function setSubmitSource(source) {
