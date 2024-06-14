@@ -17,7 +17,6 @@
             <img src="assets/user-interface.png" id="icon">
         </div>
         <div id="logintextbox">
-
         系統登入
     </div>
 

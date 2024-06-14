@@ -255,8 +255,8 @@
         ?>
         
         <div class="container">
-            <div class="center">
-                
+            <div class="row">
+            <div class="text-center my-5">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <input type="hidden" name="form_identifier" value="form1">
 
@@ -269,28 +269,36 @@
                 </select>
 
                 <button type="submit" class="send-button">送出</button>
+                
             </form>
-                 
+            </div>
 
         <?php if (!$hasnot_filled_form) {?>
             <?php if (isset($records)) { ?>
                 <form id="myForm" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="form_identifier" value="form2">
-                    <p></p>
+                    <div class="card mb-4">
+                    <div class="text-center my-5">
+                    
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學年：<?php echo($school_year);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學期：<?php echo($semester);?></span></label>
                     <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生：<?php echo($selected_student);?></span></label>
-                    <p></p>
-                    <p></p>
+                    </div>
 
-                    <div class="form-row" style="display: flex; align-items: center;">
+                    <div class="text-center my-5">
 
                         <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
-                        <input type="text" id="date_time" name="date_time" value="" class="underline-input">
+                        <input type="date" id="date_time" name="date_time" value="" class="underline-input">
 
                     </div>
+                    </div>
                     <p></p>
-
+                    <div class="card mb-4">
+                        <div class="text-center my-5">
+                            <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">學生填寫</span></label>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">校外賃居資料</span></label><br>
                     <p></p>
 
@@ -352,8 +360,8 @@
                         <input type="radio" id="no0" name="Q0" value="否" <?php if($q1 == "否") echo "checked"; ?> disabled>
                         <label for="no0" style="margin-right: 10px; <?php if($q0 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
-
-                    <p></p>
+                    </div>
+                    <div class="card mb-4">
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">賃居安全自主管理檢視資料</span></label><br>
                     <p></p>
 
@@ -512,8 +520,14 @@
                         <input type="radio" id="no13" name="Q13" value="否" <?php if($q13 == "否") echo "checked"; ?> disabled>
                         <label for="no13" style="margin-right: 10px; <?php if($q13 == "否") echo "color: blue"; ?>">否</label><br><br>
                     </div>
-                    
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估(導師填寫)</span></label><br>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="text-center my-5">
+                            <label for="s_uid"><span style="color: black; font-weight: bold; font-size: 20px;">導師填寫</span></label>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">環境及作息評估</span></label>
                     <p></p>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -525,7 +539,7 @@
                         <label for="makesense" style="margin-right: 10px;">合理</label>
 
                         <input type="radio" id="nonsense" name="tq0" value="不合理(兩個月以上租金)" required>
-                        <label for="nonsense" style="margin-right: 10px;">不合理(兩個月以上租金)</label>
+                        <label for="nonsense" style="margin-right: 10px;">不合理(兩個月以上租金)</label><br></br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -537,7 +551,7 @@
                         <label for="makesense1" style="margin-right: 10px;">合理</label>
 
                         <input type="radio" id="nonsense1" name="tq1" value="不合理" required>
-                        <label for="nonsense1" style="margin-right: 10px;">不合理</label>
+                        <label for="nonsense1" style="margin-right: 10px;">不合理</label><br></br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -554,7 +568,7 @@
                         <input type="radio" id="nonsense2" name="tq2" value="欠佳" required>
                         <label for="nonsense2" style="margin-right: 10px;">欠佳</label>
 
-                        <label for="tq2_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <label for="tq2_detail"><span style="color: black; font-weight: bold;">說明：</span></label><br></br>
                         <input type="text" id="tq2_detail" name="tq2_detail" value="" class="underline-input">
                     </div>
 
@@ -572,7 +586,7 @@
                         <input type="radio" id="nonsense3" name="tq3" value="欠佳" required>
                         <label for="nonsense3" style="margin-right: 10px;">欠佳</label>
 
-                        <label for="tq3_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <label for="tq3_detail"><span style="color: black; font-weight: bold;">說明：</span></label><br></br>
                         <input type="text" id="tq3_detail" name="tq3_detail" value="" class="underline-input">
                     </div>
                     
@@ -590,7 +604,7 @@
                         <input type="radio" id="nonsense4" name="tq4" value="待加強" required>
                         <label for="nonsense4" style="margin-right: 10px;">待加強</label>
 
-                        <label for="tq4_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <label for="tq4_detail"><span style="color: black; font-weight: bold;">說明：</span></label><br></br>
                         <input type="text" id="tq4_detail" name="tq4_detail" value="" class="underline-input">
                     </div>
 
@@ -603,13 +617,13 @@
                         <label for="makesense5" style="margin-right: 10px;">和睦</label>
 
                         <input type="radio" id="nonsense5" name="tq5" value="欠佳" required>
-                        <label for="nonsense5" style="margin-right: 10px;">欠佳</label>
+                        <label for="nonsense5" style="margin-right: 10px;">欠佳</label><br></br>
                     </div>
-
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">訪視結果(導師填寫)：</span></label><br>
-                    <p></p>
-
                     <div class="form-row" style="display: flex; align-items: center;">
+                    <label for="housing_type" style="margin-right: 10px;">
+                        <span style="color: black; font-weight: bold;">訪視結果：</span>
+                    </label>
+                    
 
                         <input type="radio" id="makesense6" name="tq6" value="整體賃居狀況良好" required>
                         <label for="makesense6" style="margin-right: 10px;">整體賃居狀況良好</label>
@@ -623,19 +637,19 @@
                         <input type="radio" id="else6" name="tq6" value="其他" required>
                         <label for="else6" style="margin-right: 10px;">其他</label>
 
-                        <label for="tq6_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <label for="tq6_detail"><span style="color: black; font-weight: bold;">說明：</span></label><br></br>
                         <input type="text" id="tq6_detail" name="tq6_detail" value="" class="underline-input">
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
 
-                        <label for="tq7"><span style="color: black; font-weight: bold;">其他記載或建議事項：</span></label>
+                        <label for="tq7"><span style="color: black; font-weight: bold;">其他記載或建議事項：</span></label><br></br>
                         <input type="text" id="tq7" name="tq7" value="" class="underline-input">
 
                     </div>
+                    
+                        <label for="title"><span style="color: black; font-weight: bold; ">關懷宣導項目(懇請導師賃居訪視時多與關懷叮嚀)：</span></label>
 
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 30px;">關懷宣導項目(懇請導師賃居訪視時多與關懷叮嚀)：</span></label><br>
-                    <p></p>
 
                     <div class="form-row" style="display: flex; align-items: center;">
 
@@ -654,25 +668,26 @@
                         <input type="radio" id="else8" name="tq8_5" value="其他" >
                         <label for="else8" style="margin-right: 10px;">其他</label>
 
-                        <label for="tq8_detail"><span style="color: black; font-weight: bold;">說明：</span></label>
+                        <label for="tq8_detail"><span style="color: black; font-weight: bold;">說明：</span></label><br></br>
                         <input type="text" id="tq8_detail" name="tq8_detail" value="" class="underline-input">
                     </div>
-
-                    <p></p>
-                    <div class="center">
-                        <button type="submit" class="submit-button">提交</button>
                     </div>
+                    <p></p>
+                    <div class="row">
+                        <button class="btn btn-primary" id="button-search" type="submit">提交</button>
+                    </div>
+                    <p></p>
                 </form>
             </div>
             <?php }?>
         </div>
-
+        </div>
         <?php
         } else {
             if ($records)echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
         }
     } else {
-        echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";
+        echo "<div class='text-center my-5'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";
     }
         ?>
         

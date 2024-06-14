@@ -44,8 +44,6 @@ $name = $_SESSION['name'];
         }
         ?>
         <div>
-
-
             <?php 
             if (($identity === "S")){
                 echo'<li><a href="IS/IS_Home.php">訪談紀錄</a></li>';
