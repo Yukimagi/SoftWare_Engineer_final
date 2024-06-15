@@ -172,17 +172,26 @@
                                     //echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Artical_Modify.php?articleID=' . $articleID . '">修改文章</a>';
                                     //echo '<button class="btn btn-primary btn-sm custom-btn" style="margin-left: 10px;" onclick="DeleteArticle(\'' . $uid . '\', \'' . $articleID . '\')">刪除</button></li>';
                                     if(!($identity === "SYS"||$identity === "L"|| $identity === "訪客")) {
-                                    echo'<div class="container">';
-                                        echo'<div class="center">'; 
-                                            echo'<form method="post" action="CPS_Artical_Response2.php">';
-                                                echo '<input type="hidden" name="articleID" value="' . $articleID . '">';
-                                                echo'<label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">回覆:</span></label><br>';
-                                                echo'<textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
-                                                
-                                                echo'<input type="submit" value="送出">';
-                                            echo'</form>';
-                                        echo'</div>';
-                                    echo'</div>';
+                                            echo '    <script>';
+                                            echo '        function validateForm() {';
+                                            echo '            var content = document.getElementById("content").value;';
+                                            echo '            if (content.trim() === "") {';
+                                            echo '                alert("回覆內容不能為空！");';
+                                            echo '                return false;';
+                                            echo '            }';
+                                            echo '            return true;';
+                                            echo '        }';
+                                            echo '    </script>';
+                                            echo '<div class="container">';
+                                            echo '    <div class="center">';
+                                            echo '        <form method="post" action="CPS_Artical_Response2.php" onsubmit="return validateForm();">';
+                                            echo '            <input type="hidden" name="articleID" value="' . $articleID . '">';
+                                            echo '            <label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">回覆:</span></label><br>';
+                                            echo '            <textarea id="content" name="content" style="width: 1200px; height: 50px;"></textarea><br><br>';
+                                            echo '            <input type="submit" value="送出">';
+                                            echo '        </form>';
+                                            echo '    </div>';
+                                            echo '</div>';
                                     echo'</ul>';
                                     }
                                     echo '</div>';

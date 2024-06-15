@@ -136,12 +136,13 @@
                     $RESULT=mysql_query($sql_query);
                     if($RESULT){
                     // 提示用戶文章已發布！
-                    echo "<p>回覆成功！</p>";
-                    echo '<script>
-                            setTimeout(function() {
-                                window.location.href = "CPS_Communicate.php"; // 跳回CPS_Communicate.php
-                            }, 1000); // 2000ms（即1秒）
-                        </script>';
+                    echo '<script language="JavaScript">alert("回覆成功！");location.href="CPS_Artical_Response.php?articleID=' . $articleID . '";</script>';
+                    //echo "<p>回覆成功！</p>";
+                    //echo '<script>
+                            //setTimeout(function() {
+                                //window.location.href = "CPS_Communicate.php"; // 跳回CPS_Communicate.php
+                            //}, 1000); // 2000ms（即1秒）
+                        //</script>';
                     }
                     else{
                         echo "<p>回覆失敗！</p>";

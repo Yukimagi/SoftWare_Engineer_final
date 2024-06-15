@@ -176,12 +176,21 @@
         }
         ?>
 
-        
+        <script>
+            function validateForm() {
+                var name = document.getElementById("name").value;
+                if (name.trim() === "") {
+                    alert("物件地址不能為空！");
+                    return false;
+                }
+                return true;
+            }
+        </script>
         <div class="container">
             <div class="center"> 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validateForm();">
                     <label for="name"><span style="color: black; font-weight: bold; font-size: 24px;">物件地址：</span></label><br>
-                    <input type="text" id="name" name="name" value="<?php echo $name; ?>"style="width: 800px; height: 40px;"><br><br>
+                    <input type="text" id="name" name="name" value="<?php echo $name; ?>" style="width: 800px; height: 40px;"><br><br>
                     
                     <input type="submit" value="新增">
                 </form>

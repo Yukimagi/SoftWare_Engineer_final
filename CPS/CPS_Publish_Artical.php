@@ -161,28 +161,39 @@
             mysql_query($sql_query);
             
             // 提示用戶文章已發布！
-            echo "<p>文章已發布！</p>";
-            echo '<script>
-                    setTimeout(function() {
-                        window.location.href = "CPS_Communicate.php"; // 跳回CPS_Communicate.php
-                    }, 2000); // 2000ms（即2秒）
-                  </script>';
+            echo '<script language="JavaScript">alert("文章已發布！");location.href="CPS_Communicate.php";</script>';
+            //echo "<p>文章已發布！</p>";
+            //echo '<script>
+                    //setTimeout(function() {
+                        //window.location.href = "CPS_Communicate.php"; // 跳回CPS_Communicate.php
+                    //}, 2000); // 2000ms（即2秒）
+                  //</script>';
             }
         }
         ?>
-        
+        <script>
+            function validateForm() {
+                var title = document.getElementById("title").value;
+                var content = document.getElementById("content").value;
+                if (title.trim() === "" || content.trim() === "") {
+                    alert("標題和內容不能為空！");
+                    return false;
+                }
+                return true;
+            }
+        </script>
         <div class="container">
-            <div class="center"> 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">文章標題：</span></label><br>
-                    <input type="text" id="title" name="title" value="<?php echo $title; ?>"style="width: 800px; height: 40px;"><br><br>
-                    
-                    <label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">文章內容:</span></label><br>
-                    <textarea id="content" name="content" style="width: 800px; height: 500px;"><?php echo $content; ?></textarea><br><br>
-                    
-                    <input type="submit" value="發布文章">
-                </form>
-            </div>
+        <div class="center">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validateForm();">
+                <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">文章標題：</span></label><br>
+                <input type="text" id="title" name="title" value="<?php echo $title; ?>" style="width: 800px; height: 40px;"><br><br>
+
+                <label for="content"><span style="color: black; font-weight: bold; font-size: 24px;">文章內容:</span></label><br>
+                <textarea id="content" name="content" style="width: 800px; height: 500px;"><?php echo $content; ?></textarea><br><br>
+
+                <input type="submit" value="發布文章">
+            </form>
+        </div>
         </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">

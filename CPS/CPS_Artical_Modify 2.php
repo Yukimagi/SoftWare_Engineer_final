@@ -143,12 +143,14 @@
                         echo "Error updating article: " . mysql_error(); // Display error message
                     } else {
                         // Update was successful
-                        echo "<p>文章已修改完成！</p>";
-                        echo '<script>
-                                setTimeout(function() {
-                                    window.location.href = "CPS_personal_publish_article.php"; // 跳回CPS_personal_publish_article.php
-                                }, 2000); // 2000ms（即2秒）
-                            </script>';
+                        // 提示用戶物件已新增
+                        echo '<script language="JavaScript">alert("文章已修改完成！");location.href="CPS_personal_publish_article.php";</script>';
+                        //echo "<p>文章已修改完成！</p>";
+                        //echo '<script>
+                          //      setTimeout(function() {
+                            //        window.location.href = "CPS_personal_publish_article.php"; // 跳回CPS_personal_publish_article.php
+                              //  }, 2000); // 2000ms（即2秒）
+                            //</script>';
                     }
                 }
             }
