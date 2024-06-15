@@ -147,6 +147,7 @@ Feat:
 
 Modify:
 - 更改CPS icon連結問題
+- update 處理CPS新增物件或文章(新增、修改)為空要報錯與回應方式的修改
 
 Fix:
 - 更改CPS icon連結問題
