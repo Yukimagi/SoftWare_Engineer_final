@@ -447,7 +447,7 @@
                 echo "<div class='text-center my-5'><p style='color: red; font-weight: bold; font-size: 18px;'>您已經填寫過訪談表單，無法再次提交。</p></div></div>";
             }
         } else {
-            echo "<div class='container'><div class='center'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";
+            echo "<div class='text-center my-5'><p style='color: red; font-weight: bold; font-size: 18px;'>訪談表單未開放。</p></div></div>";
         }
         ?>
         

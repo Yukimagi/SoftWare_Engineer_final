@@ -286,10 +286,10 @@
                             <span style="color: black; font-weight: bold;">房間類型：</span>
                         </label>
 
-                        <input type="radio" id="suite" name="room_type" value="套房" <?php if($housing_type == "套房") echo "checked"; ?> disabled>
+                        <input type="radio" id="suite" name="room_type" value="套房" <?php if($room_type == "套房") echo "checked"; ?> disabled>
                         <label for="suite" style="margin-right: 10px; <?php if($room_type == "套房") echo "color: blue;"; ?>">套房</label>
 
-                        <input type="radio" id="elegant_house" name="room_type" value="雅房" <?php if($housing_type == "雅房") echo "checked"; ?> disabled>
+                        <input type="radio" id="elegant_house" name="room_type" value="雅房" <?php if($room_type == "雅房") echo "checked"; ?> disabled>
                         <label for="elegant_house" style="margin-right: 10px; <?php if($room_type == "雅房") echo "color: blue;"; ?>">雅房</label><br><br>
                     </div>
 
