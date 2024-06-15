@@ -13,7 +13,7 @@
 ##### A1105549 杜佩真
 
 ### ●因為有個資問題，因此connection請額外設定:
-#### 1.請在BreadcrumbsSoftWare_Engineer_final/資料夾中添加connection.php
+#### 1.請在SoftWare_Engineer_final/資料夾中添加connection.php
 ```php
     <?php
     //連結資料庫
@@ -35,7 +35,7 @@
     }
     ?>
 ```
-#### 2.請在BreadcrumbsSoftWare_Engineer_final/資料夾中添加另一個connection.php(由於此連接方式與1不同，此使用binding方法，因此需要額外連結)
+#### 2.請在SoftWare_Engineer_final/資料夾中添加另一個connection.php(由於此連接方式與1不同，此使用binding方法，因此需要額外連結)
 ```php
 <?php
 $DB_severname = 'localhost';
