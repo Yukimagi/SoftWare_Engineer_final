@@ -64,7 +64,7 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="../AS_Home.php">AS</a>
+                <a class="navbar-brand" href="AS_Home.php">AS</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -226,7 +226,7 @@
                     <input type="text" id="money" name="money" value="<?php echo $r_money; ?>"style="width: 800px; height: 40px;" required><br><br>
 
                     <label for="title"><span style="color: red; font-weight: bold; font-size: 24px;">押金：</span></label><br>
-                    <input type="text" id="deposit" name="deposit" value="<?php echo $r_deposit; ?>"style="width: 800px; height: 40px; required"><br><br>
+                    <input type="text" id="deposit" name="deposit" value="<?php echo $r_deposit; ?>"style="width: 800px; height: 40px;" required><br><br>
 
                     <label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">水電費：(如:台水台電)</span></label><br>
                     <input type="text" id="utilitybill" name="utilitybill" value="<?php echo $r_utilitybill; ?>"style="width: 800px; height: 40px;"><br><br>
