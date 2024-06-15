@@ -288,7 +288,7 @@
                     <div class="text-center my-5">
 
                         <label for="date_time"><span style="color: black; font-weight: bold;">訪談日期(年/月/日)：</span></label>
-                        <input type="date" id="date_time" name="date_time" value="" class="underline-input">
+                        <input type="date" id="date_time" name="date_time" value="" class="underline-input" required>
 
                     </div>
                     </div>
