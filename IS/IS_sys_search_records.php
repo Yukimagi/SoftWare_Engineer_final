@@ -123,7 +123,7 @@
         </header>
         <!-- Page content-->
         <?php
-
+        
 
         $sql_school_year = "SELECT DISTINCT school_year FROM record_settings";
         $stmt_school_year = $conn->query($sql_school_year);
@@ -172,6 +172,7 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $form_identifier = $_POST["form_identifier"];
             if ($form_identifier == "form1") {
+                $csv_data = [];
                 $selected_school_year = isset($_POST['school_year']) ? $_POST['school_year'] : '';
                 $selected_semester = isset($_POST['semester']) ? $_POST['semester'] : '';
                 $submit_source = isset($_POST['submit_source']) ? $_POST['submit_source'] : '';
@@ -204,6 +205,27 @@
                 $records_write = $stmt_records_write->fetchAll(PDO::FETCH_ASSOC);
                 }
             }
+        }
+        if (isset($_POST['export_csv'])) {
+            // Set the headers to prompt download
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename=data.csv');
+        
+            // Open the output stream
+            $output = fopen('php://output', 'w');
+        
+            // Output the column headings
+            fputcsv($output, array('Student ID', 'Status'));
+        
+            // Output the data
+            foreach ($csv_data as $row) {
+                echo($row);
+                fputcsv($output, $row);
+            }
+        
+            // Close the output stream
+            fclose($output);
+            exit();
         }
         ?>
 
@@ -251,6 +273,7 @@
                         <?php foreach ($records_unwrite as $record) {
                             $s_uid = $record['uid'];
                             $sids = $record['sid'];
+                            $csv_data[] = $sids;
                             ?>
                             
                                 <label for="s_uid"><span style="font-weight: bold; font-size: 20px;">學生：<?php echo $sids?></span></label>
@@ -260,7 +283,7 @@
                         <?php } ?>
                     </div>
                 <?php } ?>
-
+                
                 <?php if (isset($records_write) && $records_write) { ?>
                     <div>
                         <?php foreach ($records_write as $record) {
@@ -273,15 +296,27 @@
                                 <label for="has_filled_form"><span style="color: green; font-weight: bold; font-size: 20px;">已填寫</span></label>
                             </a>
                             <p></p>
+                            
                         <?php } ?>
                     </div>
                 <?php } ?>
+                
+                <?php if (isset($records_unwrite) || isset($records_write)) { ?>
+                    <button class="btn btn-primary" id="exportButton" type="submit" name="export_csv">匯出</button>
+                <?php } ?>
+                <form id="exportForm" method="post" action="export.php" style="display:none;">
+                    <input type="hidden" name="sids" value="<?php echo htmlspecialchars(json_encode($csv_data)); ?>">
+                </form>
                 </div>
             </div>
             
         </div>
 
-
+        <script>
+            document.getElementById('exportButton').addEventListener('click', function() {
+                document.getElementById('exportForm').submit();
+            });
+        </script>
         
         <!-- Footer-->
         <footer class="py-5 bg-dark">
