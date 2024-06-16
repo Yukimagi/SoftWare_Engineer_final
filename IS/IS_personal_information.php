@@ -184,7 +184,7 @@
                                             if (!($key === "uid")) {
                                                 if ($key === "Sid" || $key === "name" || $key === "t_name" || $key === "t_rank" || $key === "grade") {
                                                     echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label>';
-                                                    echo "<input type='text' style='color: blue;'name='$key' value='$value'><br><br>";
+                                                    echo "<input type='text' style='color: blue;'name='$key' value='$value' disabled ><br><br>";
 
                                                 } else {
                                                     echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label>';

@@ -254,13 +254,13 @@
 
                     <div class="form-row">
                         <label for="landlord_name"><span style="color: black; font-weight: bold;">房東姓名：</span></label>
-                        <input type="text" id="landlord_name" name="landlord_name" value="<?php echo $landlord_name; ?>" class="underline-input" readonly>
+                        <input type="text" id="landlord_name" name="landlord_name" value="<?php echo $landlord_name; ?>" class="underline-input" disabled>
                         
                         <label for="landlord_phone"><span style="color: black; font-weight: bold;">房東電話：</span></label>
-                        <input type="text" id="landlord_phone" name="landlord_phone" value="<?php echo $landlord_phone; ?>" class="underline-input" readonly>
+                        <input type="text" id="landlord_phone" name="landlord_phone" value="<?php echo $landlord_phone; ?>" class="underline-input" disabled>
 
                         <label for="address"><span style="color: black; font-weight: bold;">租賃地址：</span></label>
-                        <input type="text" id="address" name="address" value="<?php echo $address; ?>" class="underline-input" style="width: 400px;" readonly><br><br>
+                        <input type="text" id="address" name="address" value="<?php echo $address; ?>" class="underline-input" style="width: 400px;" disabled><br><br>
                     </div>
 
                     <div class="form-row" style="display: flex; align-items: center;">
@@ -295,10 +295,10 @@
 
                     <div class="form-row">
                         <label for="rent"><span style="color: black; font-weight: bold;">每月租金：</span></label>
-                        <input type="text" id="rent" name="rent" value="<?php echo $money; ?>" class="underline-input" readonly>
+                        <input type="text" id="rent" name="rent" value="<?php echo $money; ?>" class="underline-input" disabled>
                         
                         <label for="deposit"><span style="color: black; font-weight: bold;">押金：</span></label>
-                        <input type="text" id="deposit" name="deposit" value="<?php echo $deposit; ?>" class="underline-input" readonly>
+                        <input type="text" id="deposit" name="deposit" value="<?php echo $deposit; ?>" class="underline-input" disabled>
 
                         <label for="Q0" style="margin-right: 10px;">
                             <span style="color: black; font-weight: bold;">是否推薦其他同學租賃？</span>
