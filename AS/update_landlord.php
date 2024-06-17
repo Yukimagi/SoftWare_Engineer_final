@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // SQL 更新語句
-    $sql_update = "UPDATE landlord SET l_name='$l_name', l_gender='$l_gender', l_phone='$l_phone', l_line='$l_line' WHERE uid='$uid'";
+    $sql_update = "UPDATE landlord SET l_gender='$l_gender', l_phone='$l_phone', l_line='$l_line' WHERE uid='$uid'";
     $result = $conn->query($sql_update);
 
 
