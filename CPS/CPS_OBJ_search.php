@@ -138,88 +138,69 @@
                         </div>
                     </div>
                     <?php
-                        $select_db=@mysql_select_db("rentsystem");//選擇資料庫
-                        if(!$select_db)
-                        {
-                        echo'<br>找不到資料庫!<br>';
+                        // Select the database
+                        $select_db = @mysql_select_db("rentsystem");
+                        if (!$select_db) {
+                            echo '<br>找不到資料庫!<br>';
+                            exit();
                         }
-                        else
-                        {//查table
-                            // 檢查是否收到關鍵字
-                            if (!isset($_POST['searchTerm'])) {
-                                header("Location: CPS_OBJ.php");
-                                exit();
+
+                        // Check if searchTerm is received
+                        if (!isset($_POST['searchTerm'])) {
+                            header("Location: CPS_OBJ.php");
+                            exit();
+                        } else {
+                            // Get the search term
+                            $searchTerm = $_POST['searchTerm'];
+
+                            // Prepare the SQL query
+                            $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
+                                        FROM contact_object 
+                                        LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
+                                        WHERE contact_object.name LIKE '%$searchTerm%' 
+                                        GROUP BY contact_object.objID, contact_object.name";
+
+                            $result = mysql_query($sql_query);
+
+                            // Output the matched articles
+                            while ($row = mysql_fetch_assoc($result)) {
+                                $objID = $row['objID'];
+                                $name = $row['name'];
+                                $avg_score = $row['avg_score'];
+
+                                // Output the data
+                                echo '<div class="card mb-4">';
+                                echo '<div class="card-body">';
+                                echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
+                                echo '<p class="card-text">物件 ID: ' . $objID . '</p>';
+                                echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
+                                echo '</div>';
+                                echo '</div>';
+                                
+                                echo '<ul class="list-unstyled mb-0">';
+                                echo '<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more →</a></li>';
+                                echo '</ul>';
+                                echo '</br>';
                             }
-                            // 檢查是否收到關鍵字
-                            else if(isset($_POST['searchTerm'])) {
-                                // 獲取傳過來的關鍵字
-                                $searchTerm = $_POST['searchTerm'];
-
-                                // 查關鍵字用%%
-                                $sql_query = "SELECT contact_object.objID, contact_object.name, ROUND(AVG(user_obj.score), 1) AS avg_score 
-                                            FROM contact_object 
-                                            LEFT JOIN user_obj ON contact_object.objID = user_obj.objID 
-                                            WHERE contact_object.name LIKE '%$searchTerm%' 
-                                            GROUP BY contact_object.objID, contact_object.name";
-
-                                $result = mysql_query($sql_query);
-
-                                // 输出匹配的文章
-                                while ($row = mysql_fetch_assoc($result)) {
-                                    $objID = $row['objID'];
-                                    $name = $row['name'];
-                                    $avg_score = $row['avg_score'];
-
-                                    // 输出資料
-                                    echo '<div class="card mb-4">';
-                                    echo '<div class="card-body">';
-                                    echo '<h2 class="card-title h4">物件名稱: ' . $name . '</h2>';
-                                    echo '<p class="card-text">物件 ID: ' . $objID . '</p>';
-                                    echo '<p class="card-text">平均星等: ' . $avg_score . '</p>';
-                                    echo '</div>';
-                                    echo '</div>';
-                                 
-                                    echo'</ul>';
-                                    echo'<ul class="list-unstyled mb-0">';
-                                    echo'<li><a class="btn btn-primary btn-sm custom-btn" href="CPS_Object_Review.php?objID=' . $objID . '">Read more →</a></li>';
-                                    echo'</ul>';
-                                    echo '</br>';
-                                    //echo '</div>';
-                                    //echo '</div>';
-                                }
-
-                            } 
-                            else {
-                                //echo "未收到關鍵字";
-                                //echo '<a href="CPS_OBJ.php">點擊返回</a>';
-                                //return;
-                                header("Location: CPS_OBJ.php");
-                                exit();
-                            }
-                            //echo '<a href="CPS_OBJ.php">查無此筆資物件，點擊返回</a>';
-
                         }
                     ?>
+
                     <!-- 記得引入函數-->
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                    // JavaScript 
-                      
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script>
                     $(document).ready(function() {
                         $('#search-form').submit(function(event) {
-                            event.preventDefault(); 
+                            event.preventDefault();
                             var searchTerm = $('#search-term').val().trim();
 
                             if (searchTerm === '') {
-                                // 若 searchTerm 為空，直接跳轉到 CPS_OBJ.php
+                                // If searchTerm is empty, redirect to CPS_OBJ.php
                                 window.location.href = 'CPS_OBJ.php';
                             } else {
-                                // POST
+                                // Send the search term via POST
                                 $.post('CPS_OBJ_search.php', { searchTerm: searchTerm }, function(response) {
-                                    // 處理返回的回應
-                                    console.log(response);
+                                    // Process the returned response
+                                    $('body').html(response); // Replace the body content with the response
                                 });
                             }
                         });
