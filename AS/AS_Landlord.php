@@ -169,9 +169,15 @@
                                             }
                                             // 輸出表單欄位，讓使用者修改資料
                                             if(!($key==="uid")){
-                                                echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label><br>';
+                                                if ($key === "l_name") {
+                                                    echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label>';
+                                                    echo "<input type='text' style='color: blue;'name='$key' value='$value' disabled ><br><br>";
 
-                                                echo "<input type='text' style='color: blue;'name='$key' value='$value'><br><br>";
+                                                } else {
+                                                    echo'<label for="title"><span style="color: black; font-weight: bold; font-size: 24px;">'.$key_text.'：'.'</span></label>';
+                                                    echo "<input type='text' style='color: blue;'name='$key' value='$value'><br><br>";
+                                                }
+                                               
                                             }
                                         }
                                         echo "<input type='hidden' name='uid' value='$uid'><br>"; // 保留 uid 的隱藏欄位
